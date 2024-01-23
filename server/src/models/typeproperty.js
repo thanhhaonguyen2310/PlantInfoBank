@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // TypeProperty.hasMany(models.DetailSpecies, { foreignKey: 'TypeProperty_id' });
-      //   TypeProperty.hasMany(sequelize.define("DetailSpecies"));
+        TypeProperty.hasMany(sequelize.define("Properties"));
       // TypeProperty.belongsToMany(models.Species, {through: 'DetailSpecies'});
     }
   }

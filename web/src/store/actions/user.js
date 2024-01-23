@@ -1,5 +1,5 @@
-import actionTypes from "./actionTypes";
-import * as apis from "../../services";
+import actionTypes from "./acctionTypes";
+import * as apis from "../../services/user.services";
 export const getCurrent = () => async (dispatch) => {
   try {
     const respone = await apis.apiGetCurrent();

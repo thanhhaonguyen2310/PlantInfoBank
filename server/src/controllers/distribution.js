@@ -60,7 +60,7 @@ export const deleteDistribution = async (req, res) => {
 
 export const getAllDistribution = async (req, res) => {
   try {
-    const id = req.id;
+    const id = req.params.id
     const respone = await distributionService.getAllDistributionService(id);
     return res.status(200).json(respone);
   } catch (error) {

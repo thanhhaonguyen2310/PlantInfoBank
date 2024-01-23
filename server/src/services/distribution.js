@@ -68,17 +68,15 @@ export const deleteDistributionService = (id) =>
     }
   });
 
-export const getAllDistributionService = (speciesId) =>
+export const getAllDistributionService = (id) =>
   new Promise(async (resolve, reject) => {
     try {
-      const respone = await db.Distribution.findAll({
-        where: { speciesId: speciesId },
+      console.log(id);
+      const respone = await db.Distribution.findAndCountAll({
+        where: { speciesId: id },
         // raw: true,
         // nest: true,
-        include: [
-          // {model: db.Image, as: 'images', attributes: ['image']},
-          { model: db.Provinece },
-        ],
+        include: [{ model: db.Provinece }],
         // attributes: ['id']
       });
       // console.log(respone)

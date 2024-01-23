@@ -31,3 +31,32 @@ export const getAllProperty = async (req, res ) => {
         })
     }
 }
+
+export const getAllSpecies = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const {page} = req.query;
+    // console.log(req.parameter.id)
+    const respone = await speciesService.getAllSpeciesService(id,page);
+    return res.status(200).json(respone);
+  } catch (error) {
+    return res.status(500).json({
+      err: -1,
+      msg: "Failed at post controller : " + error,
+    });
+  }
+};
+
+export const deleteSpecies = async (req, res) => {
+    try {
+      const id = req.params.id;
+      // console.log(req.parameter.id)
+      const respone = await speciesService.deleteSpeciesService();
+      return res.status(200).json(respone);
+    } catch (error) {
+      return res.status(500).json({
+        err: -1,
+        msg: "Failed at post controller : " + error,
+      });
+    }
+  };

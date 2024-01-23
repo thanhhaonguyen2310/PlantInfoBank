@@ -7,18 +7,50 @@ import propertiesValue from "../migrations/properties-value";
 export const createDetailspeciesService = (data) =>
   new Promise(async (resolve, reject) => {
     try {
-      console.log(data);
-      const detailspecies = await db.DetailSpecies.build({
-        propertiesId: data?.propertiesId,
-        speciesId: data?.speciesId,
-        propertiesvalueId: data?.propertiesvalueId,
-        value: data?.value,
-      });
-      await detailspecies.save();
+      // console.log(data);
+      const properArray = []
+      for(let i =0; i < data?.value.length; i++){
+        const properValue = {
+          propertiesId:data?.properties[i],
+          option : data?.value[i]
+        }
+        properArray.push(properValue)
+      }
+      const dataValue = await db.PropertiesValue.findAndCountAll({
+        where:{[Sequelize.Op.or]: properArray},
+        attributes: ["id"]
+      })
+      // const array = dataValue.rows
+      // console.log(dataValue.rows[0].dataValues.id)
+      const  speciesId = await db.Species.findOne({
+        where: {name: data?.name}
+      })
+      const dataQuery = []
+      for(let i =0; i < data?.value.length; i++){
+        const properValue = {
+          speciesId: speciesId?.dataValues.id,
+          propertiesId:data?.properties[i],
+          propertiesvalueId : dataValue?.rows[i]?.dataValues?.id||null,
+          value: data?.value[i]
+        }
+        dataQuery.push(properValue)
+      }
+      console.log(dataQuery)
+
+
+      const detailspecies = await db.DetailSpecies.bulkCreate(dataQuery)
+      // const detailspecies = await db.DetailSpecies.build({
+      //   propertiesId: data?.propertiesId,
+      //   speciesId: data?.speciesId,
+      //   propertiesvalueId: data?.propertiesvalueId,
+      //   value: data?.value,
+      // });
+      // await detailspecies.save();
       resolve({
         err: 0,
         msg: "Created is successfully !",
       });
+
     } catch (error) {
       reject(error);
     }

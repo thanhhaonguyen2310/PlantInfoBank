@@ -1,5 +1,7 @@
 import userReducer from "./userReducer";
 import authReducer from "./authReducer";
+import speciesReducer from "./speciesReducer";
+import provinceReducer from "./provinceReducer";
 import { combineReducers } from "redux";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
@@ -18,6 +20,8 @@ const authConfig = {
 const rootReducer = combineReducers({
     auth: persistReducer(authConfig, authReducer),
     user: userReducer,
+    species: speciesReducer,
+    province: provinceReducer,
 });
 
 export default rootReducer;
