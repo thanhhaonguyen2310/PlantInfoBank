@@ -4,6 +4,7 @@ const initState = {
   species: [],
   detailspecies: [],
   msg: "",
+  datafilter: {}
 };
 
 const speciesReducer = (state = initState, action) => {
@@ -14,12 +15,23 @@ const speciesReducer = (state = initState, action) => {
         species: action.species || [],
         msg: action.msg || "",
       };
+      case actionTypes.GET_FILTERSPECIES:
+        return {
+          ...state,
+          species: action.species || [],
+          msg: action.msg || "",
+        };
     case actionTypes.GET_PROPERTY_SPECIES:
         return {
           ...state,
           detailspecies: action.detailspecies || [],
           msg: action.msg || "",
         };
+        case actionTypes.SAVE_SPECIES:
+          return {
+            ...state,
+            datafilter: action.datafilter || {},
+          };
     default:
       return state;
   }

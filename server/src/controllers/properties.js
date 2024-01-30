@@ -18,6 +18,25 @@ export const createProperties = async (req, res) => {
     }
 }
 
+export const addSpecies = async (req, res) => {
+    const data = req.body
+    const id = req.params
+    try {
+        if (!data) return res.status(400).json({
+            err: 1,
+            msg: 'Missing inputs !'
+        })
+        const response = await propertiesService.addSpeciesService(id,data)
+        return res.status(200).json(response)
+
+    } catch (error) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at auth controller: ' + error
+        })
+    }
+}
+
 // export const updateProperties = async (req, res) => {  
 //     try {
 //         if (!req.body.id){
@@ -58,10 +77,10 @@ export const deleteProperties = async (req, res) => {
     }
 }
 
- export const getAllProperties = async (req, res ) => {
+ export const getProperty = async (req, res ) => {
     try {
-        const id = req.id
-        const respone = await propertiesService.getAllPropertiesService(id)
+        const id = req.params.id
+        const respone = await propertiesService.getPropertyService(id)
         return res.status(200).json(respone)
     } catch (error) {
         return res.status(500).json({

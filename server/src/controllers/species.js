@@ -31,6 +31,19 @@ export const getAllProperty = async (req, res ) => {
         })
     }
 }
+export const getIdSpecies = async (req, res ) => {
+  try {
+      const name = req.params.id
+      // console.log(req.parameter.id)
+      const respone = await speciesService.getIdSpeciesService(name)
+      return res.status(200).json(respone)
+  } catch (error) {
+      return res.status(500).json({
+          err: -1,
+          msg: 'Failed at post controller : ' + error,
+      })
+  }
+}
 
 export const getAllSpecies = async (req, res) => {
   try {
@@ -60,3 +73,18 @@ export const deleteSpecies = async (req, res) => {
       });
     }
   };
+
+  export const getAllFilterSpecies = async (req, res ) => {
+    try {
+        // const id = req.id
+        const data = req.query
+        
+        const respone = await speciesService.getAllFilterSpeciesService({data})
+        return res.status(200).json(respone)
+    } catch (error) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Failed at post controller : ' + error,
+        })
+    }
+}

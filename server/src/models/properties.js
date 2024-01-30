@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
 
       Properties.hasMany(sequelize.define("DetailSpecies"));
+      Properties.hasMany(sequelize.define("PropertiesValue",{freezeTableName: true,}));
       Properties.belongsTo(models.TypeProperty, {
         foreignKey: "typepropertyId",
         targetKey: "id",
@@ -27,7 +28,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Properties",
+      name: {
+        singular: 'Properties',
+        plural: 'Properties'
     }
+    },
+    
   );
   return Properties;
 };

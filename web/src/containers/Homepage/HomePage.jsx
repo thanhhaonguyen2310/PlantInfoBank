@@ -1,10 +1,12 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom';
 import { SlickSlider } from '../../components/SlickSlider'
+import Navbar from '../../components/Navbar';
 
 export const HomePage = () => {
   return (
-    <div className='container min-h-64 relative'>
+    <div>
+        <div className='container min-h-64 relative '>
       {/* <div className="title_home absolute bg-slate-100 h-[50]px">
 				<div className="container">
 					<div className="content_widget">
@@ -17,11 +19,14 @@ export const HomePage = () => {
 				</div>
 			</div> */}
       {/* slider */}
+      <Navbar/>
       <SlickSlider />
       <div className='w-full flex flex-col items-center justify-between'>
           
           <Outlet />
       </div>
     </div>
+    </div>
+    
   )
 }

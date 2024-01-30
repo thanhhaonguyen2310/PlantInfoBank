@@ -45,3 +45,32 @@ export const getProperty = (id) => async (dispatch) => {
     });
   }
 };
+
+export const getFilterSpecies = (datafilter) => async (dispatch) => {
+  try {
+
+    const respone = await api.getFilterSpecies(datafilter);
+    console.log(respone);
+    if (respone?.error === 0) {
+      dispatch({
+        type: actionTypes.GET_FILTERSPECIES,
+        species: respone.respone,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.GET_FILTERSPECIES,
+        msg: respone.msg,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_FILTERSPECIES,
+      species: null,
+    });
+  }
+};
+
+export const saveSpecies = (datafilter) => ({
+  type: actionTypes.SAVE_SPECIES,
+  datafilter,
+});

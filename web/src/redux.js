@@ -1,8 +1,4 @@
-// import { configureStore } from "@reduxjs/toolkit";
 
-// export const store = configureStore({
-//   reducer: {},
-// });
 import rootReducer from "./store/reducers/rootReducer";
 import { persistStore } from "redux-persist";
 import { createStore, applyMiddleware } from "redux";

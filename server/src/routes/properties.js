@@ -4,8 +4,8 @@ import * as propertiesController from '../controllers/properties.js'
 const router = express.Router();
 
 router.post('/create', propertiesController.createProperties);
-// router.post('/login', userController.login);
-// router.get('/all', userController.getUser);
+router.post('/add/:id', propertiesController.addSpecies);
+router.get('/all/:id', propertiesController.getProperty);
 // router.put('/update-user', userController.updateUser)
 // router.delete('/delete-user', userController.deleteUser)
 export default router;

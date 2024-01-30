@@ -8,9 +8,11 @@ const initState = {
   count_user: 0,
   update: false,
   dataEdit: {},
+  idCurrent: null,
 };
 
 const authReducer = (state = initState, action) => {
+  // console.log(action.type);
   switch (action.type) {
     case actionTypes.REGISTER_SUCCESS:
       return {
@@ -25,6 +27,7 @@ const authReducer = (state = initState, action) => {
         isLoggedIn: true,
         token: action.data,
         msg: "",
+        // idCurrent: action.idCurrent,
       };
     case actionTypes.REGISTER_FAIL:
     case actionTypes.LOGIN_FAIL:

@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       // PropertiesValue.hasMany(models.DetailSpecies, { foreignKey: 'propertiesId' });
       PropertiesValue.hasMany(sequelize.define('DetailSpecies'));
+      PropertiesValue.belongsTo(models.Properties,{ foreignKey: 'propertiesId', targetKey: 'id' });
     }
   }
   PropertiesValue.init({

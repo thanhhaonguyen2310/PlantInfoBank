@@ -35,7 +35,7 @@ export const createDetailspeciesService = (data) =>
         }
         dataQuery.push(properValue)
       }
-      console.log(dataQuery)
+      console.log(dataValue?.rows)
 
 
       const detailspecies = await db.DetailSpecies.bulkCreate(dataQuery)
@@ -49,6 +49,7 @@ export const createDetailspeciesService = (data) =>
       resolve({
         err: 0,
         msg: "Created is successfully !",
+        dataValue
       });
 
     } catch (error) {
@@ -84,18 +85,19 @@ export const updateDetailSpeciesService = (data) =>
 
 export const deleteDetailSpeciesService = (id) =>
   new Promise(async (resolve, reject) => {
+    console.log(id)
     try {
-      const detailspecies = await db.DetailSpecies.findOne({
-        where: { id: id },
+      const detailspecies = await db.DetailSpecies.destroy({
+        where: { speciesId: id },
       });
-      if (!detailspecies) {
-        resolve({
-          err: 2,
-          msg: "detailspecies is not defined",
-        });
-      }
+      // if (!detailspecies) {
+      //   resolve({
+      //     err: 2,
+      //     msg: "detailspecies is not defined",
+      //   });
+      // }
 
-      await detailspecies.destroy();
+      // await detailspecies.destroy();
 
       resolve({
         err: 0,
@@ -179,8 +181,8 @@ export const getAllDetailSpeciesService = () =>
       const propertyValuePairs = [
         { propertiesId: "N11", value: 1 },
         { propertiesId: "N20", value: 2 },
-        // { propertiesId: "N22", value: 3 },
-        // { propertiesId: "N23", value: 0 },
+        { propertiesId: "N22", value: 3 },
+        { propertiesId: "N23", value: 0 },
         // ... thêm các cặp propertiesId và value khác nếu cần
       ];
       const res = await db.DetailSpecies.findAll({

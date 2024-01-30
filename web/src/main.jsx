@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import reduxStore from './redux.js'
+import {BrowserRouter , Routes, Route} from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react';
 // import Navigation from './containers/Public/Navigation.jsx'
@@ -13,8 +14,9 @@ const {store , persistor} = reduxStore();
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store} >
     <PersistGate loading={null} persistor={persistor} >
-      
+      <BrowserRouter>
         <App />
+      </BrowserRouter>
     </PersistGate>
   </Provider>
 )

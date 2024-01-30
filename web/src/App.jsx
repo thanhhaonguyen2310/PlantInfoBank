@@ -12,6 +12,10 @@ import Navbar from './components/Navbar'
 import { Gen } from './containers/Public/Gen'
 import { DetailGen } from './components/DetailGen'
 import Footer from './containers/Public/Footer'
+import { User } from './containers/User/User'
+import Profile from './containers/User/Profile'
+import { GenFilter } from './containers/Public/GenFilter'
+import Admin from './containers/System/Admin/Admin'
 
 
 
@@ -20,30 +24,34 @@ function App() {
   // const [count, setCount] = useState(0)
 
   return (
-    <BrowserRouter>
-      <div className='w-xl relative justify-center items-center mx-20'>
+    
+      <div className='w-xl relative justify-center items-center  '>
+        <div className='mx-10 bg-white-500'>
+            <Header/>
+            {/* <Navbar /> */}
+        </div>
         
-        <Header />
-        <Navbar />
-        <div className='min-h-32'>
-          <Routes>
-            <Route path='/' element={<HomePage />} />
-            <Route path='/about' element={<About />} />
-            <Route path='/sign-in' element={<SignIn />} />
-            <Route path='/sign-up' element={<SignUp />} />
-            <Route path='/genus/:id' element={<Gen />} />
-            <Route path='/detailgen/:id' element={<DetailGen/>} />
-            {/* <Route path='/sign-up' element={<SignUp />} />
-            <Route element={<PrivateRoute />}>
-              <Route path='/profile' element={<Profile />} /> */}
-            {/* </Route> */}
+        <div className='min-h-32 bg-white-500'>
+          <Routes path='/*'>
+            <Route path='/' element={<HomePage />}>
+                
+            </Route>
+            <Route path='sign-in' element={<SignIn />} />
+            <Route path='sign-up' element={<SignUp />} />
+            <Route path='about' element={<About />} />            
+            <Route path='genus/:id' element={<Gen />} />
+            <Route path='genusfilter' element={<GenFilter/>} />
+            <Route path='detailgen/:id' element={<DetailGen/>} />
+            <Route path={'/account/*'} element={<User />}/>
+            <Route path={'/admin/*'} element={<Admin/>}/>
           </Routes>
+          
+         
+       
         </div>
         
         <Footer/>
       </div>
-      
-      </BrowserRouter>
   )
 }
 

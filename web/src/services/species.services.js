@@ -7,9 +7,15 @@ class SpeciesService {
     
     return (await this.api.get(`/all/${id}?page=${page}`)).data;
   }
-
+  async getFilterSpecies(datafilter) {
+    
+    return (await this.api.get('/filter',{ params: { data: datafilter } })).data;
+  }
   async getProperty(id) {
     return (await this.api.get(`/get/${id}`)).data;
+  }
+  async getIdSpecies(id) {
+    return (await this.api.get(`/${id}`)).data;
   }
   async update(id, data) {
     return (await this.api.put(`/${id}`, data)).data;

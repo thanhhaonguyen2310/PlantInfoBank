@@ -1,4 +1,5 @@
 import db from "../models";
+const { Sequelize, DataTypes } = require("sequelize");
 import { Op } from "sequelize";
 import { v4 } from "uuid";
 
@@ -51,8 +52,11 @@ export const getAllPropertyService = (id) =>
   new Promise(async (resolve, reject) => {
     try {
       console.log(id);
+      const speciesId = await db.Species.findOne({
+        where: { name: id },
+      });
       const respone = await db.DetailSpecies.findAndCountAll({
-        where: { speciesId: id },
+        where: { speciesId: speciesId?.dataValues.id },
         nest: true,
         include: [
           { model: db.Properties },
@@ -74,6 +78,23 @@ export const getAllPropertyService = (id) =>
     }
   });
 
+export const getIdSpeciesService = (name) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      console.log(name);
+      const respone = await db.Species.findOne({
+        where: { name: name },
+      });
+      resolve({
+        error: respone ? 0 : 1,
+        msg: respone ? "OK" : "Get id species fail.",
+        respone,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const getAllSpeciesService = (id, page) =>
   new Promise(async (resolve, reject) => {
     // console.log(page);
@@ -84,11 +105,76 @@ export const getAllSpeciesService = (id, page) =>
         nest: true,
         offset: page * 12,
         limit: 12,
+        include: [{ model: db.DetailImages, include: { model: db.Image } }],
       });
       // console.log(respone)
       resolve({
         error: respone ? 0 : 1,
         msg: respone ? "OK" : "Get species fail.",
+        respone,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+  function convertObjectToArray(inputObject) {
+    return Object.entries(inputObject).map(([propertiesId, value]) => ({ propertiesId, value }));
+  }
+  export const getAllFilterSpeciesService = ({data}) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      // console.log(data.data[0])
+      // const e = { DN5: '3', DN6: '3', DN3: '3' }
+      const propertyValuePairs = convertObjectToArray(data.data);
+      console.log(propertyValuePairs)
+      // const propertyValuePairs = [
+      //   { propertiesId: "N11", value: 1 },
+      //   { propertiesId: "N20", value: 2 },
+      //   { propertiesId: "N22", value: 3 },
+      //   // { propertiesId: "N23", value: 0 },
+      //   // ... thêm các cặp propertiesId và value khác nếu cần
+      // ];
+      const res = await db.DetailSpecies.findAll({
+        // model: db.DetailSpecies,
+        where: {
+          [Sequelize.Op.or]: propertyValuePairs.map(
+            ({ propertiesId, value }) => ({
+              propertiesId,
+              value,
+            })
+          ),
+        },
+        attributes: [
+          "speciesId",
+          [Sequelize.fn("count", Sequelize.col("speciesId")), "cnt"],
+        ],
+        group: ["speciesId"],
+
+        // having: Sequelize.literal(
+        //   `COUNT(DISTINCT DetailSpecies.speciesId) = ${propertyValuePairs.length}`
+        // ),
+      });
+      // console.log(res);
+      const species_id = res.map((data) => {
+        if (data.dataValues.cnt >= propertyValuePairs.length)
+          return data.dataValues.speciesId;
+      });
+      // const species_id = [];
+      // for (var data in res) {
+      //   console.log(data);
+      //   if (data.dataValues.cnt >= propertyValuePairs.length)
+      //     species_id.append(data.dataValues);
+      // }
+      // console.log(species_id);
+      const respone = await db.Species.findAll({
+        where: { id: { [Sequelize.Op.in]: species_id } },
+        // limit: 12,
+        include: [{ model: db.DetailImages, include: { model: db.Image } }],
+      });
+      resolve({
+        error: respone ? 0 : 1,
+        msg: respone ? "OK" : "Get post fail.",
         respone,
       });
     } catch (error) {

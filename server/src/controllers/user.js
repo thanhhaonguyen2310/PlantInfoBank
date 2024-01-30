@@ -21,7 +21,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     const { phone, password } = req.body
-    // console.log(req.body)
+    console.log(req.body)
     try {
         if (!phone || !password) return res.status(400).json({
             err: 1,
@@ -83,6 +83,19 @@ export const deleteUser = async (req, res) => {
 export const getUser = async (req, res ) => {
     try {
         const respone = await userService.getUserService()
+        return res.status(200).json(respone)
+    } catch (error) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Failed at post controller : ' + error,
+        })
+    }
+}
+
+export const getUserCurrent = async (req, res ) => {
+    try {
+        const {id} = req.user
+        const respone = await userService.getUserCurrentService(id)
         return res.status(200).json(respone)
     } catch (error) {
         return res.status(500).json({

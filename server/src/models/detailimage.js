@@ -11,24 +11,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       console.log(models, "-=====");
       DetailImages.belongsTo(models.Species);
-      DetailImages.belongsTo(models.Properties, {
-        foreignKey: "propertiesId",
+      DetailImages.belongsTo(models.Image, {
+        foreignKey: "imageId",
         targetKey: "id",
       });
-      // DetailImages.belongsTo(models.Species, { foreignKey: 'species_id' ,targetKey: 'id', as: 'species'});
-      // DetailImages.belongsTo(models.Property, { foreignKey: 'properties_id',targetKey: 'id', as: 'property' });
-      DetailImages.belongsTo(models.PropertiesValue, {
-        foreignKey: "propertiesvalueId",
-        targetKey: "id",
-      });
+      
     }
   }
   DetailImages.init(
     {
       speciesId: DataTypes.INTEGER,
-      propertiesId: DataTypes.STRING,
-      propertiesvalueId: DataTypes.INTEGER,
-      value: DataTypes.FLOAT,
+      imageId: DataTypes.INTEGER,
     },
     {
       sequelize,

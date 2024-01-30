@@ -6,7 +6,6 @@ import {useDispatch, useSelector} from 'react-redux'
 
 import * as  actions from '../store/actions';
 
-import slider1 from '../assets/lua.jpg'
 
 const Item = ({item}) => {
   const dispatch = useDispatch()
@@ -20,9 +19,9 @@ const Item = ({item}) => {
     //       dispatch(actions.editPost({image,title, id}))
     //    }}
     >
-        <Link to= {`/detailgen/${item?.id}`} 
+        <Link to= {`/detailgen/${item?.name}`} 
             className='w-[40%]'>          
-            <img src= {slider1}        
+            <img src= {item?.DetailImages?.Image?.url || item?.DetailImages[0]?.Image?.url}        
                 alt=""
                 className='object-cover w-[300px] h-[200px]'                
                 />

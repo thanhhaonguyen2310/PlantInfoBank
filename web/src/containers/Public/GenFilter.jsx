@@ -1,24 +1,25 @@
 import React, {useEffect,useState} from 'react'
 import { useParams } from 'react-router-dom';
-import { getSpecies } from '../../store/actions/species'
+import { getFilterSpecies } from '../../store/actions/species'
 import {useDispatch, useSelector} from 'react-redux'
 import Item from '../../components/Item';
 import ReactPaginate from "react-paginate";
 
-export const Gen = () => {
-  const { id } = useParams();
+export const GenFilter = () => {
+  // const { id } = useParams();
   // console.log(id)
   const [page, setPage] = useState(0);
   const dispatch = useDispatch()
-  const {species }=  useSelector(state  =>  state.species)
+  const {datafilter ,species}=  useSelector(state  =>  state.species)
+
   console.log(species)
   const handlePageClick = async (data) => {
     console.log(data.selected);
     setPage(data.selected)
   };
   useEffect(() => {
-    dispatch(getSpecies(id,page))
-  },[id,page])
+    dispatch(getFilterSpecies(datafilter))
+  },[datafilter])
   return (
     <div className='w-full items-center justify-items-center '
              
@@ -39,7 +40,7 @@ export const Gen = () => {
           
             <div className='items  col-span-4'>
                 <div className='grid grid-cols-4 gap-5 m-5' >
-                    {species?.rows?.length > 0 && species?.rows.map(item => {
+                    {species?.length > 0 && species?.map(item => {
                         return (
                           <div key={item?.id}>
                               <Item item={item} />
@@ -61,7 +62,7 @@ export const Gen = () => {
             previousLabel={"<"}
             nextLabel={">"}
             breakLabel={"..."}
-            pageCount={Math.ceil(species.count/12)}
+            pageCount={Math.ceil(species.length/12)}
             marginPagesDisplayed={2}
             pageRangeDisplayed={3}
             onPageChange={handlePageClick}

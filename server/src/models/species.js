@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       // Species.hasMany(models.DetailSpecies, { foreignKey: 'species_id', as: 'species' });
       Species.hasMany(sequelize.define("DetailSpecies"));
       Species.hasMany(sequelize.define("Distribution"));
+      Species.hasMany(sequelize.define("DetailImages"));
       // Species.belongsToMany(models.Properties, {through: 'DetailSpecies'});
     }
   }

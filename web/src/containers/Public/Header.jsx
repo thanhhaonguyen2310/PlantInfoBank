@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 export default function Header() {
   //   const { currentUser } = useSelector((state) => state.user);
   return (
-    <div className="bg-white-500">
+    <div className="bg-white-400">
       <div className="flex justify-between items-center max-w-6xl mx-auto px-3 py-5">
         <div className="w-[20%] mr-10">
           <Link to={"/"}>
