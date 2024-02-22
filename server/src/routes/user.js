@@ -6,8 +6,9 @@ const router = express.Router();
 
 router.post('/register', userController.register);
 router.post('/login', userController.login);
-// router.get('/all', userController.getUser);
+router.get('/genus/:id', userController.getGenus);
 router.use(verifyToken)
+router.get('/all', userController.getAllUser);
 router.get('/get-current', userController.getUserCurrent);
 router.put('/update-user', userController.updateUser)
 router.delete('/delete-user', userController.deleteUser)

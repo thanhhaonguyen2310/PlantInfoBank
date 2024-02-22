@@ -2,6 +2,7 @@ import actionTypes from "../actions/acctionTypes";
 
 const initState = {
   currentData: {},
+  alluser: []
 };
 
 const userReducer = (state = initState, action) => {
@@ -11,7 +12,11 @@ const userReducer = (state = initState, action) => {
         ...state,
         currentData: action.currentData || {},
       };
-
+      case actionTypes.GET_ALLUSER:
+        return {
+          ...state,
+          alluser: action.alluser || [],
+        };
     default:
       return state;
   }

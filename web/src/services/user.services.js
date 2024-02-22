@@ -81,6 +81,18 @@ export const apiGetCurrent = () =>new Promise(async(resolve, reject)=> {
     }
 })
 
+export const apiGetAllUser = () =>new Promise(async(resolve, reject)=> {
+    try {
+        const respone = await axiosConfig({
+            method: 'get',
+            url: '/api/user/all',
+        })
+        resolve(respone)
+    } catch (error) {
+        reject(error)
+    }
+})
+
 
 // import createApiClient from "./api.services";
 // class UesrService {

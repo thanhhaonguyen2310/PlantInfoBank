@@ -18,27 +18,28 @@ export default function SignIn() {
   const { isLoggedIn } = useSelector(state => state.auth)
   const [formData, setFormData] = useState({})
   const handleChange = (e) => {
-    console.log(e.target.name)
+    // console.log(e.target.name)
     setFormData({...formData, [e.target.name]: e.target.value})
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(actions.login(formData))
-    console.log(isLoggedIn)
-    // isLoggedIn && navigate('/')
+    setTimeout(function() {
+    const { token } = useSelector(state => state.auth)
+    console.log(token)
+      token === null ?  toast.success('Đăng nhập thành công !', {
+                      position: "top-right"
+                }) : toast.error('Đã xảy ra lỗi. Vui lòng kiểm tra lại số điện thoại hoặc mật khẩu của bạn!', {
+                    position: "top-right"
+                }) 
+    },1000)
 
-    // setTimeout(function() {
-      
-    // }, 1000);
-    isLoggedIn ?  toast.success('Đăng nhập thành công !', {
-      position: "top-right"
-              }) : toast.error('Đã xảy ra lỗi. Vui lòng kiểm tra lại số điện thoại hoặc mật khẩu của bạn!', {
-                  position: "top-right"
-              }) 
-    
   }
     useEffect(() => {
-      isLoggedIn && navigate('/')
+      isLoggedIn &&  setTimeout(function() {
+        console.log(isLoggedIn)
+        navigate('/')
+    }, 2000);
   }, [isLoggedIn])
   
   

@@ -80,9 +80,9 @@ export const deleteUser = async (req, res) => {
     }
 }
 
-export const getUser = async (req, res ) => {
+export const getAllUser = async (req, res ) => {
     try {
-        const respone = await userService.getUserService()
+        const respone = await userService.getAllUserService()
         return res.status(200).json(respone)
     } catch (error) {
         return res.status(500).json({
@@ -96,6 +96,19 @@ export const getUserCurrent = async (req, res ) => {
     try {
         const {id} = req.user
         const respone = await userService.getUserCurrentService(id)
+        return res.status(200).json(respone)
+    } catch (error) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Failed at post controller : ' + error,
+        })
+    }
+}
+
+export const getGenus = async (req, res ) => {
+    try {
+        const id = req.params.id
+        const respone = await userService.getGenusService(id)
         return res.status(200).json(respone)
     } catch (error) {
         return res.status(500).json({

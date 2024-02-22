@@ -14,18 +14,18 @@ import 'react-toastify/dist/ReactToastify.css';
 // const { BsCameraFill, ImBin } = icons
 const Profile = () => {
     const {currentData} = useSelector(state => state.user)
-    const {idCurrent} = useSelector(state => state.auth)
-    console.log(idCurrent)
+    // const {idCurrent} = useSelector(state => state.auth)
+    console.log(currentData)
 
     const [isOrder, setIsOrder] = useState(false);
     
-    console.log(currentData)
+    // console.log(currentData)
     const dispatch = useDispatch()
     const [payload, setPayload] =useState(() => {
       const initData = {
          name: currentData?.name ,
          email: currentData?.email||'' ,
-         dia_chi: currentData?.dia_chi|| '' ,
+         address: currentData?.address|| '' ,
          gender: currentData?.gender ,
          phone: currentData?.phone  ,
          avatar: currentData?.avatar || '',
@@ -52,7 +52,7 @@ const Profile = () => {
     }
   
     useEffect(() => {
-      dispatch(getCurrent(idCurrent))
+      dispatch(getCurrent())
     },[])
   const handleSubmit = async() =>{
         let finalPayload = {
@@ -120,7 +120,7 @@ const Profile = () => {
                           type="text"
                           id=" dia_chi"
                           className='rounded-md w-[500px] outline-none border flex-auto border-gray-300 p-2'
-                          value={payload.dia_chi}
+                          value={payload.address}
                           onChange={(e) => setPayload(prev => ({ ...prev, dia_chi: e.target.value }))}
                       />
                       

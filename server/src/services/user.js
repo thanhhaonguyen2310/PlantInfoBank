@@ -30,7 +30,7 @@ export const registerService = (payload) =>
         jwt.sign(
           { id: response[0].id, phone: response[0].phone },
           process.env.SECRET_KEY,
-          { expiresIn: "2d" }
+          { expiresIn: "365d" }
         );
       resolve({
         err: token ? 0 : 2,
@@ -54,14 +54,14 @@ export const loginService = (data) =>
       });
       const isCorrectPassword =
         response && bcrypt.compareSync(data?.password, response.password);
-      console.log(data?.password);
+      console.log(data.password);
       console.log(isCorrectPassword);
       const token =
         isCorrectPassword &&
         jwt.sign(
           { id: response.id, phone: response.phone },
           process.env.SECRET_KEY,
-          { expiresIn: "2d" }
+          { expiresIn: "365d" }
         );
       resolve({
         err: token ? 0 : 2,
@@ -142,7 +142,7 @@ export const deleteUserService = (userId) =>
     }
   });
 
-export const getUserService = () =>
+export const getAllUserService = () =>
   new Promise(async (resolve, reject) => {
     try {
       const respone = await db.User.findAll({
@@ -171,6 +171,25 @@ export const getUserCurrentService = (id) =>
     try {
       const respone = await db.User.findOne({
         where: { id },
+        raw: true,
+        nest: true
+      });
+
+      resolve({
+        error: respone ? 0 : 1,
+        msg: respone ? "OK" : "Get user fail.",
+        respone,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+  export const getGenusService = (name) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const respone = await db.Genus.findOne({
+        where: { name_vn: name },
         raw: true,
         nest: true
       });

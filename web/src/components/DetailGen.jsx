@@ -11,7 +11,7 @@ export const DetailGen = () => {
   const dispatch = useDispatch();
   const { detailspecies } = useSelector((state) => state.species);
   const { province } = useSelector((state) => state.province);
-  // console.log(detailspecies);
+  console.log(detailspecies);
   useEffect(() => {
     dispatch(getProperty(id));
     dispatch(getProvince(id))
@@ -36,8 +36,8 @@ export const DetailGen = () => {
             {detailspecies?.length > 0 && detailspecies?.map(item => {
                         return (
                           <tr key={item.id}>
-                            <td className="border p-2 text-left" colSpan="2">{item.Property.name_vn}</td>
-                            <td className="border p-2 text-left" colSpan="2">{item.PropertiesValue ? item.PropertiesValue.description : item.value}</td>
+                            <td className="border p-2 text-left" colSpan="2">{item?.Properties?.name_vn}</td>
+                            <td className="border p-2 text-left" colSpan="2">{item?.PropertiesValue ? item.PropertiesValue.description : item.value}</td>
                           </tr>
                           
                       )

@@ -18,10 +18,10 @@ export const User = () => {
   return (
     <div className=' flex  justify-between min-h-screen py-2 px-20 bg-white-300'>
       {/* <div className=""><Navbar /></div> */}
-      <div className='w-80 h-screen px-5 py-8 overflow-y-auto bg-white  dark:bg-gray-900 dark:border-gray-700'>
+      <div className='w-[20%] h-screen px-5 py-8 overflow-y-auto bg-white  dark:bg-gray-900 dark:border-gray-700'>
         <Sidebar/>
       </div>  
-      <div className="main max-w-[2300px] mt-[20px] flex flex-1 justify-between">
+      <div className="main w-[80%]  mt-[20px] flex flex-1 justify-between">
         <PageContent/>
       </div>
     </div>

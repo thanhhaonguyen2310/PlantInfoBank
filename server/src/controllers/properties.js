@@ -18,6 +18,25 @@ export const createProperties = async (req, res) => {
     }
 }
 
+export const addSpeciesExcel = async (req, res) => {
+    const data = req.body
+    const id = req.params
+    try {
+        if (!data) return res.status(400).json({
+            err: 1,
+            msg: 'Missing inputs !'
+        })
+        const response = await propertiesService.addSpeciesExcelService(id,data)
+        return res.status(200).json(response)
+
+    } catch (error) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at auth controller: ' + error
+        })
+    }
+}
+
 export const addSpecies = async (req, res) => {
     const data = req.body
     const id = req.params

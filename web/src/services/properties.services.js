@@ -10,6 +10,9 @@ class PropertiesService {
   async addSpecies(id, data) {
     return (await this.api.post(`/add/${id}`, data)).data;
   }
+  async addSpeciesExcel(id,data) {
+    return (await this.api.post(`/add/excel/${id}`, data)).data;
+  }
   async update(id, data) {
     return (await this.api.put(`/${id}`, data)).data;
   }

@@ -1,4 +1,4 @@
-import {AppstoreOutlined,ShopOutlined,ShoppingCartOutlined,UserOutlined,}  from "@ant-design/icons"
+import {AppstoreOutlined,ShopOutlined,ShoppingCartOutlined,UserOutlined,OrderedListOutlined,AppstoreAddOutlined}  from "@ant-design/icons"
 import { Menu } from "antd"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -52,14 +52,23 @@ const Sidebar = () => {
           {
             label: "Thông tin tài khoản",
             icon: <AppstoreOutlined />,
-            key: "/user/profile",
+            key: "/account/profile",
+          },
+          {
+            label: "Danh sách mẫu đã thêm",
+            key: "/account/listadd",
+            icon: <OrderedListOutlined />,
           },
           {
             label: "Thêm mẫu giống",
-            key: "/user/add",
-            icon: <ShopOutlined />,
+            key: "/account/addspecies",
+            icon: <AppstoreAddOutlined />,
           },
-          
+          {
+            label: "Thêm mẫu giống từ file excel",
+            key: "/account/addspeciesexcel",
+            icon: <AppstoreAddOutlined />,
+          },
           
         ]}
       ></Menu>

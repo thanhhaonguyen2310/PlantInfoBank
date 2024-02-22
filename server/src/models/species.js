@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       Species.hasMany(sequelize.define("DetailSpecies"));
       Species.hasMany(sequelize.define("Distribution"));
       Species.hasMany(sequelize.define("DetailImages"));
+      Species.hasMany(sequelize.define("AddSpecies"));
       // Species.belongsToMany(models.Properties, {through: 'DetailSpecies'});
     }
   }

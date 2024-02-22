@@ -1,9 +1,10 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 import { useLocation,  useNavigate } from 'react-router-dom';
 import * as actions from '../../src/store/actions/auth'
 import api from "../../src/services/species.services";
+import {getCurrent} from '../../src/store/actions/user';
 import menuManage from '../../src/ultils/menuManege';
 import { AiOutlinePlusCircle, AiOutlineLogout } from 'react-icons/ai'
 import { CiSearch } from "react-icons/ci";
@@ -20,7 +21,10 @@ function Navbar() {
   const [isShowMenu, setIsShowMenu] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
   const [idModal, setIdModal] = useState(null);
+
+
   const { isLoggedIn } = useSelector(state => state.auth)
+  const {currentData} = useSelector(state => state.user)
   const { detailspecies } = useSelector((state) => state.species);
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -73,6 +77,9 @@ function Navbar() {
     setIsShowModal(true)
     // console.log('ID của thẻ <li> được click:', showId);
   };
+  useEffect(() => {
+    dispatch(getCurrent())
+  }, []);
 
   return (
     <nav className="w-[90%] md:w-[80%] px-[10px] md:py-[20px] mx-auto   flex justify-between items-center gap-10 relative">
@@ -254,6 +261,15 @@ function Navbar() {
             :
           <NavLink to="/sign-in" className="hover:text-green-500">Đăng nhập</NavLink> }
         </li>
+        {isLoggedIn && currentData.power == true &&
+              <li>
+                <NavLink to={'/admin/manage-statistics'}>
+                  <span  className="block py-2 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                    Quản Lý </span>
+              </NavLink>
+              
+              </li>
+            }
       </ul>
       {isShowModal && <ModalFilter idModal={idModal} isShowModal  setIsShowModal={setIsShowModal} />}
       <ToastContainer />

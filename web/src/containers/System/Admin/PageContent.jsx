@@ -4,17 +4,32 @@ import {User} from '../../User/User'
 import Profile from '../../User/Profile'
 import { Routes, Route } from "react-router-dom";
 import AddSpecies from '../../User/AddSpecies';
+import ListAddSpecies from '../../User/ListAddSpecies';
+import Admin from './Admin';
+import ManageListAddSpecies from '../Page/ManageListAddSpecies';
+import ManageUser from '../Page/ManageUser';
+import AddSpeciesExcel from '../../User/AddSpeciesExcel';
 
 
 const PageContent = () => {
   return (
     <div className='items-center pl-20 w-full'>
-
+      <Routes path={'/admin/*'} element={<Admin/>}>
+        {/* <Route path="/" element={<Dashboard />}></Route>
+      <Route path="/inventory" element={<Inventory />}></Route>
+      <Route path="/orders" element={<Orders />}></Route> */}
+        <Route
+          path={'manage-listadd'}
+          element={<ManageListAddSpecies/>}
+        ></Route>
+        <Route path={'manage-user'} element={<ManageUser/>}></Route>
+      </Routes>
     <Routes path={'/account/*'} element={<User />}>
       
       <Route path={'profile'} element={<Profile />}></Route>
+      <Route path={'listadd'} element={<ListAddSpecies/>}></Route>
       <Route path={'addspecies'} element={<AddSpecies/>}></Route>
-
+      <Route path={'addspeciesexcel'} element={<AddSpeciesExcel/>}></Route>
     </Routes>
     </div>
     

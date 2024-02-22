@@ -45,6 +45,44 @@ export const getIdSpecies = async (req, res ) => {
   }
 }
 
+export const setApprove = async (req, res ) => {
+  try {
+      const id = req.params.id
+      // console.log(req.parameter.id)
+      const respone = await speciesService.setApproveService(id)
+      return res.status(200).json(respone)
+  } catch (error) {
+      return res.status(500).json({
+          err: -1,
+          msg: 'Failed at post controller : ' + error,
+      })
+  }
+}
+export const getAllAddSpecies = async (req, res ) => {
+  try {
+      const respone = await speciesService.getAllAddSpeciesService()
+      return res.status(200).json(respone)
+  } catch (error) {
+      return res.status(500).json({
+          err: -1,
+          msg: 'Failed at post controller : ' + error,
+      })
+  }
+}
+export const getAddSpecies = async (req, res ) => {
+  try {
+      const id = req.params.id
+      // console.log(req.parameter.id)
+      const respone = await speciesService.getAddSpeciesService(id)
+      return res.status(200).json(respone)
+  } catch (error) {
+      return res.status(500).json({
+          err: -1,
+          msg: 'Failed at post controller : ' + error,
+      })
+  }
+}
+
 export const getAllSpecies = async (req, res) => {
   try {
     const id = req.params.id;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getProperties } from "../../store/actions/properties";
+import {getCurrent} from '../../store/actions/user';
 import api from "../../services/properties.services";
 import * as actions from "../../store/actions/species"
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +12,8 @@ const AddSpecies = () => {
   const dispatch = useDispatch();
   const [genus, setGenus] = useState("0");
   const {properties }=  useSelector(state  =>  state.properties)
-  
+  const {currentData} = useSelector(state => state.user)
+  console.log(currentData)
   const handleChangeGenus = (e) => {
     // console.log(e.target.value)
     setGenus(e.target.value)
@@ -24,13 +26,14 @@ const AddSpecies = () => {
     }
     const handleSubmit = async() =>{
       // dispatch(actions.saveSpecies(data))
-      const response = await api.addSpecies(genus,data)
+      setdata({...data, ['id']: genus})
+      const response = await api.addSpecies(currentData?.id,data)
       console.log(response)
       setdata({})
       setGenus("0")
-      response?.err === 0 ?  toast.success('Đăng nhập thành công !', {
+      response?.err === 0 ?  toast.success('Đã thêm mẫu giống !', {
         position: "top-right"
-                }) : toast.error('Đã xảy ra lỗi. Vui lòng kiểm tra lại số điện thoại hoặc mật khẩu của bạn!', {
+                }) : toast.error('Đã xảy ra lỗi. Vui lòng kiểm tra lại !', {
                     position: "top-right"
                 }) 
       
@@ -38,6 +41,7 @@ const AddSpecies = () => {
       
   
   useEffect(() => {
+    dispatch(getCurrent())
     dispatch(getProperties(genus));
   }, [genus]);
   return (

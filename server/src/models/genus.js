@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Genus",
+      tableName: "genus",
+      name: {
+        singular: "Genus",
+        plural: "Genus",
+      },
     }
   );
   return Genus;

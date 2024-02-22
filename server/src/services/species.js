@@ -1,6 +1,6 @@
 import db from "../models";
 const { Sequelize, DataTypes } = require("sequelize");
-import { Op } from "sequelize";
+import { Op, where } from "sequelize";
 import { v4 } from "uuid";
 
 export const createSpeciesService = (data) =>
@@ -84,6 +84,70 @@ export const getIdSpeciesService = (name) =>
       console.log(name);
       const respone = await db.Species.findOne({
         where: { name: name },
+      });
+      resolve({
+        error: respone ? 0 : 1,
+        msg: respone ? "OK" : "Get id species fail.",
+        respone,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const setApproveService = (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      console.log(id);
+      
+      const respone = await db.Species.findOne(
+        {
+        
+        where:{id},
+        
+      });
+      respone.approve = true
+      await respone.save()
+      resolve({
+        error: respone ? 0 : 1,
+        msg: respone ? "OK" : "Get id species fail.",
+        respone,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const getAllAddSpeciesService = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      
+      const respone = await db.AddSpecies.findAll({
+        include:[
+          { 
+            model: db.Species,
+            where: {approve: false}
+          },
+          {model: db.User},
+        ]
+      });
+      resolve({
+        error: respone ? 0 : 1,
+        msg: respone ? "OK" : "Get id species fail.",
+        respone,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+  export const getAddSpeciesService = (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      
+      const respone = await db.AddSpecies.findAll({
+        where: { userId: id },
+        include:[
+          {model: db.Species}
+        ]
       });
       resolve({
         error: respone ? 0 : 1,

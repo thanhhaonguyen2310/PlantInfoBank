@@ -33,9 +33,7 @@ function App() {
         
         <div className='min-h-32 bg-white-500'>
           <Routes path='/*'>
-            <Route path='/' element={<HomePage />}>
-                
-            </Route>
+            <Route path='/' element={<HomePage />}/>
             <Route path='sign-in' element={<SignIn />} />
             <Route path='sign-up' element={<SignUp />} />
             <Route path='about' element={<About />} />            
