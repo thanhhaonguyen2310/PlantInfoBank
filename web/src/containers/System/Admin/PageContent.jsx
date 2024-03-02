@@ -9,6 +9,8 @@ import Admin from './Admin';
 import ManageListAddSpecies from '../Page/ManageListAddSpecies';
 import ManageUser from '../Page/ManageUser';
 import AddSpeciesExcel from '../../User/AddSpeciesExcel';
+import HierarchicalClusteringDiagram from '../../User/HierarchicalClusteringDiagram';
+import Kmeans from '../../User/Kmeans';
 
 
 const PageContent = () => {
@@ -30,6 +32,8 @@ const PageContent = () => {
       <Route path={'listadd'} element={<ListAddSpecies/>}></Route>
       <Route path={'addspecies'} element={<AddSpecies/>}></Route>
       <Route path={'addspeciesexcel'} element={<AddSpeciesExcel/>}></Route>
+      <Route path={'hierarchical'} element={<HierarchicalClusteringDiagram/>}></Route>
+      <Route path={'kmeans'} element={<Kmeans/>}></Route>
     </Routes>
     </div>
     

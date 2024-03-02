@@ -9,8 +9,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaCheck } from "react-icons/fa";
 
+
+
 import * as XLSX from "xlsx";
-const AddSpeciesExcel = () => {
+import { distanceMatrix } from "../../services/hierarchicalclustering";
+const HierarchicalClusteringDiagram = () => {
   const [excelFile, setExcelFile] = useState(null);
   const [typeError, setTypeError] = useState(null);
 
@@ -62,8 +65,9 @@ const AddSpeciesExcel = () => {
               row[key] = -1;
           }
       });
-  });
-    console.log(worksheet)
+    });
+      console.log(worksheet)
+      const dataMatrix = distanceMatrix(data)
       setIdGenus(worksheet['A1'].v.split(":")[1].trim())
       setExcelData(data);
     }
@@ -73,12 +77,6 @@ const AddSpeciesExcel = () => {
     // dispatch(actions.saveGenus(data))
     const data = {idGenus,excelData}
     const response = await api.addSpeciesExcel(currentData?.id,data)
-    // response?.err === 0 ?  toast.success('Đã thêm mẫu giống !', {
-    //   position: "top-right"
-    //           }) : toast.error('Đã xảy ra lỗi. Vui lòng kiểm tra lại !', {
-    //               position: "top-right"
-    //           }) 
-    
   }
   console.log(excelData)
   return (
@@ -160,4 +158,7 @@ const AddSpeciesExcel = () => {
   );
 };
 
-export default AddSpeciesExcel;
+
+
+
+export default HierarchicalClusteringDiagram

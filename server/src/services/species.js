@@ -1,3 +1,4 @@
+import { response } from "express";
 import db from "../models";
 const { Sequelize, DataTypes } = require("sequelize");
 import { Op, where } from "sequelize";
@@ -98,15 +99,12 @@ export const setApproveService = (id) =>
   new Promise(async (resolve, reject) => {
     try {
       console.log(id);
-      
-      const respone = await db.Species.findOne(
-        {
-        
-        where:{id},
-        
+
+      const respone = await db.Species.findOne({
+        where: { id },
       });
-      respone.approve = true
-      await respone.save()
+      respone.approve = true;
+      await respone.save();
       resolve({
         error: respone ? 0 : 1,
         msg: respone ? "OK" : "Get id species fail.",
@@ -119,15 +117,14 @@ export const setApproveService = (id) =>
 export const getAllAddSpeciesService = () =>
   new Promise(async (resolve, reject) => {
     try {
-      
       const respone = await db.AddSpecies.findAll({
-        include:[
-          { 
+        include: [
+          {
             model: db.Species,
-            where: {approve: false}
+            where: { approve: false },
           },
-          {model: db.User},
-        ]
+          { model: db.User },
+        ],
       });
       resolve({
         error: respone ? 0 : 1,
@@ -139,15 +136,12 @@ export const getAllAddSpeciesService = () =>
     }
   });
 
-  export const getAddSpeciesService = (id) =>
+export const getAddSpeciesService = (id) =>
   new Promise(async (resolve, reject) => {
     try {
-      
       const respone = await db.AddSpecies.findAll({
         where: { userId: id },
-        include:[
-          {model: db.Species}
-        ]
+        include: [{ model: db.Species }],
       });
       resolve({
         error: respone ? 0 : 1,
@@ -182,16 +176,19 @@ export const getAllSpeciesService = (id, page) =>
     }
   });
 
-  function convertObjectToArray(inputObject) {
-    return Object.entries(inputObject).map(([propertiesId, value]) => ({ propertiesId, value }));
-  }
-  export const getAllFilterSpeciesService = ({data}) =>
+function convertObjectToArray(inputObject) {
+  return Object.entries(inputObject).map(([propertiesId, value]) => ({
+    propertiesId,
+    value,
+  }));
+}
+export const getAllFilterSpeciesService = ({ data }) =>
   new Promise(async (resolve, reject) => {
     try {
       // console.log(data.data[0])
       // const e = { DN5: '3', DN6: '3', DN3: '3' }
       const propertyValuePairs = convertObjectToArray(data.data);
-      console.log(propertyValuePairs)
+      console.log(propertyValuePairs);
       // const propertyValuePairs = [
       //   { propertiesId: "N11", value: 1 },
       //   { propertiesId: "N20", value: 2 },
@@ -271,3 +268,77 @@ export const deleteSpeciesService = () =>
       reject(error);
     }
   });
+
+const { PythonShell } = require("python-shell");
+const pythonScript = "kmeans.py";
+export const KmeansService = (data) =>
+  new Promise(async (resolve, reject) => {
+    // console.log(data);
+    let jsonString = JSON.stringify(data);
+
+    try {
+      let options = {
+        mode: "json",
+        pythonPath: "python",
+        pythonOptions: ["-u"], // unbuffered binary stdout and stderr
+        scriptPath: "../server/src/services",
+        args: [jsonString],
+      };
+
+      // PythonShell.run(pythonScript, options, function (err, result) {
+      //   if (err) {
+      //     console.log(err);
+      //     reject(err);
+      //   } else {
+      //     console.log(result);
+      //     const response = result;
+      //   }
+      //   resolve({
+      //     error: response ? 0 : 1,
+      //     msg: response ? "OK" : "Get id species fail.",
+      //     response,
+      //   });
+      // });
+
+      let results = await PythonShell.run(pythonScript, options).then(
+        (results) => {
+          // results is an array consisting of messages collected during execution
+          console.log("results: %j", results);
+          return results;
+        }
+      );
+
+      resolve({
+        error: results ? 0 : 1,
+        msg: results ? "OK" : "Get id species fail.",
+        results,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+// const { spawn } = require("child_process");
+// export const KmeansService = (data) =>
+//   new Promise(async (resolve, reject) => {
+//     // console.log(data[1])
+//     try {
+//       const pythonProcess = spawn("python3", ["kmeans.py", data]);
+
+//       let result = "";
+
+//       pythonProcess.stdout.on("data", (data) => {
+//         result += data.toString();
+//       });
+//       console.log(result);
+//       pythonProcess.on("close", (code) => {
+//         if (code !== 0) {
+//           reject(`Quy trình Python đã kết thúc với mã trạng thái ${code}`);
+//           return;
+//         }
+//         resolve(result);
+//       });
+//     } catch (error) {
+//       reject(error);
+//     }
+//   });

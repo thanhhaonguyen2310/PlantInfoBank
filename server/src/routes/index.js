@@ -4,6 +4,7 @@ import propertiesRouter from './properties'
 import propertiesvalueRouter from './propertiesvalue'
 import detailspeciesRouter from './detailspecies'
 import distributionRouter from "./distribution";
+import publicRouter from "./public";
 
 const initRoutes = (app) =>{
     app.use('/api/user',userRouter)
@@ -12,7 +13,7 @@ const initRoutes = (app) =>{
     app.use('/api/propertiesvalue', propertiesvalueRouter)
     app.use('/api/properties', propertiesRouter)
     app.use("/api/distribution", distributionRouter);
-    // app.use('/api/v1/book', bookRouter)
+    app.use('/api/public', publicRouter)
     return app.use('/', (req,res )=>{
         res.send('server on ..')
     })
