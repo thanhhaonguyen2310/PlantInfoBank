@@ -141,3 +141,18 @@ export const Kmeans = async (req, res) => {
     });
   }
 };
+
+export const Hierarchical = async (req, res) => {
+  try {
+    // const id = req.id
+    const data = req.body;
+    // console.log(data);
+    const respone = await speciesService.HierarchicalService(data);
+    return res.status(200).json(respone);
+  } catch (error) {
+    return res.status(500).json({
+      err: -1,
+      msg: "Failed at post controller : " + error,
+    });
+  }
+};

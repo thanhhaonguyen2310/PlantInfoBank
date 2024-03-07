@@ -318,6 +318,36 @@ export const KmeansService = (data) =>
     }
   });
 
+export const HierarchicalService = (data) =>
+  new Promise(async (resolve, reject) => {
+    let jsonString = JSON.stringify(data);
+
+    try {
+      let options = {
+        mode: "json",
+        pythonPath: "python",
+        pythonOptions: ["-u"], // unbuffered binary stdout and stderr
+        scriptPath: "../server/src/services",
+        args: [jsonString],
+      };
+
+      let results = await PythonShell.run("hierarchical.py", options).then(
+        (results) => {
+          // results is an array consisting of messages collected during execution
+          console.log("results: %j", results);
+          return results;
+        }
+      );
+
+      resolve({
+        error: results ? 0 : 1,
+        msg: results ? "OK" : "Get id species fail.",
+        results,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
 // const { spawn } = require("child_process");
 // export const KmeansService = (data) =>
 //   new Promise(async (resolve, reject) => {

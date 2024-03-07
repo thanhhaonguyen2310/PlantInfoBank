@@ -20,6 +20,7 @@ const Kmeans = () => {
 
   const [labels, setLabels] = useState([]);
   const [cluster, setCluster] = useState(null);
+  const [index, setIndex] = useState(null);
   const [genus, setGenus] = useState("0");
   const handleChangeGenus = (e) => {
     // console.log(e.target.value)
@@ -83,9 +84,9 @@ const Kmeans = () => {
         defval: -1, // Thay thế giá trị trống bằng -1
       });
       data.forEach((row) => {
-        // Lặp qua mỗi cột
+       
         Object.keys(row).forEach((key) => {
-          // Kiểm tra nếu giá trị là null hoặc undefined
+         
           if (row[key] === " ") {
             // Thay thế giá trị bằng -1
             row[key] = -1;
@@ -111,9 +112,9 @@ const Kmeans = () => {
         defval: -1, // Thay thế giá trị trống bằng -1
       });
       Object.keys(data[0]).forEach((key) => {
-        // Loại bỏ các khoảng trắng từ tên cột
+    
         const trimmedKey = key.trim();
-        // Nếu tên cột đã thay đổi, cập nhật tên cột trong đối tượng dữ liệu
+       
         if (key !== trimmedKey) {
           Object.defineProperty(
             data[0],
@@ -124,9 +125,9 @@ const Kmeans = () => {
         }
       });
       data.forEach((row) => {
-        // Lặp qua mỗi cột
+        
         Object.keys(row).forEach((key) => {
-          // Kiểm tra nếu giá trị là null hoặc undefined
+    
           if (row[key] === " ") {
             // Thay thế giá trị bằng -1
             row[key] = -1;
@@ -168,18 +169,19 @@ const Kmeans = () => {
       handleRemoveOption(index);
     }
   };
-  // display nhóm
+  const sortedLabels = labels.slice().sort((a, b) => a - b);
+
   const [displayedData, setDisplayedData] = useState([]);
 
-  // Hàm xử lý sự kiện khi click vào nút nhóm
   const handleGroupClick = (groupIndex) => {
-    // Lọc dữ liệu tương ứng với nhóm được chọn
-    const filteredData = excelData.filter(
-      (item, index) => labels[index] === groupIndex
-    );
-    // Cập nhật dữ liệu được hiển thị
+
+    const filteredData = excelData
+        .map((item, index) => ({index: index + 1, ...item}))
+        .filter(({index}) => labels[index-1] === groupIndex)
+    setIndex(groupIndex)
     setDisplayedData(filteredData);
   };
+  console.log(displayedData)
   useEffect(() => {
     dispatch(getProperties(genus));
     if (textareaRef.current) {
@@ -326,36 +328,38 @@ const Kmeans = () => {
           <div className="flex justify-between items-center gap-10 w-full">
             <div className="w-[15%]  border border-slate-400 top-0 relative overflow-y-auto">
               <div className="flex flex-col py-2">
-                {Array.from(new Set(labels)).map((groupIndex) => (
+                {Array.from(new Set(sortedLabels)).map((groupIndex) => (
                   <button
                     key={groupIndex}
                     onClick={() => handleGroupClick(groupIndex)}
+                    className="hover:text-green-500"
                   >
                     Nhóm {groupIndex + 1}
                   </button>
                 ))}
               </div>
             </div>
+        {displayedData.length >0 &&
             <div className="w-[85%] p-5 top-5">
               <div className="flex flex-col gap-5">
-                <div className="top-5">
+                <div className="flex gap-5 top-5">
+                  <p className="text-xl font-bold">Nhóm:  <span className="text-blue-500 p-1">{index + 1}</span></p>
                   <p className="text-xl font-bold">Số lượng:  <span className="text-blue-500 p-1">{displayedData.length}</span></p>
                 </div>
                 <table className="border-2 border-gray-300 text-center">
                   <thead>
                     <tr className=" py-2 px-4 border-2 text-[18px] right-2">
-                      {/* Tạo tiêu đề cột từ các tên cột */}
+                    <th  className=" py-2 px-4 border-2 text-[18px] right-2">STT</th>
                       {Object.keys(excelData[0]).map((columnName) => (
                         <th key={columnName} className=" py-2 px-4 border-2 text-[18px] right-2">{columnName}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {/* Hiển thị dữ liệu từng hàng */}
+            
                     {displayedData.map((row, rowIndex) => (
                       <tr key={rowIndex} className=" py-2 px-4 border-2 text-[18px] right-2">
-                        {/* Hiển thị dữ liệu từng ô */}
-                        {Object.values(row).map((cellValue, cellIndex) => (
+                        {Object.values(row).map((cellValue, cellIndex) => (                         
                           <td key={cellIndex} className=" py-2 px-4 border-2 text-[18px] right-2">{cellValue}</td>
                         ))}
                       </tr>
@@ -364,6 +368,7 @@ const Kmeans = () => {
                 </table>
               </div>
             </div>
+        }
           </div>
         )}
       </div>

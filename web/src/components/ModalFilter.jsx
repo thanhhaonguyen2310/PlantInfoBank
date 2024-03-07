@@ -37,19 +37,23 @@ const ModalFilter = ({ idModal, isShowModal, setIsShowModal }) => {
       }}
     >
       <div
-        className="bg-white max-w-1100 w-full overflow-y-auto justify-items-center pr-12"
+        className="bg-white max-w-1100 w-full  justify-items-center pr-12 "
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
+        
         {isShowModal ? (
           <>
             <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
-              <div className="relative w-auto mx-auto max-w-6xl">
+              <div className="relative top-0 w-auto mx-auto h-auto max-h-[calc(100vh-100px)]">
                 
-                <div className="border-0 rounded-lg shadow-lg relative flex flex-col justify-between items-center w-full bg-white outline-none focus:outline-none p-10 gap-5">
-                <span className='uppercase text-red-500 text-center text-xl'>Bộ Lọc</span>  
-                  <div className="gap-2">
+                <div className=" border-0 rounded-lg shadow-lg relative flex flex-col justify-between items-center w-full bg-white outline-none focus:outline-none p-10 gap-5">
+                  <div className=' top-0'>
+                    <span className='uppercase text-red-500 text-center text-xl '>Bộ Lọc</span>
+                  </div>
+                    
+                  <div className="gap-2 overflow-y-auto  max-h-80">
                   {properties?.rows?.length >0 && properties?.rows.map((item) => {
                         return (
                           item.PropertiesValues.length > 0 ? (
@@ -82,7 +86,10 @@ const ModalFilter = ({ idModal, isShowModal, setIsShowModal }) => {
                         );
                       })}
                
-                    <div className="flex justify-center gap-5 items-center pt-5">
+                    
+                  </div>
+
+                  <div className=" flex justify-center gap-5 items-center pt-5">
                       <button
                         className='bg-gray-200 p-2 border rounded-sm'
                         onClick={() =>
@@ -94,14 +101,13 @@ const ModalFilter = ({ idModal, isShowModal, setIsShowModal }) => {
                         className='bg-gray-200 p-2 border rounded-sm'
                       >Search</button>
                     </div>
-                  </div>
 
                   <div className="absolute top-0 right-0 ">
                     <button
                       className=" bg-transparent border border-black text-white"
                       onClick={() => setIsShowModal(false)}
                     >
-                      <div className="bg-red-600 p-1 text-xl">
+                      <div className="bg-red-600 p-1 text-xl ">
                         <MdClose />
                       </div>
                     </button>
@@ -118,3 +124,4 @@ const ModalFilter = ({ idModal, isShowModal, setIsShowModal }) => {
 };
 
 export default ModalFilter;
+
