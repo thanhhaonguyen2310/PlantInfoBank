@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaCheck } from "react-icons/fa";
+import image from '../../assets/dendrogram.png'
 
 
 
@@ -20,7 +21,6 @@ const HierarchicalClusteringDiagram = () => {
   // submit state
   const [linkage, setLinkage] = useState(null);
   const [excelData, setExcelData] = useState(null);
-  const {currentData} = useSelector(state => state.user)
   const handleFile=(e)=>{
     let fileTypes = ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/csv'];
     let selectedFile = e.target.files[0];
@@ -88,7 +88,7 @@ const HierarchicalClusteringDiagram = () => {
       <div className=" pl-10  flex flex-col ">
         <div className="flex justify-center  gap-20">
           <span className="text-4xl text-slate-500 ">
-            Thêm mẫu giống từ file excel
+            Hierarchical Clustering
           </span>
         </div>
         <div className="flex justify-center p-10  mt-10">
@@ -124,8 +124,14 @@ const HierarchicalClusteringDiagram = () => {
           }
         </div> 
 
-        <div className="flex justify-center items-center h-auto mt-10">        
-        {linkage && <Dendrogram linkage={linkage}/>}
+        <div className="flex justify-center items-center ">        
+          {/* {linkage && <Dendrogram linkage={linkage}/>} */}
+          {linkage &&
+            <div >
+              <img src={image} alt="dendrogram" className="w-[700px] h-[450px]"/>
+            </div>
+          
+          }
       </div>     
       </div>
       

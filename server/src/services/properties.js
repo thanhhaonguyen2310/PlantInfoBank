@@ -177,7 +177,7 @@ export const addSpeciesExcelService = (id, data) =>
       const dataQuerry = [];
       property.forEach((propertyRow, rowIndex) => {
         const newRow = [];
-        console.log(rowIndex)
+        console.log(rowIndex);
         propertyRow.forEach((property, colIndex) => {
           const newData = {
             speciesId: idSpecies[rowIndex],
@@ -190,15 +190,14 @@ export const addSpeciesExcelService = (id, data) =>
         dataQuerry.push(newRow);
       });
 
-      
-      for(let i = 0; i< idSpecies.length;i++){
+      for (let i = 0; i < idSpecies.length; i++) {
         // console.log(dataQuerry[i]);
         // console.log(idSpecies[i]);
-        const detailspecies = await db.DetailSpecies.bulkCreate(dataQuerry[i])
+        const detailspecies = await db.DetailSpecies.bulkCreate(dataQuerry[i]);
         const addSpecies = await db.AddSpecies.create({
           speciesId: idSpecies[i],
-          userId: id.id
-        })
+          userId: id.id,
+        });
       }
       resolve({
         err: 0,
@@ -271,6 +270,77 @@ export const getPropertyService = (id) =>
         include: [{ model: db.PropertiesValue, group: ["propertiesId"] }],
       });
       // console.log(respone)
+      resolve({
+        error: respone ? 0 : 1,
+        msg: respone ? "OK" : "Get post fail.",
+        respone,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+const columnsToArrayOfObjects = (columns) => {
+  // Khởi tạo một mảng trống để lưu trữ kết quả
+  const result = [];
+
+  // Lặp qua các cột
+  for (const [key, values] of Object.entries(columns)) {
+    // Tạo một đối tượng mới với tên cột và mảng giá trị tương ứng
+    const columnObject = { [key]: values };
+
+    // Đẩy đối tượng mới vào mảng kết quả
+    result.push(columnObject);
+  }
+
+  return result;
+};
+
+export const getPropertyColumnService = (data) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const respone = [];
+      for (const [key, values] of Object.entries(data)) {
+        const propertyId = await db.Properties.findOne({
+          where: { name_vn: [key] },
+          attributes: ["id"],
+        });
+        console.log(propertyId?.dataValues);
+        const result = await db.PropertiesValue.findOne({
+          where: { propertiesId: propertyId?.dataValues?.id },
+          attributes: ["id"],
+        });
+
+        if (result === null) {
+          respone.push({ key, values });
+        } else {
+          const newArray = values.map((value) => ({
+            propertiesId: propertyId?.dataValues?.id,
+            option: value,
+          }));
+          // console.log(newArray);
+          const properValue = [];
+          for (let i = 0; i < newArray?.length; i++) {
+            const propertiesValue = await db.PropertiesValue.findOne({
+              where: { [Sequelize.Op.and]: newArray[i] },
+              attributes: ["description"],
+            });
+
+            properValue.push(propertiesValue.dataValues.description);
+          }
+          respone.push(properValue);
+        }
+
+        // result.push(columnObject);
+      }
+      // const respone = await db.Properties.findAll({
+      //   where: {
+      //     id: {
+      //       [Op.regexp]: `^${id}\\d+`,
+      //     },
+      //   },
+      //   include: [{ model: db.PropertiesValue, group: ["propertiesId"] }],
+      // });
       resolve({
         error: respone ? 0 : 1,
         msg: respone ? "OK" : "Get post fail.",

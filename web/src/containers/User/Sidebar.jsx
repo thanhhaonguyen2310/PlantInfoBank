@@ -60,6 +60,11 @@ const Sidebar = () => {
             icon: <OrderedListOutlined />,
           },
           {
+            label: "Thêm vùng phân bố",
+            key: "/account/addarea",
+            icon: <AppstoreAddOutlined />,
+          },
+          {
             label: "Thêm mẫu giống",
             key: "/account/addspecies",
             icon: <AppstoreAddOutlined />,

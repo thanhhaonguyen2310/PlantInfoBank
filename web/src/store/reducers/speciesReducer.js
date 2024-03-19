@@ -10,6 +10,12 @@ const initState = {
 
 const speciesReducer = (state = initState, action) => {
   switch (action.type) {
+    case actionTypes.GET_ALLSPECIES:
+      return {
+        ...state,
+        species: action.species || [],
+        msg: action.msg || "",
+      };
     case actionTypes.GET_SPECIES:
       return {
         ...state,
@@ -28,12 +34,12 @@ const speciesReducer = (state = initState, action) => {
         listAddspecies: action.listAddspecies || [],
         msg: action.msg || "",
       };
-      case actionTypes.GET_ALLADDSPECIES:
-        return {
-          ...state,
-          listAddspecies: action.listAddspecies || [],
-          msg: action.msg || "",
-        };
+    case actionTypes.GET_ALLADDSPECIES:
+      return {
+        ...state,
+        listAddspecies: action.listAddspecies || [],
+        msg: action.msg || "",
+      };
     case actionTypes.GET_PROPERTY_SPECIES:
       return {
         ...state,

@@ -27,7 +27,7 @@ const ListAddSpecies = () => {
 
   return (
     <div className="container mx-auto mt-8">
-      <h1 className="text-2xl font-bold mb-4 text-center text-blue-400">
+      <h1 className="text-3xl font-bold mb-5 text-center text-blue-400">
         Danh sách giống đã thêm
       </h1>
       <table className="min-w-full bg-white border border-gray-300 text-center">

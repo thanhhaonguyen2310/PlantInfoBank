@@ -4,6 +4,7 @@ import * as speciesController from "../controllers/species.js";
 const router = express.Router();
 
 router.post("/create", speciesController.createSpecies);
+router.get("/species", speciesController.getSpecies);
 router.get("/filter", speciesController.getAllFilterSpecies);
 router.get("/get-addspecies/all", speciesController.getAllAddSpecies);
 router.get("/get-addspecies/:id", speciesController.getAddSpecies);

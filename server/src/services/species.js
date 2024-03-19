@@ -114,6 +114,23 @@ export const setApproveService = (id) =>
       reject(error);
     }
   });
+
+export const getSpeciesService = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const respone = await db.Species.findAll({
+        // attributes: ["name"]
+      });
+      resolve({
+        error: respone ? 0 : 1,
+        msg: respone ? "OK" : "Get  species fail.",
+        respone,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const getAllAddSpeciesService = () =>
   new Promise(async (resolve, reject) => {
     try {

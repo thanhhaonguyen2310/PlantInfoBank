@@ -23,6 +23,29 @@ export const getSpecies = (id, page) => async (dispatch) => {
   }
 };
 
+export const getAllSpecies = () => async (dispatch) => {
+  try {
+    const respone = await api.getAllSpecies();
+    // console.log(respone);
+    if (respone?.error === 0) {
+      dispatch({
+        type: actionTypes.GET_ALLSPECIES,
+        species: respone.respone,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.GET_ALLSPECIES,
+        msg: respone.msg,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_ALLSPECIES,
+      species: null,
+    });
+  }
+};
+
 export const getProperty = (id) => async (dispatch) => {
   try {
     const respone = await api.getProperty(id);

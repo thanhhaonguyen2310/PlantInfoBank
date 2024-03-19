@@ -13,7 +13,12 @@ const provinceReducer = (state = initState, action) => {
         province: action.province || [],
         msg: action.msg || "",
       };
-
+    case actionTypes.GET_ALLPROVINCE:
+      return {
+        ...state,
+        province: action.province || [],
+        msg: action.msg || "",
+      };
     default:
       return state;
   }

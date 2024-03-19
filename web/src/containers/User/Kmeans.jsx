@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as actions from "../../store/actions/species";
 import api from "../../services/public.server";
+import apis from "../../services/properties.services";
 import { useDispatch, useSelector } from "react-redux";
 import { getProperties } from "../../store/actions/properties";
 import { ToastContainer, toast } from "react-toastify";
@@ -19,7 +20,9 @@ const Kmeans = () => {
   const [excelFile, setExcelFile] = useState(null);
 
   const [labels, setLabels] = useState([]);
+  const [column, setColumn] = useState([]);
   const [cluster, setCluster] = useState(null);
+  const [name, setName] = useState(null);
   const [index, setIndex] = useState(null);
   const [genus, setGenus] = useState("0");
   const handleChangeGenus = (e) => {
@@ -48,6 +51,7 @@ const Kmeans = () => {
   // submit state
   const [idGenus, setIdGenus] = useState(null);
   const [excelData, setExcelData] = useState(null);
+  const [displayedData, setDisplayedData] = useState([]);
   const handleFile = (e) => {
     let fileTypes = [
       "application/vnd.ms-excel",
@@ -70,35 +74,7 @@ const Kmeans = () => {
     }
   };
 
-  const handleFileSubmit = async () => {
-    // e.preventDefault();
-    if (excelFile !== null) {
-      const workbook = XLSX.read(excelFile, { type: "buffer" });
-      const worksheetName = workbook.SheetNames[0];
-
-      const worksheet = workbook.Sheets[worksheetName];
-
-      const data = XLSX.utils.sheet_to_json(worksheet, {
-        range: 0,
-        cellDates: true,
-        defval: -1, // Thay thế giá trị trống bằng -1
-      });
-      data.forEach((row) => {
-       
-        Object.keys(row).forEach((key) => {
-         
-          if (row[key] === " ") {
-            // Thay thế giá trị bằng -1
-            row[key] = -1;
-          }
-        });
-      });
-      //   console.log(worksheet)
-      // const cluster = KmeansCluster(data);
-      //   setIdGenus(worksheet['A1'].v.split(":")[1].trim())
-      setExcelData(data);
-    }
-  };
+  
   const handleDataKmeans = async () => {
     if (excelFile !== null) {
       const workbook = XLSX.read(excelFile, { type: "buffer" });
@@ -134,32 +110,68 @@ const Kmeans = () => {
           }
         });
       });
+      let nameColumnValues = [];
+      const newData = data.map(row => {
+        
+        nameColumnValues.push(row.Name);
+    
+        const { Name, ...rest } = row;
+        return rest; 
+    });
+    setLabels([])
+    setName(nameColumnValues)
 
-      
-      console.log(data);
-
-      const filteredData = [];
-
-      data.forEach((item) => {
-        const filteredItem = {};
-
-        selectedOptions.forEach((key) => {
-          if (item[key] !== undefined) {
-            filteredItem[key] = item[key];
-          }
+      let filteredData = [];
+      if (selectedOptions.includes('all')) {
+        newData.forEach((item) => {
+          
+          filteredData.push(item);
         });
-
-        filteredData.push(filteredItem);
-      });
-
+      }
+      else {
+        data.forEach((item) => {
+          const filteredItem = {};
+  
+          selectedOptions.forEach((key) => {
+            if (item[key] !== undefined) {
+              filteredItem[key] = item[key];
+            }
+          });
+  
+          filteredData.push(filteredItem);
+        });
+      }
+      
       console.log(filteredData);
       let dataset = [cluster, filteredData];
       const response = await api.kmeans(dataset);
-      console.log(response?.results[0]);
-      console.log(response?.results[0]?.labels);
       setLabels(response?.results[0]?.labels);
       setExcelData(filteredData);
-    }
+      setTextareaValue("");
+      setGenus("0")
+      setCluster(null)
+      setExcelFile(null)
+      setSelectedOptions([])
+      setDisplayedData([])
+      const columns = {};
+
+      for (let i = 0; i < filteredData.length; i++) {
+        const row = filteredData[i];
+        Object.keys(row).forEach(key => {
+          if (!columns[key]) {
+            columns[key] = [];
+          }
+          columns[key].push(row[key]);
+        });
+      }
+        console.log(columns);
+        
+        const result = await apis.getPropertyColumn(columns)
+        console.log(result.respone)
+        setColumn(result.respone)
+
+      }
+      
   };
 
   const handleClickInTextarea = (event) => {
@@ -170,20 +182,53 @@ const Kmeans = () => {
     }
   };
   const sortedLabels = labels.slice().sort((a, b) => a - b);
-
-  const [displayedData, setDisplayedData] = useState([]);
-
+  
+  const handleProperty = () => {
+    
+  }
+  function transpose(matrix) {
+    return matrix[0].map((_, columnIndex) => matrix.map(row => row[columnIndex]));
+  }
   const handleGroupClick = (groupIndex) => {
+    if(column && column.length){  
+    // Biến đổi mảng column thành dạng dữ liệu hàng
+      const columns = transpose(column);
+      const filteredData = excelData
+      console.log(columns)
+      // const columns = column
+      // console.log(columns[0].length)
 
-    const filteredData = excelData
-        .map((item, index) => ({index: index + 1, ...item}))
+      const columnNames = Object.keys(filteredData[0]);
+      console.log(columnNames)
+      let updatedExcelData = filteredData.map((row, rowIndex) => {
+        const updatedRow = { ...row };
+        const columnValues = columns[rowIndex]; // Lấy mảng giá trị cột cho hàng tương ứng
+
+        if (columnValues && columnValues.length) {
+            for (let j = 0; j < columnValues.length; j++) {
+                // Sử dụng tên của cột từ excelData làm tên cột cho column
+                const columnName = columnNames[j];
+                updatedRow[columnName] = columnValues[j];
+            }
+        }
+
+        return updatedRow;
+    });
+      console.log(updatedExcelData)
+
+      const Data = updatedExcelData
+        .map((item, index) => ({index: index + 1,name: name[index], ...item}))
         .filter(({index}) => labels[index-1] === groupIndex)
-    setIndex(groupIndex)
-    setDisplayedData(filteredData);
+      setIndex(groupIndex)
+      setDisplayedData(Data);
+    }
+
+    
   };
-  console.log(displayedData)
+  // console.log(displayedData)
   useEffect(() => {
     dispatch(getProperties(genus));
+    labels && column && handleProperty()
     if (textareaRef.current) {
       textareaRef.current.addEventListener("click", handleClickInTextarea);
     }
@@ -192,7 +237,7 @@ const Kmeans = () => {
         textareaRef.current.removeEventListener("click", handleClickInTextarea);
       }
     };
-  }, [genus, textareaValue]);
+  }, [genus, textareaValue,selectedOptions,labels,column]);
   return (
     <div className="w-full bg-white mt-10 ">
       <div className="flex flex-col justify-center items-start">
@@ -202,7 +247,7 @@ const Kmeans = () => {
         <div className="flex flex-col gap-5 justify-start p-10  ">
           <form
             className=" flex  gap-3 justify-between items-center "
-            onSubmit={handleFileSubmit}
+            // onSubmit={handleFileSubmit}
           >
             <div className="min-h-40 flex flex-col gap-3 justify-start items-center my-auto mt-6">
               <div className="flex gap-1 p-1 text-center items-center">
@@ -270,6 +315,9 @@ const Kmeans = () => {
                 >
                   <option value="0" className="bg-white-500">
                     Chọn ở đây
+                  </option>
+                  <option value="all" className="bg-white-500">
+                    Chọn tất cả
                   </option>
                   {properties?.rows?.length > 0 &&
                     properties?.rows.map((item) => {
@@ -349,10 +397,11 @@ const Kmeans = () => {
                 <table className="border-2 border-gray-300 text-center">
                   <thead>
                     <tr className=" py-2 px-4 border-2 text-[18px] right-2">
-                    <th  className=" py-2 px-4 border-2 text-[18px] right-2">STT</th>
-                      {Object.keys(excelData[0]).map((columnName) => (
-                        <th key={columnName} className=" py-2 px-4 border-2 text-[18px] right-2">{columnName}</th>
-                      ))}
+                      <th  className=" py-2 px-4 border-2 text-[18px] right-2">STT</th>
+                      <th  className=" py-2 px-4 border-2 text-[18px] right-2">Mẫu giống</th>
+                        {Object.keys(excelData[0]).map((columnName) => (
+                          <th key={columnName} className=" py-2 px-4 border-2 text-[18px] right-2">{columnName}</th>
+                        ))}
                     </tr>
                   </thead>
                   <tbody>

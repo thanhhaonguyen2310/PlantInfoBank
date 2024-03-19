@@ -11,6 +11,7 @@ import ManageUser from '../Page/ManageUser';
 import AddSpeciesExcel from '../../User/AddSpeciesExcel';
 import HierarchicalClusteringDiagram from '../../User/HierarchicalClusteringDiagram';
 import Kmeans from '../../User/Kmeans';
+import AddArea from '../../User/AddArea';
 
 
 const PageContent = () => {
@@ -30,6 +31,7 @@ const PageContent = () => {
       
       <Route path={'profile'} element={<Profile />}></Route>
       <Route path={'listadd'} element={<ListAddSpecies/>}></Route>
+      <Route path={'addarea'} element={<AddArea/>}></Route>
       <Route path={'addspecies'} element={<AddSpecies/>}></Route>
       <Route path={'addspeciesexcel'} element={<AddSpeciesExcel/>}></Route>
       <Route path={'hierarchical'} element={<HierarchicalClusteringDiagram/>}></Route>

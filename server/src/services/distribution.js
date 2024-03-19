@@ -19,6 +19,43 @@ export const createDistributionService = (data) =>
     }
   });
 
+export const AddArea = (data) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      console.log(data);
+      const speciesId = data.selection;
+      const province = data.checkbox;
+      const distributionPromises = [];
+
+      province.forEach(async (provinceId) => {
+        const existingDistribution = await db.Distribution.findOne({
+          where: {
+            speciesId: speciesId,
+            provineceId: provinceId,
+          },
+        });
+
+        if (!existingDistribution) {
+          distributionPromises.push(
+            db.Distribution.create({
+              speciesId: speciesId,
+              provineceId: provinceId,
+            })
+          );
+        }
+      });
+
+      await Promise.all(distributionPromises);
+
+      resolve({
+        err: 0,
+        msg: "Distributions created successfully!",
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const updateDistributionService = (data) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -100,6 +137,21 @@ export const getDistributionService = () =>
         ],
         group: ["provineceId"],
       });
+      // console.log(respone)
+      resolve({
+        error: respone ? 0 : 1,
+        msg: respone ? "OK" : "Get data fail.",
+        respone,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+export const getAllProvinceService = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const respone = await db.Provinece.findAll({});
       // console.log(respone)
       resolve({
         error: respone ? 0 : 1,
