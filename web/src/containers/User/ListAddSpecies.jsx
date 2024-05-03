@@ -30,6 +30,7 @@ const ListAddSpecies = () => {
       <h1 className="text-3xl font-bold mb-5 text-center text-blue-400">
         Danh sách giống đã thêm
       </h1>
+      {listAddspecies.length <=0 ? <p className="text-xl text-center p-10">Chưa có mẫu giống nhau được thêm</p>:
       <table className="min-w-full bg-white border border-gray-300 text-center">
         <thead>
           <tr>
@@ -62,7 +63,7 @@ const ListAddSpecies = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> }
       {isShowModal && <ModalAddSpecies idModal={idModal} isShowModal  setIsShowModal={setIsShowModal} />}
     </div>
   );

@@ -9,7 +9,7 @@ import { ImCancelCircle } from "react-icons/im";
 import { FaCheckCircle } from "react-icons/fa";
 import ModalAddSpecies from "../../../components/ModalAddSpecies";
 
-const ManageListAddSpecies = () => {
+const ManageListDelete = () => {
   const dispatch = useDispatch();
   const { currentData } = useSelector((state) => state.user);
   // console.log(id)
@@ -31,13 +31,13 @@ const ManageListAddSpecies = () => {
   };
   console.log(listAddspecies);
   useEffect(() => {
-    dispatch(getAllAddSpecies(0));
+    dispatch(getAllAddSpecies(-1));
   }, [isShowModal]);
 
   return (
     <div className="container mx-auto mt-8">
       <h1 className="text-2xl font-bold mb-10 text-center text-blue-400 uppercase">
-        Danh sách giống đang chờ duyệt
+        Danh sách giống đã xóa
       </h1>
       <table className="min-w-full bg-white border border-gray-300 text-center">
         <thead>
@@ -62,12 +62,12 @@ const ManageListAddSpecies = () => {
                 <GiThreeLeaves className="text-gray-400 hover:text-green-500 hover:shadow-lg" />
               </td>
               <td className="  border ">
-                <button
+                {/* <button
                   className="text-gray-300 hover:text-red-600 p-3"
                   onClick={() => handleApprove(item.Species?.id,[-1])}
                 >
                   <ImCancelCircle/>
-                </button>
+                </button> */}
                 <button
                   className="text-gray-300 hover:text-green-600"
                   onClick={() => handleApprove(item.Species?.id,[1])}
@@ -86,4 +86,4 @@ const ManageListAddSpecies = () => {
   );
 };
 
-export default ManageListAddSpecies;
+export default ManageListDelete;

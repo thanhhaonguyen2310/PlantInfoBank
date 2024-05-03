@@ -31,12 +31,12 @@ const ModalAddSpecies = ({ idModal, isShowModal, setIsShowModal }) => {
         {isShowModal ? (
           <>
             <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
-              <div className="relative w-auto mx-auto max-w-6xl">
+              <div className="relative top-0 w-auto mx-auto h-auto max-h-[calc(100vh-100px)]">
                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col justify-between items-center w-full bg-white outline-none focus:outline-none p-10 gap-5">
                   <span className="uppercase text-red-500 text-center text-xl">
                     Chi tiết về giống
                   </span>
-                  <div className="gap-2">
+                  <div className="gap-2 overflow-y-auto  max-h-100">
                     <table className="table-auto border border-solid  border-slate-600 p-2">
                       <thead>
                         <tr>

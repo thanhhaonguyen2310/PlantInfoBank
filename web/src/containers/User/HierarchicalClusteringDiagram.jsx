@@ -7,13 +7,13 @@ import * as actions from "../../store/actions/species";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck,FaSpinner } from "react-icons/fa";
 import image from '../../assets/dendrogram.png'
 
 
 
 import * as XLSX from "xlsx";
-import Dendrogram from "../../components/Dendrogram";
+
 const HierarchicalClusteringDiagram = () => {
   const [excelFile, setExcelFile] = useState(null);
   const [typeError, setTypeError] = useState(null);
@@ -73,10 +73,20 @@ const HierarchicalClusteringDiagram = () => {
     }
     
   }
+  const [loading, setLoading] = useState(false);
   const handleAddExcel = async() =>{
-    const response = await api.hierarchical(excelData);
-    console.log(response)
-    setLinkage(response.results[0])
+    try {
+      setLoading(true);
+      const response = await api.hierarchical(excelData);
+      console.log(response)
+      setLinkage(response.results[0])
+      setLoading(false);
+    } catch (error) {
+      console.error('Error:', error);
+      // Xử lý lỗi nếu cần
+      setLoading(false); 
+    }
+    
   }
   console.log(excelData)
   // useEffect(() => {
@@ -85,42 +95,54 @@ const HierarchicalClusteringDiagram = () => {
   // }, [linkage]);
   return (
     <div className="w-full bg-white mt-10 ">
-      <div className=" pl-10  flex flex-col ">
-        <div className="flex justify-center  gap-20">
-          <span className="text-4xl text-slate-500 ">
-            Hierarchical Clustering
-          </span>
-        </div>
-        <div className="flex justify-center p-10  mt-10">
-          <form
-            className=" flex flex-col gap-3 justify-center items-center "
-            onSubmit={handleFileSubmit}
+      <header className="py-4 bg-green-600 text-white text-center">
+        <h1 className="text-3xl font-semibold">Hierarchical Clustering Diagram</h1>
+        <p className="text-lg font-semibold text-blue-200"></p>
+      </header>
+        
+        <div className="flex justify-center p-10  ">
+        <form
+          className="flex flex-col gap-3 items-center bg-gray-100 p-6 rounded-lg shadow-md"
+          onSubmit={handleFileSubmit}
+        >
+          <label htmlFor="file-upload" className="text-xl uppercase text-red-600">
+            Tải file lên ở đây
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            className="w-full py-2 px-4 border border-gray-300 rounded-md"
+            required
+            onChange={handleFile}
+          />
+
+
+          <button
+            type="submit"
+            className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300"
           >
-            <label htmlFor="" className="text-xl uppercase text-red-600">
-              Upload file ở đây
-            </label>
-            <input
-              type="file"
-              className="form-control flex text-center justify-center"
-              required
-              onChange={handleFile}
-            />
-            <button
-              type="submit"
-              className="text-xl  text-center hover:text-blue-400"
-            >
-              Tải file 
-            </button>
-            {typeError&&(
-                <div className="alert alert-danger" role="alert">{typeError}</div>
-                )}
-          </form>
+            Tải file
+          </button>
+          {typeError && (
+            <div className="text-red-600">{typeError}</div>
+          )}
+        </form>
         </div>
         <div >
           {excelData &&
           <button  
             onClick={handleAddExcel}
-            className="flex justify-start items-center gap-1 transition duration-300 ease-in-out hover:text-green-600 hover:shadow-md p-2"><span className="text-green-300 transition duration-300 ease-in-out hover:text-green-600">Xác nhận</span><FaCheck/></button>
+            className="flex justify-start items-center gap-1 transition duration-300 ease-in-out hover:text-green-600 hover:shadow-md p-2">
+              {/* <span className="text-green-300 transition duration-300 ease-in-out hover:text-green-600">Xác nhận</span><FaCheck/> */}
+              {loading ? (
+                <FaSpinner className="text-lg animate-spin" />
+              ) : (
+                <>
+                  <FaCheck className="text-lg" />
+                  <span className="text-lg font-semibold">Xác nhận</span>
+                </>
+              )}
+            </button>
           }
         </div> 
 
@@ -132,8 +154,8 @@ const HierarchicalClusteringDiagram = () => {
             </div>
           
           }
-      </div>     
-      </div>
+        </div>     
+      
       
       {/* <ToastContainer /> */}
     </div>

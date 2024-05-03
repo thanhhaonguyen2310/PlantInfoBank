@@ -300,14 +300,22 @@ export const getPropertyColumnService = (data) =>
   new Promise(async (resolve, reject) => {
     try {
       const respone = [];
+      // console.log(data);
       for (const [key, values] of Object.entries(data)) {
         const propertyId = await db.Properties.findOne({
           where: { name_vn: [key] },
           attributes: ["id"],
         });
         console.log(propertyId?.dataValues);
+        console.log(key);
         const result = await db.PropertiesValue.findOne({
-          where: { propertiesId: propertyId?.dataValues?.id },
+          where: {
+            propertiesId: propertyId?.dataValues?.id,
+            // [Op.and]: [
+            //   { propertiesId: propertyId?.dataValues?.id },
+            //   { option: values }
+            // ]
+          },
           attributes: ["id"],
         });
 
@@ -326,7 +334,7 @@ export const getPropertyColumnService = (data) =>
               attributes: ["description"],
             });
 
-            properValue.push(propertiesValue.dataValues.description);
+            properValue.push(propertiesValue?.dataValues?.description);
           }
           respone.push(properValue);
         }

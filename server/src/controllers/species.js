@@ -48,8 +48,10 @@ export const getIdSpecies = async (req, res) => {
 export const setApprove = async (req, res) => {
   try {
     const id = req.params.id;
+    const data = req.body;
+    // console.log(data);
     // console.log(req.parameter.id)
-    const respone = await speciesService.setApproveService(id);
+    const respone = await speciesService.setApproveService(id, data);
     return res.status(200).json(respone);
   } catch (error) {
     return res.status(500).json({
@@ -60,7 +62,8 @@ export const setApprove = async (req, res) => {
 };
 export const getAllAddSpecies = async (req, res) => {
   try {
-    const respone = await speciesService.getAllAddSpeciesService();
+    const id = req.params.id;
+    const respone = await speciesService.getAllAddSpeciesService(id);
     return res.status(200).json(respone);
   } catch (error) {
     return res.status(500).json({
@@ -87,7 +90,7 @@ export const getAllSpecies = async (req, res) => {
   try {
     const id = req.params.id;
     const { page } = req.query;
-    // console.log(req.parameter.id)
+    console.log(id);
     const respone = await speciesService.getAllSpeciesService(id, page);
     return res.status(200).json(respone);
   } catch (error) {
@@ -114,8 +117,6 @@ export const deleteSpecies = async (req, res) => {
 
 export const getSpecies = async (req, res) => {
   try {
-
-
     const respone = await speciesService.getSpeciesService();
     return res.status(200).json(respone);
   } catch (error) {
@@ -130,7 +131,7 @@ export const getAllFilterSpecies = async (req, res) => {
   try {
     // const id = req.id
     const data = req.query;
-
+    console.log("first", data);
     const respone = await speciesService.getAllFilterSpeciesService({ data });
     return res.status(200).json(respone);
   } catch (error) {

@@ -1,4 +1,7 @@
 import {AppstoreOutlined,ShopOutlined,ShoppingCartOutlined,UserOutlined,OrderedListOutlined,AppstoreAddOutlined}  from "@ant-design/icons"
+import { MdAddComment ,MdAddLocationAlt} from "react-icons/md";
+import { AiOutlineCluster } from "react-icons/ai";
+import { FaRegObjectUngroup } from "react-icons/fa";
 import { Menu } from "antd"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -25,7 +28,7 @@ const Sidebar = () => {
               <img className='w-10 h-10 object-cover' src={anonAvatar} alt="avatar" />
               <button type="" className="hover:text-red-50" 
                 // onClick={ha}
-              >thay đổi</button>
+              ></button>
           </div>
           
           <div className='flex flex-col justify-center'>
@@ -62,12 +65,12 @@ const Sidebar = () => {
           {
             label: "Thêm vùng phân bố",
             key: "/account/addarea",
-            icon: <AppstoreAddOutlined />,
+            icon: <MdAddLocationAlt />,
           },
           {
             label: "Thêm mẫu giống",
             key: "/account/addspecies",
-            icon: <AppstoreAddOutlined />,
+            icon: <MdAddComment />,
           },
           {
             label: "Thêm mẫu giống từ file excel",
@@ -77,14 +80,18 @@ const Sidebar = () => {
           {
             label: "HierarchicalClusteringDiagram",
             key: "/account/hierarchical",
-            icon: <AppstoreAddOutlined />,
+            icon: <AiOutlineCluster />,
           },
           {
             label: "Kmeans",
             key: "/account/kmeans",
-            icon: <AppstoreAddOutlined />,
+            icon: <FaRegObjectUngroup />,
           },
-          
+          {
+            label: "Gom nhóm giống mẫu ",
+            key: "/account/public",
+            icon: <FaRegObjectUngroup />,
+          },
         ]}
       ></Menu>
     </div>

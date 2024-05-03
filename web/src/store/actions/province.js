@@ -3,7 +3,7 @@ import api from "../../services/province.services";
 export const getProvince = (id) => async (dispatch) => {
   try {
     const respone = await api.getProvince(id);
-    // console.log(respone);
+    console.log(respone);
     if (respone?.error === 0) {
       dispatch({
         type: actionTypes.GET_PROVINCE,

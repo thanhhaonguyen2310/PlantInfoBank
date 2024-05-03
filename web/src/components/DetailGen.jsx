@@ -7,26 +7,26 @@ import { getProvince } from "../store/actions/province";
 
 export const DetailGen = () => {
   const { id } = useParams();
-  // console.log(id)
+  console.log(id)
   const dispatch = useDispatch();
   const { detailspecies } = useSelector((state) => state.species);
   const { province } = useSelector((state) => state.province);
-  console.log(detailspecies);
+  console.log(province)
   useEffect(() => {
     dispatch(getProperty(id));
     dispatch(getProvince(id))
   }, [id]);
   return (
     <div className="flex justify-between p-10 bg-white">
-      <div className="w-4/5">
+      <div className="w-4/5 text-center">
         <h3 className="p-3 text-xl font-bold  text-teal-500 uppercase">Bảng chi tiết về đặc điểm hình thái và nông học của mẫu giống</h3>
-        <table className="table-auto border border-solid  border-slate-600 p-2">
+        <table className="table-auto border border-solid  border-slate-600 p-2 text-center mx-auto">
           <thead>
             <tr>
               <th className="border p-2 text-gray-400">Mẫu giống : <span>{detailspecies[0]?.Species?.name}</span></th>
               <th className="border p-2 text-gray-400">Tên trước kia : <span>{detailspecies[0]?.Species?.name_other}</span></th>
-              <th className="border p-2 text-gray-400">Nơi thu giống : <span>{detailspecies[0]?.Species?.origin_vn}</span></th>
-              <th className="border p-2 text-gray-400">Xuất xứ: <span>chưa biết</span></th>
+              <th className="border p-2 text-gray-400">Xuất xứ : <span>{detailspecies[0]?.Species?.origin_vn}</span></th>
+              {/* <th className="border p-2 text-gray-400">Xuất xứ: <span>chưa biết</span></th> */}
             </tr>
           </thead>
           <tbody>

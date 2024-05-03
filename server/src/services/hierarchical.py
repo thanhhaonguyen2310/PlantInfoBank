@@ -10,14 +10,25 @@ import time
 import datetime
 import matplotlib.pyplot as plt
 
-
-
+def read_json_file(file_path):
+    try:
+        with open(file_path, 'r',encoding='utf-8') as file:
+            data = json.load(file)
+            return data
+    except FileNotFoundError:
+        print("File not found!")
+        return None
+    except json.JSONDecodeError:
+        print("Error decoding JSON!")
+        return None
+filePath = "D:\\LVTN\\LVTN_1\\server\\src\\services\\data.json"
 start_time = time.time()
 # Nhận dữ liệu từ JavaScript qua đối số dòng lệnh
-json_string_from_js = sys.argv[1]
+# json_string_from_js = sys.argv[1]
 # k = json_string_from_js[2]
 # data = json_string_from_js[5:-1]
-data = json.loads(json_string_from_js)
+data = read_json_file(filePath)
+# data = json.loads(json_string_from_js)
 df= pd.DataFrame(data)
 labels = df.pop('Name')
 id2name = dict(zip(range(len(labels)), labels))
@@ -51,7 +62,6 @@ Z_list = Z.tolist()
 #         }      
 # print(json.dumps(label_tree))
 print(json.dumps(Z_list))
-
 
 
 

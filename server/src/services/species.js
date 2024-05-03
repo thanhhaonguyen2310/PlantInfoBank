@@ -95,15 +95,15 @@ export const getIdSpeciesService = (name) =>
       reject(error);
     }
   });
-export const setApproveService = (id) =>
+export const setApproveService = (id, data) =>
   new Promise(async (resolve, reject) => {
     try {
-      console.log(id);
+      // console.log(data);
 
       const respone = await db.Species.findOne({
         where: { id },
       });
-      respone.approve = true;
+      respone.approve = data[0];
       await respone.save();
       resolve({
         error: respone ? 0 : 1,
@@ -131,14 +131,14 @@ export const getSpeciesService = () =>
     }
   });
 
-export const getAllAddSpeciesService = () =>
+export const getAllAddSpeciesService = (id) =>
   new Promise(async (resolve, reject) => {
     try {
       const respone = await db.AddSpecies.findAll({
         include: [
           {
             model: db.Species,
-            where: { approve: false },
+            where: { approve: id },
           },
           { model: db.User },
         ],
@@ -202,7 +202,7 @@ function convertObjectToArray(inputObject) {
 export const getAllFilterSpeciesService = ({ data }) =>
   new Promise(async (resolve, reject) => {
     try {
-      // console.log(data.data[0])
+      console.log(data);
       // const e = { DN5: '3', DN6: '3', DN3: '3' }
       const propertyValuePairs = convertObjectToArray(data.data);
       console.log(propertyValuePairs);
@@ -285,21 +285,49 @@ export const deleteSpeciesService = () =>
       reject(error);
     }
   });
+const fs = require("fs");
 
+function saveJSONToFile(jsonString, filePath) {
+  fs.writeFileSync(filePath, jsonString);
+}
+const filePath = "D:\\LVTN\\LVTN_1\\server\\src\\services\\data.json";
 const { PythonShell } = require("python-shell");
 const pythonScript = "kmeans.py";
 export const KmeansService = (data) =>
   new Promise(async (resolve, reject) => {
-    // console.log(data);
+    // console.log("data",data);
     let jsonString = JSON.stringify(data);
-
+    // console.log("jsonString:",jsonString)
+    // let jsonString = JSON.stringify(data);
+    // const sizeInKB = calculateJSONSize(jsonString);
+    // console.log("Dung lượng của đối tượng JSON là: " + sizeInKB + " KB");
+    saveJSONToFile(jsonString, filePath);
+    const ex = {
+      employees: [
+        {
+          firstName: "John",
+          lastName: "Doe",
+          email: "john.doe@example.com",
+        },
+        {
+          firstName: "Jane",
+          lastName: "Smith",
+          email: "jane.smith@example.com",
+        },
+        {
+          firstName: "David",
+          lastName: "Johnson",
+          email: "david.johnson@example.com",
+        },
+      ],
+    };
     try {
       let options = {
         mode: "json",
         pythonPath: "python",
         pythonOptions: ["-u"], // unbuffered binary stdout and stderr
         scriptPath: "../server/src/services",
-        args: [jsonString],
+        args: [ex],
       };
 
       // PythonShell.run(pythonScript, options, function (err, result) {
@@ -320,7 +348,7 @@ export const KmeansService = (data) =>
       let results = await PythonShell.run(pythonScript, options).then(
         (results) => {
           // results is an array consisting of messages collected during execution
-          console.log("results: %j", results);
+          // console.log("results: %j", results);
           return results;
         }
       );
@@ -334,24 +362,51 @@ export const KmeansService = (data) =>
       reject(error);
     }
   });
+function calculateJSONSize(obj) {
+  const jsonString = JSON.stringify(obj);
+  const bytes = new Blob([jsonString]).size;
+  const kilobytes = bytes / 1024;
+  return kilobytes; // Trả về kích thước dữ liệu JSON tính bằng kilobytes
+}
 
 export const HierarchicalService = (data) =>
   new Promise(async (resolve, reject) => {
     let jsonString = JSON.stringify(data);
-
+    // const sizeInKB = calculateJSONSize(jsonString);
+    // console.log("Dung lượng của đối tượng JSON là: " + sizeInKB + " KB");
+    saveJSONToFile(jsonString, filePath);
+    const ex = {
+      employees: [
+        {
+          firstName: "John",
+          lastName: "Doe",
+          email: "john.doe@example.com",
+        },
+        {
+          firstName: "Jane",
+          lastName: "Smith",
+          email: "jane.smith@example.com",
+        },
+        {
+          firstName: "David",
+          lastName: "Johnson",
+          email: "david.johnson@example.com",
+        },
+      ],
+    };
+    // console.log(jsonString);
     try {
       let options = {
         mode: "json",
         pythonPath: "python",
         pythonOptions: ["-u"], // unbuffered binary stdout and stderr
         scriptPath: "../server/src/services",
-        args: [jsonString],
+        args: [ex],
       };
 
       let results = await PythonShell.run("hierarchical.py", options).then(
         (results) => {
-          // results is an array consisting of messages collected during execution
-          console.log("results: %j", results);
+          // console.log("results: %j", results);
           return results;
         }
       );
@@ -362,6 +417,7 @@ export const HierarchicalService = (data) =>
         results,
       });
     } catch (error) {
+      console.log(error);
       reject(error);
     }
   });

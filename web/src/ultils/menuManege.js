@@ -7,7 +7,7 @@ const menuManage = [
 
   {
       id: 2,
-      text: 'Thêm mẫu giống',
+      text: 'Quản lý',
       path: '/account/addspecies',
   }
 ];

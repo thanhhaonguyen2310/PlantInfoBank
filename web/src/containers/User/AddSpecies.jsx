@@ -56,27 +56,30 @@ const AddSpecies = () => {
         Bạn muốn thêm mẫu giống nào?
       </span>
           <div>
-            <select
-              className="shadow-md py-2 bg-white-300 w-[170px] border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-              onChange={handleChangeGenus}
-              value={genus}
-            >
-              <option value="0" className="bg-white-500">
-                Chọn ở đây
-              </option>
-              <option value="N" className="bg-white-500">
-                Lúa
-              </option>
-              <option value="B" className="bg-white-500">
-                Ngô
-              </option>
-              <option value="D" className="bg-white-500">
-                Dưa lưới
-              </option>
-              <option value="DN" className="bg-white-500">
-                Đậu nành
-              </option>
-            </select>
+              <select
+                className="shadow-md py-2 bg-white-300 w-[170px] border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                onChange={handleChangeGenus}
+                value={genus}
+              >
+                <option value="0" className="bg-white-500">
+                  Chọn ở đây
+                </option>
+                <option value="N" className="bg-white-500">
+                  Lúa
+                </option>
+                <option value="B" className="bg-white-500">
+                  Ngô
+                </option>
+                <option value="D" className="bg-white-500">
+                  Dưa lưới
+                </option>
+                <option value="L" className="bg-white-500">
+                  Lan
+                </option>
+                <option value="DN" className="bg-white-500">
+                  Đậu nành
+                </option>
+              </select>
           </div>
         </div>
 

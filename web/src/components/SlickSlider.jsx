@@ -6,9 +6,9 @@ import slider1 from '../assets/lua.jpg'
 import slider2 from '../assets/ngo.jpg'
 import slider3 from '../assets/dua.jpg'
 import slider4 from '../assets/lan.jpg'
+import slider5 from '../assets/DN.jpg'
 
-
-const arrImages=[slider1,slider2,slider3,slider4]
+const arrImages=[slider1,slider2,slider3,slider4,slider5]
 export const SlickSlider = () => {
     const ref = useRef({});
     const navigate = useNavigate()

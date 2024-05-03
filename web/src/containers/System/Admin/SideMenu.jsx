@@ -6,7 +6,13 @@ import {
     TableOutlined,
     OrderedListOutlined,
     PayCircleOutlined,
+    AppstoreAddOutlined
+
   } from "@ant-design/icons";
+import { MdAddComment ,MdAddLocationAlt,MdOutlinePlaylistAddCheck} from "react-icons/md";
+import { AiOutlineCluster } from "react-icons/ai";
+import { FaRegObjectUngroup } from "react-icons/fa";
+import { FcDeleteDatabase } from "react-icons/fc";
   import { Menu } from "antd";
   import { useEffect, useState } from "react";
   import { useLocation, useNavigate } from "react-router-dom";
@@ -35,35 +41,51 @@ import {
           selectedKeys={[selectedKeys]}
           items={[
             {
-              label: "Manage Statistics",
-              icon: <AppstoreOutlined />,
-              key: "/admin/manage-statistics",
-            },
-            {
-              label: "Duyệt danh sách giống",
-              icon: <AppstoreOutlined />,
-              key: "/admin/manage-listadd",
-            },
-            {
-              label: "Manage User",
+              label: "Danh sách người dùng",
               key: "/admin/manage-user",
               icon: <UserOutlined />,
             },
-            // {
-            //   label: "Manage Post",
-            //   key: "/admin/manage-post",
-            //   icon: <ShoppingCartOutlined />,
-            // },
-            // {
-            //   label: "Manage Customers",
-            //   key: "/admin/customers",
-            //   icon: <UserOutlined />,
-            // },
-            // {
-            //   label: "Manage Tablle",
-            //   key: "/admin/manage-table",
-            //   icon: <PayCircleOutlined />,
-            // },
+            {
+              label: "Danh sách mẫu giống",
+              icon: <OrderedListOutlined />,
+              key: "/admin/manage-species",
+            },
+            {
+              label: "Duyệt danh sách giống",
+              icon: <MdOutlinePlaylistAddCheck />,
+              key: "/admin/manage-listadd",
+            },
+            {
+              label: "Danh sách giống đã xóa",
+              icon: <FcDeleteDatabase />,
+              key: "/admin/manage-listdelete",
+            },
+            {
+              label: "Thêm vùng phân bố",
+              key: "/admin/manage-addarea",
+              icon: <MdAddLocationAlt />,
+            },
+            {
+              label: "Thêm mẫu giống",
+              icon: <MdAddComment />,
+              key: "/admin/manage-add",
+            },
+            
+            {
+              label: "Thêm mẫu giống từ file excel",
+              key: "/admin/manage-addspeciesexcel",
+              icon: <AppstoreAddOutlined />,
+            },
+            {
+              label: "HierarchicalClusteringDiagram",
+              key: "/admin/manage-hierarchical",
+              icon: <AiOutlineCluster />,
+            },
+            {
+              label: "Kmeans",
+              key: "/admin/manage-kmeans",
+              icon: <FaRegObjectUngroup />,
+            },
           ]}
         ></Menu>
       </div>

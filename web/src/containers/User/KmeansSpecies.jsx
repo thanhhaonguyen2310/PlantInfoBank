@@ -8,10 +8,12 @@ import { getProperties } from "../../store/actions/properties";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaCheck,FaSpinner } from "react-icons/fa";
+import { FaCaretDown } from "react-icons/fa";
 
 import * as XLSX from "xlsx";
+// import fetch from 'node-fetch';
 import { KmeansCluster } from "../../services/kmeans";
-const Kmeans = () => {
+const KmeansSpecies = () => {
   const dispatch = useDispatch();
   const textareaRef = useRef(null);
   const [selectedValue, setSelectedValue] = useState("");
@@ -22,6 +24,7 @@ const Kmeans = () => {
   const [labels, setLabels] = useState([]);
   const [column, setColumn] = useState([]);
   const [cluster, setCluster] = useState(null);
+  const [quantity, setQuantity] = useState(null);
   const [name, setName] = useState(null);
   const [index, setIndex] = useState(null);
   const [genus, setGenus] = useState("0");
@@ -32,8 +35,13 @@ const Kmeans = () => {
   const handleCluster = (e) => {
     // console.log(e.target.value)
     setCluster(e.target.value);
+    
   };
-  
+  const handleQuantity = (e) => {
+    // console.log(e.target.value)
+    setQuantity(e.target.value);
+  };
+  // console.log(quantity)
   const handleChangeValue = (event) => {
     const selectedGenus = event.target.value;
     setSelectedValue(selectedGenus);
@@ -49,134 +57,132 @@ const Kmeans = () => {
     setTextareaValue(newOptions.join(", "));
   };
   const { properties } = useSelector((state) => state.properties);
-  // submit state
-  // console.log(cluster)
-  const [idGenus, setIdGenus] = useState(null);
   const [excelData, setExcelData] = useState(null);
   const [displayedData, setDisplayedData] = useState([]);
-  const handleFile = (e) => {
-    let fileTypes = [
-      "application/vnd.ms-excel",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "text/csv",
-    ];
-    let selectedFile = e.target.files[0];
-    if (selectedFile) {
-      if (selectedFile && fileTypes.includes(selectedFile.type)) {
-        let reader = new FileReader();
-        reader.readAsArrayBuffer(selectedFile);
-        reader.onload = (e) => {
-          setExcelFile(e.target.result);
-        };
-      } else {
-        setExcelFile(null);
-      }
-    } else {
-      console.log("Please select your file");
-    }
-  };
 
   const [loading, setLoading] = useState(false);
+  
+  // const filePath = "D:/LVTN/Excel/100_lua.xlsx";
+  const filePath = "web\\src\\assets\\kmeans_lua_3.xlsx";
   const handleDataKmeans = async () => {
     setLoading(true)
-    if (excelFile !== null) {
-      
-      const workbook = XLSX.read(excelFile, { type: "buffer" });
-      // console.log(workbook)
-      const worksheetName = workbook.SheetNames[0];
+    fetch(filePath)
+      .then(response => response.arrayBuffer())
+      .then(arrayBuffer => {
+        const data = new Uint8Array(arrayBuffer);
+        const workbook = XLSX.read(data, { type: 'buffer' });
 
-      const worksheet = workbook.Sheets[worksheetName];
+        // Lấy tên sheet đầu tiên
+        const firstSheetName = workbook.SheetNames[0];
 
-      const data = XLSX.utils.sheet_to_json(worksheet, {
-        range: 0,
-        cellDates: true,
-        defval: -1, // Thay thế giá trị trống bằng -1
+        // Lấy dữ liệu từ sheet đầu tiên
+        const worksheet = workbook.Sheets[firstSheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+        console.log(jsonData);
+      })
+      .catch(error => {
+        console.error("Đã xảy ra lỗi khi đọc tệp Excel:", error);
       });
-      Object.keys(data[0]).forEach((key) => {
+    // if (genus !== null) {
+    //   const workbook = XLSX.read(filePath,{ type: "buffer" });
+    //   const worksheetName = workbook.SheetNames[0];
+      
+    //   const worksheet = workbook.Sheets[worksheetName];
+    //   console.log(workbook)
+    //   const data = XLSX.utils.sheet_to_json(worksheet, {
+    //     range: 0,
+    //     cellDates: true,
+    //     defval: -1, // Thay thế giá trị trống bằng -1
+    //   });
+    //   console.log(data)
+    //   Object.keys(data[0]).forEach((key) => {
     
-        const trimmedKey = key.trim();
+    //     const trimmedKey = key.trim();
        
-        if (key !== trimmedKey) {
-          Object.defineProperty(
-            data[0],
-            trimmedKey,
-            Object.getOwnPropertyDescriptor(data[0], key)
-          );
-          delete data[0][key];
-        }
-      });
-      data.forEach((row) => {
+    //     if (key !== trimmedKey) {
+    //       Object.defineProperty(
+    //         data[0],
+    //         trimmedKey,
+    //         Object.getOwnPropertyDescriptor(data[0], key)
+    //       );
+    //       delete data[0][key];
+    //     }
+    //   });
+    //   data.forEach((row) => {
         
-        Object.keys(row).forEach((key) => {
+    //     Object.keys(row).forEach((key) => {
     
-          if (row[key] === " ") {
-            // Thay thế giá trị bằng -1
-            row[key] = -1;
-          }
-        });
-      });
-      let nameColumnValues = [];
-      const newData = data.map(row => {
+    //       if (row[key] === " ") {
+    //         // Thay thế giá trị bằng -1
+    //         row[key] = -1;
+    //       }
+    //     });
+    //   });
+    //   console.log(data)
+    //   const slicedData = data.slice(0,parseInt(quantity, 10));
+    //   let nameColumnValues = [];
+    //   const newData = slicedData.map(row => {
         
-        nameColumnValues.push(row.Name);
+    //     nameColumnValues.push(row.Name);
     
-        const { Name, ...rest } = row;
-        return rest; 
-    });
-    setLabels([])
-    setName(nameColumnValues)
+    //     const { Name, ...rest } = row;
+    //     return rest; 
+    // });
+    // setLabels([])
+    // setName(nameColumnValues)
 
-      let filteredData = [];
-      if (selectedOptions.includes('all')) {
-        newData.forEach((item) => {
+    //   let filteredData = [];
+    //   if (selectedOptions.includes('all')) {
+    //     newData.forEach((item) => {
           
-          filteredData.push(item);
-        });
-      }
-      else {
-        data.forEach((item) => {
-          const filteredItem = {};
+    //       filteredData.push(item);
+    //     });
+    //   }
+    //   else {
+    //     data.forEach((item) => {
+    //       const filteredItem = {};
   
-          selectedOptions.forEach((key) => {
-            if (item[key] !== undefined) {
-              filteredItem[key] = item[key];
-            }
-          });
+    //       selectedOptions.forEach((key) => {
+    //         if (item[key] !== undefined) {
+    //           filteredItem[key] = item[key];
+    //         }
+    //       });
   
-          filteredData.push(filteredItem);
-        });
-      }
+    //       filteredData.push(filteredItem);
+    //     });
+    //   }
       
-      console.log(filteredData);
-      let dataset = [cluster, filteredData];
-      const response = await api.kmeans(dataset);
-      setLabels(response?.results[0]?.labels);
-      setExcelData(filteredData);
-      setTextareaValue("");
-      setGenus("0")
-      setCluster(null)
-      setExcelFile(null)
-      setSelectedOptions([])
-      setDisplayedData([])
-      setLoading(false)
-      const columns = {};
+    //   console.log(filteredData);
+    //   let dataset = [cluster, filteredData];
+    //   const response = await api.kmeans(dataset);
+    //   setLabels(response?.results[0]?.labels);
+    //   setExcelData(filteredData);
+    //   setTextareaValue("");
+    //   setGenus("0")
+    //   setCluster(null)
+    //   setExcelFile(null)
+    //   setSelectedOptions([])
+    //   setDisplayedData([])
+    //   setLoading(false)
+    //   const columns = {};
 
-      for (let i = 0; i < filteredData.length; i++) {
-        const row = filteredData[i];
-        Object.keys(row).forEach(key => {
-          if (!columns[key]) {
-            columns[key] = [];
-          }
-          columns[key].push(row[key]);
-        });
-      }
-        console.log(columns);
+    //   for (let i = 0; i < filteredData.length; i++) {
+    //     const row = filteredData[i];
+    //     Object.keys(row).forEach(key => {
+    //       if (!columns[key]) {
+    //         columns[key] = [];
+    //       }
+    //       columns[key].push(row[key]);
+    //     });
+    //   }
+    //     console.log(columns);
         
-        const result = await apis.getPropertyColumn(columns)
-        console.log(result.respone)
-        setColumn(result.respone)
+    //     const result = await apis.getPropertyColumn(columns)
+    //     console.log(result.respone)
+    //     setColumn(result.respone)
 
-      }
+    //   }
       
   };
 
@@ -248,7 +254,7 @@ const Kmeans = () => {
   return (
     <div className="w-full bg-white mt-10 ">
       <header className="py-4 bg-green-600 text-white text-center">
-        <h1 className="text-3xl font-semibold">Gom cụm dữ liệu</h1>
+        <h1 className="text-3xl font-semibold">Gom cụm dữ liệu từ mẫu</h1>
         <p className="text-lg font-semibold text-blue-200"></p>
       </header>
       <div className="flex flex-col justify-center items-start">    
@@ -258,7 +264,7 @@ const Kmeans = () => {
             // onSubmit={handleFileSubmit}
           >
             <div className="min-h-40 flex flex-col gap-3 justify-start items-center my-auto mt-6">
-              <div className="flex gap-1 p-1 text-center items-center">
+              {/* <div className="flex gap-1 p-1 text-center items-center">
                 <label htmlFor="" className="text-md  text-red-600">
                   Đọc dữ liệu:
                 </label>
@@ -268,9 +274,9 @@ const Kmeans = () => {
                   required
                   onChange={handleFile}
                 />
-              </div>
+              </div> */}
               <div className="flex  gap-3 p-1 justify-start text-center items-center  mr-auto">
-                <label htmlFor="" className="text-md  text-red-600  ">
+                <label htmlFor="" className="text-md  text-red-600  w-[50%]">
                   Chọn mẫu:
                 </label>
                 <select
@@ -298,10 +304,10 @@ const Kmeans = () => {
                   </option>
                 </select>
               </div>
-              <div className="flex gap-1 p-1 text-center items-center mr-auto">
+              <div className="flex gap-2 p-1 pl-3 text-center items-center mr-auto">
                 <label
                   htmlFor=""
-                  className="flex flex-col text-md  text-red-600"
+                  className="flex flex-col text-md  text-red-600 w-[50%]"
                 >
                   Chọn số nhóm:
                   {/* <span className="text-[10px]">Lưu ý: Chọn số nhóm phải nhỏ hơn mẫu </span> */}
@@ -312,6 +318,35 @@ const Kmeans = () => {
                   required
                   onChange={handleCluster}
                 />
+              </div>
+              <div className="flex gap-1  p-1 text-center items-center mr-auto">
+                <label
+                  htmlFor=""
+                  className="flex flex-col text-md  text-red-600 w-[50%]"
+                >
+                  Chọn số lượng mẫu:
+                  {/* <span className="text-[10px]">Lưu ý: Chọn số nhóm phải nhỏ hơn mẫu </span> */}
+                </label>
+                <input
+                  type="number"
+                  className="flex text-center justify-center border w-[40%]"
+                  required
+                  onChange={handleQuantity}
+                />
+                <select
+                    className="flex text-center justify-center border"
+                    required
+                    onChange={handleQuantity}
+                  >
+                    <option value=""><FaCaretDown /></option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                    <option value="1000">Tất cả</option>
+                  </select>
               </div>
             </div>
             <div className="w-[60%] flex flex-col gap-3 justify-start items-center">
@@ -445,4 +480,4 @@ const Kmeans = () => {
   );
 };
 
-export default Kmeans;
+export default KmeansSpecies;

@@ -3188,3 +3188,50 @@ INSERT INTO `detailspecies` (`speciesId`, `propertiesId`, `propertiesvalueId`, `
 (55, 'N8', 9, 1)
 
 
+INSERT INTO `propertiesvalues` (`propertiesId`, `option`, `description`,`description_en`) VALUES 
+('L1','1', 'Đa thân','multi body'),('L1','2', 'Giả hành','hypocrisy'),('L1','3', 'Đơn thân','single'),('L2','1', 'Nhiều','multi'),('L2','2', 'Trung bình','medium'),('L2','3', 'Ít','little'),
+('L3','1', 'Tròn','Round'),('L3','2', 'Dẹt','flat'),('L4','1', 'Dài','long'),('L4','2', 'Trung bình','medium'),('L4','3', 'Ngắn','short'),
+('L5','1', 'Màu xanh đậm','Dark Blue'),('L5','2', 'Màu xanh cốm','Nuggets blue'),('L6','1', 'Mềm, rủ',' Soft'),('L6','2', 'Cứng','Hard'),
+('L7','1', 'Dài (2-3cm)','long'),('L7','2','Trung bình (1,5-2,5cm)', 'medium'),('L7','3', 'Ngắn','short'),('L8','1', 'Màu xanh đậm','Dark Blue'),('L8','2', 'Màu xanh nhạt','Light blue'),
+('L9','1', 'Hình mác','lanceolate'),('L9','2', 'Tròn','round'),('L9','3', 'Lá thuôn dài','oblong leaves'),
+('L10','1', 'Mỏng','thin'),('L10','2', 'Trung bình','medium'),('L10','3', 'Dày','thick'),
+('L11','1', 'So le','staggered'),('L11','2', 'Mỗi thân chỉ có 1 lá','each stem has only 1 leaf'),('L12','1', 'Rễ chùm','beam'),('L12','2', 'Rễ củ','root'),
+('L13','1', 'Khí sinh','biogas'),('L13','2', 'Trồng đất','cultivation') ,('L14','1', 'Tập trung','Focus'),('L14','2', 'Rải rác','scattered'),
+('L15','1', 'Trên thân chính','On the main body'),('L15','2', 'Đầu ngọn','tip'),('L16','1', 'Hoa đơn','inflorescence'),('L16','2', 'Hoa chùm','single'),
+('L17','1', 'Trắng tím','white purple'),('L17','2', 'Cánh vàng, lưỡi nâu tím','yellow wings, purple brown tongue'),('L17','3', 'Vàng','yellow'),('L17','4', 'Tím nhạt','light purple'),('L17','8', 'Vàng kim','golden needle'),
+('L17','5', 'Cánh tím đậm, lưỡi trắng tím','dark purple wings, white purple tongue'),('L17','6', 'Cánh trắng, họng vàng','white wings, yellow throat'),('L17','7', 'Trắng,lục','white'),
+('L18','1', 'Thơm dịu/mát/nhẹ','fragrant / mat / light'),('L18','2', 'Rất thơm/đậm','very fragrant / compacted'),('L19','1', 'Đóng','closed'),
+('L20','1', 'Hình trụ ngắn phình ở giữa','short cylindrical bulge in the middle'),('L20','2', 'Quả nang hơi hình thoi','slightly rhombic capsule'),('L20','3', 'Hình trụ ngắn phình hình phễu','short cylindrical bulge funnel'),
+('L21','1', 'Không đều','Irregular'),('L21','2', 'Tròn','round'),('L21','3', 'Góc cạnh','Angular'),('L22','1', 'Xanh','Green')
+
+{
+   "name": "Hoàng thảo Tam bảo sắc",
+    "properties": ["L1","L2","L3","L4","L5","L6","L7","L8","L9","L10","L11","L12","L14","L15","L16","L17","L18","L19","L20","L13","L21","L22"],
+   "value": [1,1,1,2,1,1,2,1,2,2,1,1,1,1,1,2,2,1,null,1,1]
+}
+
+
+
+L1 1	L1 1	L1 1	L1 1	L1 .. 1	L1  3	L1 1	L1 1	L1 1	L1  2	L1 1	L1  1	L1 1	L1 1	L1  1
+L2 1	L2 1	L2 1	L2 1	L2 1	L2 2	L2 2	L2 2	L2 2	L2 2	L2 2	L2 1	L2 2	L2 1	L2 1
+L3 1	L3 1	L3 1	L3 1	L3 2	L3 2	L3 1	L3 1	L3 2	L3 1	L3 1	L3 1	L3 1	L3 1	L3 1
+L4 1	L4 2	L4 2	L4 3	L4 2	L4	    L4 3	L4 3	L4 3	L4 3	L4 3	L4 1	L4 3	L4 2	L4 2
+L5 1	L5 1	L5 1	L5 1	L5 2	L5	    L5 1	L5 1	L5 1	L5 1	L5 1	L5 1	L5 1	L5 2	L5 2
+L6 1	L6 1	L6 1	L6 1	L6 1	L6 2	L6 2	L6 2	L6 2	L6 2	L6 2	L6 1	L6 2	L6 1	L6 1
+L7 1	L7 2	L7 2	L7 3	L7 3	L7	    L7 3	L7 3	L7 3	L7 3	L7 3	L7 2	L7 3	L7 2	L7 2
+L8 2	L8 1	L8 1	L8 1	L8 1	L8 2	L8 1	L8 1	L8 1	L8 1	L8 1	L8 2	L8 1	L8 1	L8 1
+L9 1	L9 2	L9 2	L9 1	L9 1	L9 1	L9 2	L9 2	L9 2	L9 2	L9 3	L9 1	L9 1	L9 1	L9 1
+L10 1	L10 2	L10 2	L10 2	L10 2	L10 1	L10 3	L10 3	L10 3	L10 3	L10 3	L10 1	L10 3	L10 1	L10 3
+L11 1	L11 1	L11 1	L11 1	L11 1	L11 1	L11 1	L11 1	L11 1	L11 2	L11 1	L11 1	L11 1	L11 1	L11 1
+L12 1	L12 1	L12 1	L12 1	L12 1	L12 2	L12 1	L12 1	L12 1	L12 1	L12 1	L12 1	L12 1	L12 1	L12 1
+L13 1	L13 1	L13 1	L13 1	L13 1	L13 2	L13 1	L13 1	L13 1	L13 1	L13 1	L13 1	L13 1	L13 1	L13 1
+L14 1	L14 1	L14 1	L14 1	L14 1	L14 	L14 	L14 	L14 	L14 1	L14 1	L14 1	L14 1	L14 1	L14 1
+L15 1	L15 1	L15 1	L15 1	L15 1	L15 	L15 	L15 	L15 	L15 2	L15 2	L15 1	L15 2	L15 1	L15 1
+L16 1	L16 1	L16 2	L16 1	L16 2	L16 1	L16 	L16 	L16 	L16 2	L16 2	L16 1	L16 2	L16 1	L16 1
+23. 7       1   2       3           2       1     7       1      3         3        3    4        8        5     6
+L18 1	L18 1	L18 1	L18 1	L18 3	L18 	L18 	L18 	L18 		    L18 1	L18 13	L18 2	L18 1	L18 1
+25. 11111111111111111111111111111111111111111111111111111111111111111111
+L20  2	L20  1	L20	    L20 : 2	L20 2	L20	    L20	    L20	    L20	    L20	    L20	    L20 1	L20  3	L20 1	L201
+L21  1	L21  1	L21 1	L21 2	L21  2	L21	    L21	    L21	    L21	    L21	    L21 3	L21 3	L21 3	L21  1	L21 1
+28. Mầu mặt ngoài quả:  Xanh (Green)	28. Mầu mặt ngoài quả:  Xanh (Green)	28. Mầu mặt ngoài quả:  Xanh (Green)	28. Mầu mặt ngoài quả:  Xanh (Green)	28. Mầu mặt ngoài quả:  Xanh (Green)	28. Mầu mặt ngoài quả:	28. Mầu mặt ngoài quả:	28. Mầu mặt ngoài quả:	28. Mầu mặt ngoài quả:	28. Mầu mặt ngoài quả:	28. Mầu mặt ngoài quả: Xanh (Green)	28. Mầu mặt ngoài quả: Xanh (Green)	28. Mầu mặt ngoài quả:  Xanh (Green)	28. Mầu mặt ngoài quả:  Xanh (Green)	28. Mầu mặt ngoài quả: Xanh (Green)
+

@@ -7,7 +7,7 @@ class PropertiesService {
     return (await this.api.get(`/all/${id}`)).data;
   }
   async getPropertyColumn(data) {
-    return (await this.api.post('/column', data)).data;
+    return (await this.api.post("/column", data)).data;
   }
   async addSpecies(id, data) {
     return (await this.api.post(`/add/${id}`, data)).data;

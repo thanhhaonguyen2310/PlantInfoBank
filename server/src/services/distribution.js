@@ -108,15 +108,18 @@ export const deleteDistributionService = (id) =>
 export const getAllDistributionService = (id) =>
   new Promise(async (resolve, reject) => {
     try {
-      console.log(id);
+      // console.log(id);
+      const  speciesId = await db.Species.findOne({
+        where: {name: id}
+      })
       const respone = await db.Distribution.findAndCountAll({
-        where: { speciesId: id },
+        where: { speciesId: speciesId?.dataValues.id },
         // raw: true,
         // nest: true,
         include: [{ model: db.Provinece }],
         // attributes: ['id']
       });
-      // console.log(respone)
+      // console.log(respone);
       resolve({
         error: respone ? 0 : 1,
         msg: respone ? "OK" : "Get data fail.",

@@ -41,22 +41,20 @@ const AddArea = () => {
       }, []);
   return (
     <div className="w-full bg-white mt-10 ">
+      <header className="py-4 bg-green-600 text-white text-center">
+        <h1 className="text-3xl font-semibold">Thêm vùng phân bố cho mẫu giống</h1>
+        <p className="text-lg font-semibold text-blue-200"></p>
+      </header>
       <div className=" pl-10  flex flex-col">
-        <div className="flex justify-center ">
-          <span className="text-4xl text-slate-500">
-            Thêm vùng phân bố cho mẫu giống
-          </span>
-          
-        </div>
 
-        <div className="flex justify-center items-center  gap-20 mt-20">
+        <div className="flex justify-center items-center  gap-20 mt-10">
             <span className="text-xl shadow-sm p-2 "> Chọn mẫu giống :</span>
             <select
               className="shadow-md py-2  bg-white-300  w-[170px] "
               onChange={handleChange}
             > 
                 <option value="0" className="bg-white-500">Chọn ở đây</option>
-            {species && species.map((item) => {
+            {species && species?.map((item) => {
                 return(
                     <option key={item?.id} value={item?.id} className="bg-white-500">{item?.name}</option>
                 )

@@ -92,9 +92,9 @@ export const getFilterSpecies = (datafilter) => async (dispatch) => {
   }
 };
 
-export const getAllAddSpecies = () => async (dispatch) => {
+export const getAllAddSpecies = (id) => async (dispatch) => {
   try {
-    const respone = await api.getAllAddSpecies();
+    const respone = await api.getAllAddSpecies(id);
     console.log(respone);
     if (respone?.error === 0) {
       dispatch({

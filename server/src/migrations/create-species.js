@@ -34,7 +34,7 @@ module.exports = {
 
       approve: {
         // type: Sequelize.STRING,
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.INTEGER,
       },
       genusId: {
         type: Sequelize.INTEGER,

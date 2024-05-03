@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       origin_vn: DataTypes.STRING,
       origin_en: DataTypes.STRING,
       // provinceId: DataTypes.INTEGER,
-      approve: DataTypes.BOOLEAN,
+      approve: DataTypes.INTEGER,
       genusId: DataTypes.INTEGER,
     },
     {

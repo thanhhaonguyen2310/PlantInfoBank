@@ -12,6 +12,9 @@ import AddSpeciesExcel from '../../User/AddSpeciesExcel';
 import HierarchicalClusteringDiagram from '../../User/HierarchicalClusteringDiagram';
 import Kmeans from '../../User/Kmeans';
 import AddArea from '../../User/AddArea';
+import ManageListDelete from '../Page/ManageListDelete';
+import ManageSpecies from '../Page/ManageSpecies';
+import KmeansSpecies from '../../User/KmeansSpecies';
 
 
 const PageContent = () => {
@@ -25,6 +28,13 @@ const PageContent = () => {
           path={'manage-listadd'}
           element={<ManageListAddSpecies/>}
         ></Route>
+        <Route path={'manage-listdelete'} element={<ManageListDelete/>}></Route>
+        <Route path={'manage-species'} element={<ManageSpecies/>}></Route>
+        <Route path={'manage-add'} element={<AddSpecies/>}></Route>
+        <Route path={'manage-addspeciesexcel'} element={<AddSpeciesExcel/>}></Route>
+        <Route path={'manage-hierarchical'} element={<HierarchicalClusteringDiagram/>}></Route>
+        <Route path={'manage-kmeans'} element={<Kmeans/>}></Route>
+        <Route path={'manage-addarea'} element={<AddArea/>}></Route>
         <Route path={'manage-user'} element={<ManageUser/>}></Route>
       </Routes>
     <Routes path={'/account/*'} element={<User />}>
@@ -36,6 +46,7 @@ const PageContent = () => {
       <Route path={'addspeciesexcel'} element={<AddSpeciesExcel/>}></Route>
       <Route path={'hierarchical'} element={<HierarchicalClusteringDiagram/>}></Route>
       <Route path={'kmeans'} element={<Kmeans/>}></Route>
+      <Route path={'public'} element={<KmeansSpecies/>}></Route>
     </Routes>
     </div>
     
