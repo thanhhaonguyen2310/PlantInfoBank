@@ -18,6 +18,7 @@ const ManageListAddSpecies = () => {
 
   const [isShowModal, setIsShowModal] = useState(false);
   const [idModal, setIdModal] = useState(null);
+  const [load, setLoad] = useState(false);
   const handleClick = (id) => {
     console.log(id)
     setIdModal(id)
@@ -28,11 +29,12 @@ const ManageListAddSpecies = () => {
     // console.log(data)
     const respone = await api.setApprove(id,data)
     console.log(respone)
+    setLoad(!load)
   };
   console.log(listAddspecies);
   useEffect(() => {
     dispatch(getAllAddSpecies(0));
-  }, [isShowModal]);
+  }, [isShowModal,load]);
 
   return (
     <div className="container mx-auto mt-8">

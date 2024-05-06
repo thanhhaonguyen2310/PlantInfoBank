@@ -3,8 +3,14 @@ class PropertiesService {
   constructor(baseUrl = "/api/properties") {
     this.api = createApiClient(baseUrl);
   }
+  async createProperty(data) {
+    return (await this.api.post("/create", data)).data;
+  }
   async getProperties(id) {
     return (await this.api.get(`/all/${id}`)).data;
+  }
+  async getPropertiesGenus(id) {
+    return (await this.api.get(`/genus/${id}`)).data;
   }
   async getPropertyColumn(data) {
     return (await this.api.post("/column", data)).data;

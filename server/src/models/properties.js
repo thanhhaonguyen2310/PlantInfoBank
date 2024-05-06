@@ -11,9 +11,11 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
 
       Properties.hasMany(sequelize.define("DetailSpecies"));
-      Properties.hasMany(sequelize.define("PropertiesValue",{freezeTableName: true,}));
-      Properties.belongsTo(models.TypeProperty, {
-        foreignKey: "typepropertyId",
+      Properties.hasMany(
+        sequelize.define("PropertiesValue", { freezeTableName: true })
+      );
+      Properties.belongsTo(models.Genus, {
+        foreignKey: "genusId",
         targetKey: "id",
       });
       // Properties.belongsToMany(models.Species, {through: 'DetailSpecies'});
@@ -23,17 +25,16 @@ module.exports = (sequelize, DataTypes) => {
     {
       name_vn: DataTypes.STRING,
       name_en: DataTypes.STRING,
-      typepropertyId: DataTypes.INTEGER,
+      genusId: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "Properties",
       name: {
-        singular: 'Properties',
-        plural: 'Properties'
+        singular: "Properties",
+        plural: "Properties",
+      },
     }
-    },
-    
   );
   return Properties;
 };

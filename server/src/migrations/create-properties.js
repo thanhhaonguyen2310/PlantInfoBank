@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -15,7 +15,7 @@ module.exports = {
       name_en: {
         type: Sequelize.STRING,
       },
-      typepropertyId: {
+      genusId: {
         type: Sequelize.INTEGER,
       },
       createdAt: {
@@ -29,6 +29,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Properties');
-  }
+    await queryInterface.dropTable("Properties");
+  },
 };

@@ -8,7 +8,7 @@ export const createPropertiesService = (data) =>
     try {
       console.log(data);
       const species = await db.Properties.findOne({
-        where: { name_vn: data.name_vn },
+        where: { name_vn: data?.name_vn },
         raw: false,
       });
       if (species) {
@@ -24,6 +24,7 @@ export const createPropertiesService = (data) =>
       const properNew = await db.Properties.build({
         name_vn: data?.name_vn,
         name_en: data?.name_en,
+        genusId: data?.genusId,
       });
       // console.log(properNew)
 
@@ -279,7 +280,33 @@ export const getPropertyService = (id) =>
       reject(error);
     }
   });
-
+export const getPropertyGenusService = (id) =>
+  new Promise(async (resolve, reject) => {
+    console.log(id);
+    try {
+      const respone = await db.Properties.findAndCountAll({
+        where: {
+          genusId: id,
+        },
+        include: [
+          {
+            model: db.PropertiesValue,
+            group: ["propertiesId"],
+            // model: db.Genus,
+          },
+          { model: db.Genus },
+        ],
+      });
+      // console.log(respone)
+      resolve({
+        error: respone ? 0 : 1,
+        msg: respone ? "OK" : "Get post fail.",
+        respone,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
 const columnsToArrayOfObjects = (columns) => {
   // Khởi tạo một mảng trống để lưu trữ kết quả
   const result = [];

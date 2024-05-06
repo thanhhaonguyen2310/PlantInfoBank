@@ -7,13 +7,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProperties } from "../../store/actions/properties";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaCheck,FaSpinner } from "react-icons/fa";
-import { FaCaretDown } from "react-icons/fa";
+import { FaCheck, FaSpinner } from "react-icons/fa";
+import Modal from "react-modal";
+
+Modal.setAppElement("#root");
 
 import * as XLSX from "xlsx";
-// import fetch from 'node-fetch';
 import { KmeansCluster } from "../../services/kmeans";
-const KmeansSpecies = () => {
+
+const Kmeans = () => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  // Function to open modal
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  // Function to close modal
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const [showModalButton, setShowModalButton] = useState(false);
+
   const dispatch = useDispatch();
   const textareaRef = useRef(null);
   const [selectedValue, setSelectedValue] = useState("");
@@ -24,7 +40,6 @@ const KmeansSpecies = () => {
   const [labels, setLabels] = useState([]);
   const [column, setColumn] = useState([]);
   const [cluster, setCluster] = useState(null);
-  const [quantity, setQuantity] = useState(null);
   const [name, setName] = useState(null);
   const [index, setIndex] = useState(null);
   const [genus, setGenus] = useState("0");
@@ -35,13 +50,7 @@ const KmeansSpecies = () => {
   const handleCluster = (e) => {
     // console.log(e.target.value)
     setCluster(e.target.value);
-    
   };
-  const handleQuantity = (e) => {
-    // console.log(e.target.value)
-    setQuantity(e.target.value);
-  };
-  // console.log(quantity)
   const handleChangeValue = (event) => {
     const selectedGenus = event.target.value;
     setSelectedValue(selectedGenus);
@@ -57,135 +66,165 @@ const KmeansSpecies = () => {
     setTextareaValue(newOptions.join(", "));
   };
   const { properties } = useSelector((state) => state.properties);
+  // submit state
+  const [idGenus, setIdGenus] = useState(null);
   const [excelData, setExcelData] = useState(null);
-  const [displayedData, setDisplayedData] = useState([]);
-
-  const [loading, setLoading] = useState(false);
-  
-  // const filePath = "D:/LVTN/Excel/100_lua.xlsx";
-  const filePath = "web\\src\\assets\\kmeans_lua_3.xlsx";
-  const handleDataKmeans = async () => {
-    setLoading(true)
-    fetch(filePath)
-      .then(response => response.arrayBuffer())
-      .then(arrayBuffer => {
-        const data = new Uint8Array(arrayBuffer);
-        const workbook = XLSX.read(data, { type: 'buffer' });
-
-        // Lấy tên sheet đầu tiên
-        const firstSheetName = workbook.SheetNames[0];
-
-        // Lấy dữ liệu từ sheet đầu tiên
-        const worksheet = workbook.Sheets[firstSheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
-        console.log(jsonData);
-      })
-      .catch(error => {
-        console.error("Đã xảy ra lỗi khi đọc tệp Excel:", error);
-      });
-    // if (genus !== null) {
-    //   const workbook = XLSX.read(filePath,{ type: "buffer" });
-    //   const worksheetName = workbook.SheetNames[0];
-      
-    //   const worksheet = workbook.Sheets[worksheetName];
-    //   console.log(workbook)
-    //   const data = XLSX.utils.sheet_to_json(worksheet, {
-    //     range: 0,
-    //     cellDates: true,
-    //     defval: -1, // Thay thế giá trị trống bằng -1
-    //   });
-    //   console.log(data)
-    //   Object.keys(data[0]).forEach((key) => {
-    
-    //     const trimmedKey = key.trim();
-       
-    //     if (key !== trimmedKey) {
-    //       Object.defineProperty(
-    //         data[0],
-    //         trimmedKey,
-    //         Object.getOwnPropertyDescriptor(data[0], key)
-    //       );
-    //       delete data[0][key];
-    //     }
-    //   });
-    //   data.forEach((row) => {
-        
-    //     Object.keys(row).forEach((key) => {
-    
-    //       if (row[key] === " ") {
-    //         // Thay thế giá trị bằng -1
-    //         row[key] = -1;
-    //       }
-    //     });
-    //   });
-    //   console.log(data)
-    //   const slicedData = data.slice(0,parseInt(quantity, 10));
-    //   let nameColumnValues = [];
-    //   const newData = slicedData.map(row => {
-        
-    //     nameColumnValues.push(row.Name);
-    
-    //     const { Name, ...rest } = row;
-    //     return rest; 
-    // });
-    // setLabels([])
-    // setName(nameColumnValues)
-
-    //   let filteredData = [];
-    //   if (selectedOptions.includes('all')) {
-    //     newData.forEach((item) => {
-          
-    //       filteredData.push(item);
-    //     });
-    //   }
-    //   else {
-    //     data.forEach((item) => {
-    //       const filteredItem = {};
-  
-    //       selectedOptions.forEach((key) => {
-    //         if (item[key] !== undefined) {
-    //           filteredItem[key] = item[key];
-    //         }
-    //       });
-  
-    //       filteredData.push(filteredItem);
-    //     });
-    //   }
-      
-    //   console.log(filteredData);
-    //   let dataset = [cluster, filteredData];
-    //   const response = await api.kmeans(dataset);
-    //   setLabels(response?.results[0]?.labels);
-    //   setExcelData(filteredData);
-    //   setTextareaValue("");
-    //   setGenus("0")
-    //   setCluster(null)
-    //   setExcelFile(null)
-    //   setSelectedOptions([])
-    //   setDisplayedData([])
-    //   setLoading(false)
-    //   const columns = {};
-
-    //   for (let i = 0; i < filteredData.length; i++) {
-    //     const row = filteredData[i];
-    //     Object.keys(row).forEach(key => {
-    //       if (!columns[key]) {
-    //         columns[key] = [];
-    //       }
-    //       columns[key].push(row[key]);
-    //     });
-    //   }
-    //     console.log(columns);
-        
-    //     const result = await apis.getPropertyColumn(columns)
-    //     console.log(result.respone)
-    //     setColumn(result.respone)
-
-    //   }
-      
+  const handleFile = (e) => {
+    let fileTypes = [
+      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "text/csv",
+    ];
+    let selectedFile = e.target.files[0];
+    if (selectedFile) {
+      if (selectedFile && fileTypes.includes(selectedFile.type)) {
+        let reader = new FileReader();
+        reader.readAsArrayBuffer(selectedFile);
+        reader.onload = (e) => {
+          setExcelFile(e.target.result);
+        };
+      } else {
+        setExcelFile(null);
+      }
+    } else {
+      console.log("Please select your file");
+    }
   };
 
+  const handleFileSubmit = async () => {
+    // e.preventDefault();
+    if (excelFile !== null) {
+      const workbook = XLSX.read(excelFile, { type: "buffer" });
+      const worksheetName = workbook.SheetNames[0];
+
+      const worksheet = workbook.Sheets[worksheetName];
+
+      const data = XLSX.utils.sheet_to_json(worksheet, {
+        range: 0,
+        cellDates: true,
+        defval: -1, // Thay thế giá trị trống bằng -1
+      });
+      data.forEach((row) => {
+        Object.keys(row).forEach((key) => {
+          if (row[key] === " ") {
+            // Thay thế giá trị bằng -1
+            row[key] = -1;
+          }
+        });
+      });
+      //   console.log(worksheet)
+      // const cluster = KmeansCluster(data);
+      //   setIdGenus(worksheet['A1'].v.split(":")[1].trim())
+      setExcelData(data);
+    }
+  };
+
+  // const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleDataKmeans = async () => {
+    setLoading(true)
+    if (excelFile !== null) {
+      
+      const workbook = XLSX.read(excelFile, { type: "buffer" });
+      // console.log(workbook)
+      const worksheetName = workbook.SheetNames[0];
+
+      const worksheet = workbook.Sheets[worksheetName];
+
+      const data = XLSX.utils.sheet_to_json(worksheet, {
+        range: 0,
+        cellDates: true,
+        defval: -1, // Thay thế giá trị trống bằng -1
+      });
+      Object.keys(data[0]).forEach((key) => {
+    
+        const trimmedKey = key.trim();
+       
+        if (key !== trimmedKey) {
+          Object.defineProperty(
+            data[0],
+            trimmedKey,
+            Object.getOwnPropertyDescriptor(data[0], key)
+          );
+          delete data[0][key];
+        }
+      });
+      data.forEach((row) => {
+        
+        Object.keys(row).forEach((key) => {
+    
+          if (row[key] === " ") {
+            // Thay thế giá trị bằng -1
+            row[key] = -1;
+          }
+        });
+      });
+      let nameColumnValues = [];
+      const newData = data.map(row => {
+        
+        nameColumnValues.push(row.Name);
+    
+        const { Name, ...rest } = row;
+        return rest; 
+    });
+    setLabels([])
+    setName(nameColumnValues)
+
+      let filteredData = [];
+      if (selectedOptions.includes('all')) {
+        newData.forEach((item) => {
+          
+          filteredData.push(item);
+        });
+      }
+      else {
+        data.forEach((item) => {
+          const filteredItem = {};
+  
+          selectedOptions.forEach((key) => {
+            if (item[key] !== undefined) {
+              filteredItem[key] = item[key];
+            }
+          });
+  
+          filteredData.push(filteredItem);
+        });
+      }
+      
+      console.log(filteredData);
+      let dataset = [cluster, filteredData];
+      const response = await api.kmeans(dataset);
+      setLabels(response?.results[0]?.labels);
+      setExcelData(filteredData);
+      setTextareaValue("");
+      setGenus("0")
+      setCluster(null)
+      setExcelFile(null)
+      setSelectedOptions([])
+      setDisplayedData([])
+      setLoading(false)
+      const columns = {};
+
+      for (let i = 0; i < filteredData.length; i++) {
+        const row = filteredData[i];
+        Object.keys(row).forEach(key => {
+          if (!columns[key]) {
+            columns[key] = [];
+          }
+          columns[key].push(row[key]);
+        });
+      }
+        console.log(columns);
+        
+        const result = await apis.getPropertyColumn(columns)
+        console.log(result.respone)
+        setColumn(result.respone)
+
+      }
+      setShowModalButton(true);
+  };
+  // setShowModalButton(true);
   const handleClickInTextarea = (event) => {
     const { target } = event;
     if (target.classList.contains("remove-option")) {
@@ -194,10 +233,9 @@ const KmeansSpecies = () => {
     }
   };
   const sortedLabels = labels.slice().sort((a, b) => a - b);
-  
-  const handleProperty = () => {
-    
-  }
+
+  const [displayedData, setDisplayedData] = useState([]);
+
   function transpose(matrix) {
     return matrix[0].map((_, columnIndex) => matrix.map(row => row[columnIndex]));
   }
@@ -238,10 +276,9 @@ const KmeansSpecies = () => {
 
     
   };
-  // console.log(displayedData)
+  console.log(displayedData);
   useEffect(() => {
     dispatch(getProperties(genus));
-    labels && column && handleProperty()
     if (textareaRef.current) {
       textareaRef.current.addEventListener("click", handleClickInTextarea);
     }
@@ -250,234 +287,238 @@ const KmeansSpecies = () => {
         textareaRef.current.removeEventListener("click", handleClickInTextarea);
       }
     };
-  }, [genus, textareaValue,selectedOptions,labels,column]);
+  }, [genus, textareaValue]);
   return (
-    <div className="w-full bg-white mt-10 ">
+    <div className="w-full bg-white">
       <header className="py-4 bg-green-600 text-white text-center">
-        <h1 className="text-3xl font-semibold">Gom cụm dữ liệu từ mẫu</h1>
+        <h1 className="text-3xl font-semibold">Gom cụm dữ liệu</h1>
         <p className="text-lg font-semibold text-blue-200"></p>
       </header>
-      <div className="flex flex-col justify-center items-start">    
-        <div className="flex flex-col gap-5 justify-center p-10  ">
-          <form
-            className=" flex  gap-3 justify-between items-center "
-            // onSubmit={handleFileSubmit}
-          >
-            <div className="min-h-40 flex flex-col gap-3 justify-start items-center my-auto mt-6">
-              {/* <div className="flex gap-1 p-1 text-center items-center">
-                <label htmlFor="" className="text-md  text-red-600">
-                  Đọc dữ liệu:
-                </label>
-                <input
-                  type="file"
-                  className="flex text-center justify-center "
-                  required
-                  onChange={handleFile}
-                />
-              </div> */}
-              <div className="flex  gap-3 p-1 justify-start text-center items-center  mr-auto">
-                <label htmlFor="" className="text-md  text-red-600  w-[50%]">
-                  Chọn mẫu:
-                </label>
-                <select
-                  className="shadow-md py-2  bg-white-300  w-[120px] h-[35px] text-center text-[15px]"
-                  onChange={handleChangeGenus}
-                  value={genus}
-                >
-                  <option value="0" className="bg-white-500">
-                    Chọn ở đây
-                  </option>
-                  <option value="N" className="bg-white-500">
-                    Lúa
-                  </option>
-                  <option value="B" className="bg-white-500">
-                    Ngô
-                  </option>
-                  <option value="D" className="bg-white-500">
-                    Dưa lưới
-                  </option>
-                  <option value="L" className="bg-white-500">
-                    Lan
-                  </option>
-                  <option value="DN" className="bg-white-500">
-                    Đậu nành
-                  </option>
-                </select>
-              </div>
-              <div className="flex gap-2 p-1 pl-3 text-center items-center mr-auto">
-                <label
-                  htmlFor=""
-                  className="flex flex-col text-md  text-red-600 w-[50%]"
-                >
-                  Chọn số nhóm:
-                  {/* <span className="text-[10px]">Lưu ý: Chọn số nhóm phải nhỏ hơn mẫu </span> */}
-                </label>
-                <input
-                  type="number"
-                  className="flex text-center justify-center border "
-                  required
-                  onChange={handleCluster}
-                />
-              </div>
-              <div className="flex gap-1  p-1 text-center items-center mr-auto">
-                <label
-                  htmlFor=""
-                  className="flex flex-col text-md  text-red-600 w-[50%]"
-                >
-                  Chọn số lượng mẫu:
-                  {/* <span className="text-[10px]">Lưu ý: Chọn số nhóm phải nhỏ hơn mẫu </span> */}
-                </label>
-                <input
-                  type="number"
-                  className="flex text-center justify-center border w-[40%]"
-                  required
-                  onChange={handleQuantity}
-                />
-                <select
-                    className="flex text-center justify-center border"
-                    required
-                    onChange={handleQuantity}
-                  >
-                    <option value=""><FaCaretDown /></option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                    <option value="300">300</option>
-                    <option value="400">400</option>
-                    <option value="500">500</option>
-                    <option value="1000">Tất cả</option>
-                  </select>
-              </div>
+      <div className="flex flex-col justify-center items-center bg-gray-100 min-h-screen">
+        <div className="bg-blue-200 rounded-lg  w-full max-w-md">
+          <form className="flex flex-col gap-4 items-start">
+            <div className="flex flex-col gap-2 items-start">
+              <label htmlFor="file-upload" className="text-lg text-black">
+                Tải lên tệp dữ liệu:
+              </label>
+              <input
+                id="file-upload"
+                type="file"
+                className="w-full py-2 px-4 border border-blue-300 rounded-md"
+                required
+                onChange={handleFile}
+              />
             </div>
-            <div className="w-[60%] flex flex-col gap-3 justify-start items-center">
-              <div className="flex  gap-3 p-1 justify-start text-center items-center  mr-auto">
-                <label htmlFor="" className="text-md  text-red-600  ">
-                  Danh sách thuộc tính:
-                </label>
-                <select
-                  className="shadow-md py-2  bg-white-300  w-[120px] h-[35px] text-center text-[15px]"
-                  onChange={handleChangeValue}
-                  value={selectedValue}
-                >
-                  <option value="0" className="bg-white-500">
-                    Chọn ở đây
-                  </option>
-                  <option value="all" className="bg-white-500">
-                    Chọn tất cả
-                  </option>
-                  {properties?.rows?.length > 0 &&
-                    properties?.rows.map((item) => {
-                      return (
-                        <option
-                          value={item?.name_vn}
-                          className="bg-white-500"
-                          key={item?.id}
-                        >
-                          {item?.name_vn}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
-              <div
-                className=" flex gap-4 p-5 min-w-80 min-h-20 border border-slate-400"
-                ref={textareaRef}
+            <div className="flex flex-col gap-2 items-start">
+              <label htmlFor="genus-select" className="text-lg text-black">
+                Chọn loại mẫu:
+              </label>
+              <select
+                id="genus-select"
+                className="w-full py-2 px-4 border border-blue-300 rounded-md"
+                onChange={handleChangeGenus}
+                value={genus}
               >
-                {selectedOptions.map((option, index) => (
-                  <div
-                    key={index}
-                    className="flex justify-between p-1 gap-2 bg-slate-400"
-                  >
-                    <span className="text-[13px]">{option}</span>
-                    <span
-                      className="text-red-600 cursor-pointer text-md remove-option"
-                      data-index={index}
-                    >
-                      x
-                    </span>
-                  </div>
-                ))}
-              </div>
+                <option value="0">Chọn loại mẫu</option>
+                <option value="N">Lúa</option>
+                <option value="B">Ngô</option>
+                <option value="D">Dưa lưới</option>
+                <option value="DN">Đậu nành</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-2 items-start">
+              <label htmlFor="cluster-input" className="text-lg text-black">
+                Nhập số nhóm:
+              </label>
+              <input
+                id="cluster-input"
+                type="number"
+                className="w-full py-2 px-4 border border-blue-300 rounded-md"
+                required
+                onChange={handleCluster}
+              />
             </div>
           </form>
-          <div>
-            <button
-              type="submit"
-              onClick={handleDataKmeans}
-              className="flex justify-center items-center gap-1 transition duration-300 ease-in-out hover:text-green-600 hover:shadow-md p-2 mx-auto"
-            > 
-                {loading ? (
-                  <FaSpinner className="text-lg animate-spin text-blue-400" />
-                ) : (
-                  <>
-                    <FaCheck className="text-lg" />
-                    <span className="text-xl text-green-300 transition duration-300 ease-in-out hover:text-green-600">
-                      Thực hiện
-                    </span>
-                  </>
-                )}
-              
-              
-            </button>
-          </div>
-        </div>
-        <div className="flex flex-col justify-center items-center text-center mx-auto w-full">
-          <div className="text-center bg-gray-300   ">
-            <p className="text-2xl px-20 py-3">Kết quả phân cụm</p>
-          </div>
-        </div>
-        {labels?.length > 0 && (
-          <div className="flex justify-between items-center gap-10 w-full">
-            <div className="w-[15%]  border border-slate-400 top-0 relative overflow-y-auto">
-              <div className="flex flex-col py-2">
-                {Array.from(new Set(sortedLabels)).map((groupIndex) => (
-                  <button
-                    key={groupIndex}
-                    onClick={() => handleGroupClick(groupIndex)}
-                    className="hover:text-green-500"
-                  >
-                    Nhóm {groupIndex + 1}
-                  </button>
+          <div className="flex flex-col gap-4 mt-4">
+            <label htmlFor="attribute-select" className="text-lg text-black">
+              Chọn thuộc tính:
+            </label>
+            <select
+              id="attribute-select"
+              className="w-full py-2 px-4 border border-blue-300 rounded-md"
+              onChange={handleChangeValue}
+              value={selectedValue}
+            >
+              <option value="0">Chọn thuộc tính</option>
+              <option value="all" className="bg-white-500">
+                    Chọn tất cả
+                  </option>
+              {properties?.rows?.length > 0 &&
+                properties?.rows.map((item) => (
+                  <option key={item.id} value={item.name_vn}>
+                    {item.name_vn}
+                  </option>
                 ))}
-              </div>
-            </div>
-        {displayedData.length >0 &&
-            <div className="w-[85%] p-5 top-5 overflow-x-auto">
-              <div className="flex flex-col gap-5">
-                <div className="flex gap-5 top-5">
-                  <p className="text-xl font-bold">Nhóm:  <span className="text-blue-500 p-1">{index + 1}</span></p>
-                  <p className="text-xl font-bold">Số lượng:  <span className="text-blue-500 p-1">{displayedData.length}</span></p>
-                </div>
-                <table className="border-2 border-gray-300 text-center ">
-                  <thead>
-                    <tr className=" py-2 px-4 border-2 text-[18px] right-2">
-                      <th  className=" py-2 px-4 border-2 text-[18px] right-2">STT</th>
-                      <th  className=" py-2 px-4 border-2 text-[18px] right-2">Mẫu giống</th>
-                        {Object.keys(excelData[0]).map((columnName) => (
-                          <th key={columnName} className=" py-2 px-4 border-2 text-[18px] right-2">{columnName}</th>
-                        ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-            
-                    {displayedData.map((row, rowIndex) => (
-                      <tr key={rowIndex} className=" py-2 px-4 border-2 text-[18px] right-2">
-                        {Object.values(row).map((cellValue, cellIndex) => (                         
-                          <td key={cellIndex} className=" py-2 px-4 border-2 text-[18px] right-2">{cellValue}</td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-        }
+            </select>
           </div>
-        )}
+          <div className="border border-blue-300 rounded-md p-4 mt-4">
+            <h2 className="text-lg font-bold text-black mb-2">
+              Danh sách thuộc tính đã chọn:
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {selectedOptions.map((option, index) => (
+                <div key={index} className="bg-blue-100 py-1 px-2 rounded-md">
+                  <span className="text-sm text-black">{option}</span>
+                  <button
+                    className="ml-2 text-black focus:outline-none"
+                    onClick={() => handleRemoveOption(index)}
+                  >
+                    x
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <button
+            type="submit"
+            onClick={handleDataKmeans}
+            className="bg-blue-500 hover:bg-blue-600 text-black font-bold py-2 px-4 rounded-md mt-4 focus:outline-none relative"
+            disabled={loading}
+          >
+            <span className="flex items-center">
+              Thực hiện
+              {loading && <FaSpinner className="animate-spin ml-2" />}
+            </span>
+          </button>
+        </div>
+
+        <div className="flex flex-col justify-center items-center text-center mx-auto w-full mt-1">
+          <div className="bg-green-600 text-white text-2xl px-20 py-3 rounded-t-lg w-full max-w-md">
+            Kết quả phân cụm
+          </div>
+        </div>
+
+        <div className="mt-0">
+          {!loading && showModalButton && (
+            <button
+              onClick={openModal}
+              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 transition-colors duration-300 mt-4"
+            >
+              Open Modal
+            </button>
+          )}
+
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            className="modal"
+          >
+            {/* Content of your modal */}
+            {labels?.length > 0 && (
+              <div className="flex justify-between">
+                <div className="w-1/4 bg-blue-100 border border-blue-400 rounded-lg p-4">
+                  <h2 className="text-lg font-semibold text-blue-800 mb-4">
+                    Danh sách nhóm:
+                  </h2>
+                  <div className="space-y-2">
+                    {Array.from(new Set(sortedLabels)).map((groupIndex) => (
+                      <button
+                        key={groupIndex}
+                        onClick={() => handleGroupClick(groupIndex)}
+                        className="block w-full py-2 px-4 text-left rounded-md hover:bg-blue-200 focus:outline-none focus:ring focus:ring-blue-300 transition-colors duration-300 text-blue-800"
+                      >
+                        Nhóm {groupIndex + 1}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {displayedData.length > 0 && (
+                  <div className="w-3/4 p-4">
+                    <div
+                      className="bg-white rounded-lg shadow-md"
+                      style={{ maxHeight: "550px", overflowY: "auto" }}
+                    >
+                      <div className="flex justify-between items-center px-6 py-4 border-b bg-blue-200">
+                        <div>
+                          <p className="text-xl font-bold text-blue-800">
+                            Nhóm:{" "}
+                            <span className="text-blue-500">{index + 1}</span>
+                          </p>
+                          <p className="text-xl font-bold text-blue-800">
+                            Số lượng:{" "}
+                            <span className="text-blue-500">
+                              {displayedData.length}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                      <table className="w-full table-auto border-collapse border border-gray-300">
+                        <thead>
+                          <tr className="bg-blue-200">
+                          <th
+                                  
+                                  className="py-2 px-4 border border-gray-300 text-center bg-blue-200 text-blue-800"
+                                >
+                                  STT
+                                </th>
+                                <th
+                                  
+                                  className="py-2 px-4 border border-gray-300 text-center bg-blue-200 text-blue-800"
+                                >
+                                  Mẫu giống
+                                </th>
+                            {Object.keys(excelData[0]).map(
+                              (columnName, columnIndex) => (
+                                <th
+                                  key={columnIndex}
+                                  className="py-2 px-4 border border-gray-300 text-center bg-blue-200 text-blue-800"
+                                >
+                                  {columnName}
+                                </th>
+                              )
+                            )}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {displayedData.map((row, rowIndex) => (
+                            <tr
+                              key={rowIndex}
+                              className={
+                                rowIndex % 2 === 0 ? "bg-blue-100" : ""
+                              }
+                            >
+                              {Object.values(row).map(
+                                (cellValue, cellIndex) => (
+                                  <td
+                                    key={cellIndex}
+                                    className="py-2 px-4 border border-gray-300 text-center"
+                                  >
+                                    {cellValue}
+                                  </td>
+                                )
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            <button
+              onClick={closeModal}
+              className="absolute top-0 right-0 mt-4 mr-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-300 transition-colors duration-300"
+            >
+              Close Modal
+            </button>
+          </Modal>
+        </div>
       </div>
       <ToastContainer />
     </div>
   );
 };
 
-export default KmeansSpecies;
+export default Kmeans;

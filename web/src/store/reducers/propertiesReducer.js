@@ -2,6 +2,7 @@ import actionTypes from "../actions/acctionTypes";
 
 const initState = {
   properties: [],
+  propertygenus: [],
   msg: "",
 };
 
@@ -11,6 +12,12 @@ const propertiesReducer = (state = initState, action) => {
       return {
         ...state,
         properties: action.properties || [],
+        msg: action.msg || "",
+      };
+    case actionTypes.GET_PROPERTIES_GENUS:
+      return {
+        ...state,
+        propertygenus: action.properties || [],
         msg: action.msg || "",
       };
 

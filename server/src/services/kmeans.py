@@ -53,8 +53,8 @@ result = {
         }      
 # print(json.dumps(labels))
 
-# pca = PCA(n_components=2)
-pca = TSNE(n_components=2,random_state=0)
+pca = PCA(n_components=2)
+# pca = TSNE(n_components=2,random_state=0)
 X_pca = pca.fit_transform(df)
 kmeans = KMeans(n_clusters=k)
 kmeans.fit_predict(X_pca)

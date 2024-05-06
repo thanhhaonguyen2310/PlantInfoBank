@@ -36,7 +36,7 @@ data_to_cluster = [item for item in df[1:]]
 X = np.array(data_to_cluster)
 encoded_df = pd.get_dummies(df,columns=X)
 
-Z = linkage(encoded_df, 'ward')
+Z = linkage(encoded_df, 'average')
 
 
 plt.figure(figsize=(10, 7))

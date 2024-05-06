@@ -46,6 +46,16 @@ import { FcDeleteDatabase } from "react-icons/fc";
               icon: <UserOutlined />,
             },
             {
+              label: "Danh sách loại giống",
+              icon: <OrderedListOutlined />,
+              key: "/admin/manage-genus",
+            },
+            {
+              label: "Danh sách các thuộc tính",
+              icon: <OrderedListOutlined />,
+              key: "/admin/manage-property",
+            },
+            {
               label: "Danh sách mẫu giống",
               icon: <OrderedListOutlined />,
               key: "/admin/manage-species",

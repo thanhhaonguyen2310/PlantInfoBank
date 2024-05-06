@@ -108,6 +108,18 @@ export const deleteProperties = async (req, res) => {
         })
     }
 }
+export const getPropertyGenus = async (req, res ) => {
+    try {
+        const id = req.params.id
+        const respone = await propertiesService.getPropertyGenusService(id)
+        return res.status(200).json(respone)
+    } catch (error) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Failed at post controller : ' + error,
+        })
+    }
+}
 export const getPropertyColumn = async (req, res ) => {
     try {
         const data = req.body

@@ -5,9 +5,9 @@ module.exports = {
     await queryInterface.createTable("Genus", {
       id: {
         allowNull: false,
-        // autoIncrement: true,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
       },
       name_vn: {
         type: Sequelize.STRING,

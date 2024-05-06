@@ -22,3 +22,26 @@ export const getProperties = (id) => async (dispatch) => {
     });
   }
 };
+
+export const getPropertiesGenus = (id) => async (dispatch) => {
+  try {
+    const respone = await api.getPropertiesGenus(id);
+    console.log(respone);
+    if (respone?.error === 0) {
+      dispatch({
+        type: actionTypes.GET_PROPERTIES_GENUS,
+        properties: respone.respone,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.GET_PROPERTIES_GENUS,
+        msg: respone.msg,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_PROPERTIES_GENUS,
+      properties: null,
+    });
+  }
+};
