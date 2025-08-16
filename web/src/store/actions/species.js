@@ -29,18 +29,18 @@ export const getAllSpecies = () => async (dispatch) => {
     // console.log(respone);
     if (respone?.error === 0) {
       dispatch({
-        type: actionTypes.GET_ALLSPECIES,
-        species: respone.respone,
+        type: actionTypes.GET_SPECIES_AREA,
+        species: respone?.respone,
       });
     } else {
       dispatch({
-        type: actionTypes.GET_ALLSPECIES,
+        type: actionTypes.GET_SPECIES_AREA,
         msg: respone.msg,
       });
     }
   } catch (error) {
     dispatch({
-      type: actionTypes.GET_ALLSPECIES,
+      type: actionTypes.GET_SPECIES_AREA,
       species: null,
     });
   }

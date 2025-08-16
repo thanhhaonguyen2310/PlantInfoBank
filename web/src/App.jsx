@@ -23,15 +23,14 @@ import Admin from './containers/System/Admin/Admin'
 function App() {
   // const [count, setCount] = useState(0)
 
-  return (
-    
-      <div className='w-xl relative justify-center items-center  '>
-        <div className='mx-10 bg-white-500'>
+  return (  
+      <div className='w-xl relative justify-center items-center overflow-x-hidden'>
+        <div className=' bg-white-500'>
             <Header/>
             {/* <Navbar /> */}
         </div>
         
-        <div className='min-h-32 bg-white-500'>
+        <div className=' bg-white-500'>
           <Routes path='/*'>
             <Route path='/' element={<HomePage />}/>
             <Route path='sign-in' element={<SignIn />} />

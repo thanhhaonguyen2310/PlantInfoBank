@@ -2,6 +2,7 @@ import actionTypes from "../actions/acctionTypes";
 
 const initState = {
   species: [],
+  speciesarea: [],
   detailspecies: [],
   msg: "",
   datafilter: {},
@@ -14,6 +15,12 @@ const speciesReducer = (state = initState, action) => {
       return {
         ...state,
         species: action.species || [],
+        msg: action.msg || "",
+      };
+      case actionTypes.GET_SPECIES_AREA:
+      return {
+        ...state,
+        speciesarea: action.species || [],
         msg: action.msg || "",
       };
     case actionTypes.GET_SPECIES:

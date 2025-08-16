@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const AddArea = () => {
     const dispatch = useDispatch();
-    const {species} = useSelector(state => state.species)
+    const {speciesarea} = useSelector(state => state.species)
     const {province} = useSelector(state => state.province)
     const [selection, setSelection] = useState(null);
     const [checkbox, setCheckbox] = useState([]);
@@ -34,7 +34,7 @@ const AddArea = () => {
         setSelection(null)
     }
     console.log(checkbox)
-    console.log(selection)
+    console.log(speciesarea)
     useEffect(() => {
         dispatch(getAllSpecies())
         dispatch(getAllProvince())
@@ -54,7 +54,7 @@ const AddArea = () => {
               onChange={handleChange}
             > 
                 <option value="0" className="bg-white-500">Chọn ở đây</option>
-            {species && species?.map((item) => {
+            {speciesarea && speciesarea?.map((item) => {
                 return(
                     <option key={item?.id} value={item?.id} className="bg-white-500">{item?.name}</option>
                 )

@@ -23,6 +23,29 @@ export const getProperties = (id) => async (dispatch) => {
   }
 };
 
+export const getPropertyID = (id) => async (dispatch) => {
+  try {
+    const respone = await api.getPropertyID(id);
+    console.log(respone);
+    if (respone?.error === 0) {
+      dispatch({
+        type: actionTypes.GET_PROPERTIESID,
+        properties: respone.respone,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.GET_PROPERTIESID,
+        msg: respone.msg,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_PROPERTIESID,
+      properties: null,
+    });
+  }
+};
+
 export const getPropertiesGenus = (id) => async (dispatch) => {
   try {
     const respone = await api.getPropertiesGenus(id);

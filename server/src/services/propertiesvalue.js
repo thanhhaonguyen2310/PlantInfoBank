@@ -1,80 +1,125 @@
-import db from '../models'
-import { Op} from 'sequelize'
-import { v4 } from 'uuid'
+import db from "../models";
+import { Op } from "sequelize";
+import { v4 } from "uuid";
 
-
-export const createPropertiesValueService = (data) => new Promise(async (resolve, reject) => {
-
+export const createPropertiesValueService = (data) =>
+  new Promise(async (resolve, reject) => {
     try {
-        const properValueNew = await db.PropertiesValue.build({        
-            propertiesId: data?.propertiesId,
-            option: data?.option,
-            description: data?.description,
-            description_en: data?.description_en,
-        })
-        await properValueNew.save()
-        resolve({
-            err: 0,
-            msg:'Created is successfully !' ,
-        })
-
+      const properValueNew = await db.PropertiesValue.build({
+        propertiesId: data?.id,
+        option: data?.option,
+        description: data?.description,
+        description_en: data?.description_en,
+      });
+      await properValueNew.save();
+      resolve({
+        err: 0,
+        msg: "Created is successfully !",
+      });
     } catch (error) {
-        reject(error)
+      reject(error);
     }
-})
-
-export const updatePropertiesValueService = (data) => new Promise(async (resolve, reject) => {
+  });
+export const updatePropertyService = (data) =>
+  new Promise(async (resolve, reject) => {
     try {
-            const properties = await db.PropertiesValue.findOne({
-                where: {id: data.id},
-                raw: false
-            })
-            if (!properties) {
-                resolve({
-                    err: 1,
-                    msg: 'The user is not defined'
-                })
-            }
-           
-                properties.propertiesId= data?.propertiesId;
-                properties.description = data?.description;
-                properties.option= data?.option,
-                properties.description_en= data?.description_en,
-            
+      const dataUpdate = await db.PropertiesValue.findOne({
+        where: { id: data.id },
+        raw: false,
+      });
+      if (!dataUpdate) {
+        resolve({
+          err: 1,
+          msg: "The data is not defined",
+        });
+      }
+      (dataUpdate.option = data?.option),
+        (dataUpdate.description = data?.description),
+        (dataUpdate.description_en = data?.description_en),
+        await dataUpdate.save();
+      resolve({
+        err: 0,
+        msg: "updated SUCCESS",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
 
-            await properties.save()
-            resolve({
-                err: 0,
-                msg: 'updated SUCCESS',
-            })
-        } catch (e) {
-            reject(e)
-        }
-})
+export const deletePropertyService = (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const dataDelete = await db.PropertiesValue.findOne({
+        where: { id: id },
+      });
+      if (!dataDelete) {
+        resolve({
+          err: 2,
+          msg: "data is not defined",
+        });
+      }
 
-export const deletePropertiesValueService = (id) => new Promise(async (resolve, reject) => {
-    try {   
-            
-            const properties = await db.PropertiesValue.findOne({
-                where: {id: id}
-            })
-            if (!properties) {
-                resolve({
-                    err: 2,
-                    msg: 'PropertiesValue is not defined'
-                })
-            }
+      await dataDelete.destroy();
 
-            await properties.destroy();
-            
-            resolve({
-                err: 0,
-                msg: 'deleted SUCCESS',
-            })
-        } catch (e) {
-            reject(e)
-        }
-})
+      resolve({
+        err: 0,
+        msg: "deleted SUCCESS",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+export const updatePropertiesValueService = (data) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const properties = await db.PropertiesValue.findOne({
+        where: { id: data.id },
+        raw: false,
+      });
+      if (!properties) {
+        resolve({
+          err: 1,
+          msg: "The user is not defined",
+        });
+      }
+
+      properties.propertiesId = data?.propertiesId;
+      properties.description = data?.description;
+      (properties.option = data?.option),
+        (properties.description_en = data?.description_en),
+        await properties.save();
+      resolve({
+        err: 0,
+        msg: "updated SUCCESS",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+
+export const deletePropertiesValueService = (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const properties = await db.PropertiesValue.findOne({
+        where: { id: id },
+      });
+      if (!properties) {
+        resolve({
+          err: 2,
+          msg: "PropertiesValue is not defined",
+        });
+      }
+
+      await properties.destroy();
+
+      resolve({
+        err: 0,
+        msg: "deleted SUCCESS",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
 
 // export const getAllPropertiesService = (speciesId) => new Promise(async(resolve, reject) => {
 //     try {
@@ -87,7 +132,7 @@ export const deletePropertiesValueService = (id) => new Promise(async (resolve, 
 //                 {model: db.Loai_mon, as: 'loai', attributes: ['ten_loai']},
 //             ],
 //             attributes: ['id', 'ten_mon','anh_mon','gia','mo_ta']
-//         }) 
+//         })
 //         // console.log(respone)
 //         resolve({
 //             error: respone ? 0:1,

@@ -22,6 +22,7 @@ export const createPropertiesService = (data) =>
        */
 
       const properNew = await db.Properties.build({
+        id: data?.id,
         name_vn: data?.name_vn,
         name_en: data?.name_en,
         genusId: data?.genusId,
@@ -148,7 +149,7 @@ export const addSpeciesExcelService = (id, data) =>
           property.push(propertyArray);
         }
       });
-      // console.log(species);
+      console.log(species);
       const idSpecies = [];
       for (const subArray of species) {
         const speciesResponse = await db.Species.create({
@@ -160,9 +161,10 @@ export const addSpeciesExcelService = (id, data) =>
           genusId: gen?.dataValues.id,
         });
         idSpecies.push(speciesResponse?.dataValues.id);
+        console.log(speciesResponse);
       }
-      console.log(property);
-      console.log(idSpecies);
+      // console.log(property);
+      // console.log(idSpecies);
       const propertiesArray = [];
       for (let i = 0; i < property.length; i++) {
         const dataValue = await db.PropertiesValue.findAll({
@@ -174,11 +176,11 @@ export const addSpeciesExcelService = (id, data) =>
           dataValue.map((property) => property.dataValues.id)
         );
       }
-      console.log(propertiesArray);
+      // console.log(propertiesArray);
       const dataQuerry = [];
       property.forEach((propertyRow, rowIndex) => {
         const newRow = [];
-        console.log(rowIndex);
+        // console.log(rowIndex);
         propertyRow.forEach((property, colIndex) => {
           const newData = {
             speciesId: idSpecies[rowIndex],
@@ -199,6 +201,7 @@ export const addSpeciesExcelService = (id, data) =>
           speciesId: idSpecies[i],
           userId: id.id,
         });
+        console.log(addSpecies);
       }
       resolve({
         err: 0,
@@ -269,6 +272,29 @@ export const getPropertyService = (id) =>
           },
         },
         include: [{ model: db.PropertiesValue, group: ["propertiesId"] }],
+      });
+      // console.log(respone)
+      resolve({
+        error: respone ? 0 : 1,
+        msg: respone ? "OK" : "Get post fail.",
+        respone,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const getPropertyIDService = (id) =>
+  new Promise(async (resolve, reject) => {
+    console.log(id);
+    try {
+      const respone = await db.Properties.findOne({
+        where: {
+          id: id,
+        },
+        include: [
+          { model: db.PropertiesValue, group: ["propertiesId"] },
+          { model: db.Genus },
+        ],
       });
       // console.log(respone)
       resolve({
@@ -383,5 +409,55 @@ export const getPropertyColumnService = (data) =>
       });
     } catch (error) {
       reject(error);
+    }
+  });
+
+export const updatePropertyService = (data) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const dataUpdate = await db.Properties.findOne({
+        where: { id: data.id },
+        raw: false,
+      });
+      if (!dataUpdate) {
+        resolve({
+          err: 1,
+          msg: "The data is not defined",
+        });
+      }
+      (dataUpdate.name_vn = data?.name_vn),
+        (dataUpdate.name_en = data?.name_en),
+        (dataUpdate.genusId = data?.genusId),
+        await dataUpdate.save();
+      resolve({
+        err: 0,
+        msg: "updated SUCCESS",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+
+export const deletePropertyService = (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const dataDelete = await db.Properties.findOne({
+        where: { id: id },
+      });
+      if (!dataDelete) {
+        resolve({
+          err: 2,
+          msg: "data is not defined",
+        });
+      }
+
+      await dataDelete.destroy();
+
+      resolve({
+        err: 0,
+        msg: "deleted SUCCESS",
+      });
+    } catch (e) {
+      reject(e);
     }
   });

@@ -81,7 +81,7 @@ function Navbar() {
 
   return (
     <nav
-      className="bg-green-600 shadow-lg flex justify-between items-center py-2 px-4 mx-auto"
+      className="bg-green-600 shadow-lg flex justify-between items-center py-2 mx-auto"
       style={{
         marginLeft: "0px",
         marginRight: "-70px",

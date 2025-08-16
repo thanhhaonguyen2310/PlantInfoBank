@@ -25,14 +25,12 @@ export default function SignIn() {
     e.preventDefault();
     dispatch(actions.login(formData))
     setTimeout(function() {
-    const { token } = useSelector(state => state.auth)
-    console.log(token)
-      token === null ?  toast.success('Đăng nhập thành công !', {
-                      position: "top-right"
-                }) : toast.error('Đã xảy ra lỗi. Vui lòng kiểm tra lại số điện thoại hoặc mật khẩu của bạn!', {
-                    position: "top-right"
-                }) 
-    },1000)
+    }, 1000);
+    !isLoggedIn ?  toast.success('Đăng nhập thành công !', {
+      position: "top-right"
+    }) : toast.error('Đã xảy ra lỗi. Vui lòng kiểm tra lại số điện thoại hoặc mật khẩu của bạn!', {
+        position: "top-right"
+    }) 
 
   }
     useEffect(() => {

@@ -16,6 +16,10 @@ import { FcDeleteDatabase } from "react-icons/fc";
   import { Menu } from "antd";
   import { useEffect, useState } from "react";
   import { useLocation, useNavigate } from "react-router-dom";
+  import { CiCircleList } from "react-icons/ci";
+  import { FaListCheck } from "react-icons/fa6";
+  import { MdFormatListBulletedAdd } from "react-icons/md";
+
 
   
   function SideMenu() {
@@ -47,13 +51,18 @@ import { FcDeleteDatabase } from "react-icons/fc";
             },
             {
               label: "Danh sách loại giống",
-              icon: <OrderedListOutlined />,
+              icon: <CiCircleList />,
               key: "/admin/manage-genus",
             },
             {
               label: "Danh sách các thuộc tính",
-              icon: <OrderedListOutlined />,
+              icon: <FaListCheck />,
               key: "/admin/manage-property",
+            },
+            {
+              label: "Danh sách các giá trị thuộc tính",
+              icon: <MdFormatListBulletedAdd />,
+              key: "/admin/manage-propertyvalue",
             },
             {
               label: "Danh sách mẫu giống",

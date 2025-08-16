@@ -26,7 +26,7 @@ export default function SignUp() {
     dispatch(actions.register(formData))
     // isLoggedIn && navigate('/')
     setTimeout(function() {
-    }, 3000);
+    }, 1000);
     isLoggedIn ?  toast.success('Đăng nhập thành công !', {
       position: "top-right"
     }) : toast.error('Đã xảy ra lỗi. Vui lòng kiểm tra lại số điện thoại hoặc mật khẩu của bạn!', {

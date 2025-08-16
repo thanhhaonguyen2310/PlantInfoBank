@@ -9,6 +9,9 @@ class PropertiesService {
   async getProperties(id) {
     return (await this.api.get(`/all/${id}`)).data;
   }
+  async getPropertyID(id) {
+    return (await this.api.get(`/get/${id}`)).data;
+  }
   async getPropertiesGenus(id) {
     return (await this.api.get(`/genus/${id}`)).data;
   }
@@ -21,11 +24,11 @@ class PropertiesService {
   async addSpeciesExcel(id, data) {
     return (await this.api.post(`/add/excel/${id}`, data)).data;
   }
-  async update(id, data) {
-    return (await this.api.put(`/${id}`, data)).data;
+  async update(data) {
+    return (await this.api.put(`/update`, data)).data;
   }
-  async delete(id) {
-    return (await this.api.delete(`/${id}`)).data;
+  async delete(data) {
+    return (await this.api.delete(`/delete`, { data: data })).data;
   }
 }
 export default new PropertiesService();

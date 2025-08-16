@@ -82,11 +82,11 @@ const Sidebar = () => {
             key: "/account/hierarchical",
             icon: <AiOutlineCluster />,
           },
-          {
-            label: "Kmeans",
-            key: "/account/kmeans",
-            icon: <FaRegObjectUngroup />,
-          },
+          // {
+          //   label: "Kmeans",
+          //   key: "/account/kmeans",
+          //   icon: <FaRegObjectUngroup />,
+          // },
           {
             label: "Gom nhóm giống mẫu ",
             key: "/account/public",

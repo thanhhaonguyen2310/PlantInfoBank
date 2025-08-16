@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
     return (
-      <footer  className="inline-block mt-20  w-full pb-0 bg-slate-200 mx-4">
+      <footer  className="inline-block mt-20  w-full pb-0 bg-slate-200 ">
         <div className="absolute-footer dark medium-text-center small-text-center ">
           <div className="container clearfix flex justify-center p-5 items-center gap-20">
             <div className="footer-primary pull-left right-7">

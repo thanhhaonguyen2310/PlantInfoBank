@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GiThreeLeaves } from "react-icons/gi";
 import { ImCancelCircle } from "react-icons/im";
 import { FaCheckCircle } from "react-icons/fa";
-import ModalAddSpecies from "../../../components/ModalAddSpecies";
+import ModalProperty from "../../../components/ModalProperty";
 import Modal from "react-modal";
 
 Modal.setAppElement("#root");
@@ -59,22 +59,18 @@ const ManageProperty = () => {
   };
   const handleEdit = async(event) => {
     event.preventDefault();
-    const data ={
-        id: idgenus,
-        name_vn: nameVN,
-        name_en: nameEN
-    }
+    // console.log(formData)
+    console.log(dataSave)
+    const data = {...formData, id: dataSave?.id, genusId: dataSave?.genusId}
     const respone = await api.update(data)
-    console.log("Tên tiếng Việt:", nameVN);
-    console.log("Tên tiếng Anh:", idgenus);
-    setNameVN('')
-    setNameEN('')
     setLoad(!load)
     closeModal();
   };
-  const handleClick = (item) => {
-    // console.log(e.target.value)
-    console.log(item)
+  const handleClick = (id) => {
+    console.log(id)
+    setIdModal(id)
+    setIsShowModal(true)
+   
   };
   const handleSave = (item) => {
     // console.log(e.target.value)
@@ -90,7 +86,7 @@ const ManageProperty = () => {
     dispatch(getAllAddSpecies(-1));
     dispatch(getAllGenus());
     dispatch(getPropertiesGenus(idgenus));
-  }, [load,idgenus]);
+  }, [load,idgenus,idModal]);
 
   return (
     <div className="container mx-auto mt-8">
@@ -144,7 +140,7 @@ const ManageProperty = () => {
               <td className="py-2 px-4 border">{item?.Genus?.name_vn}</td>
               <td className="py-4 px-4 border flex items-center justify-center hover:shadow-lg cursor-pointer text-xl"
                     // id={item.id}
-                    onClick={() => handleClick(item?.PropertiesValues)}
+                    onClick={() => handleClick(item?.id)}
               >
                 <GiThreeLeaves className="text-gray-400 hover:text-green-500 hover:shadow-lg" />
               </td>
@@ -184,21 +180,23 @@ const ManageProperty = () => {
           <form 
             onSubmit={isEditing ? handleEdit : handleCreate}
         >
+          {!isEditing &&
             <div className=" mb-4 mt-5 flex justify-between gap-5">
               <label className="block text-gray-700 text-sm font-bold mb-2 w-[40%]">Mã thuộc tính:</label>
               <input
                 type="text"
-                value={isEditing && dataSave?.id}
+                // value={isEditing ? dataSave?.id : ''}
                 name="id"
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
+            }
             <div className=" mb-4 mt-5 flex justify-between gap-5">
               <label className="block text-gray-700 text-sm font-bold mb-2 w-[40%]">Tên thuộc tính:</label>
               <input
                 type="text"
-                value={isEditing && dataSave?.name_vn}
+                // value={isEditing ? dataSave?.name_vn : ''}
                 name="name_vn"
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -208,7 +206,7 @@ const ManageProperty = () => {
               <label className="block text-gray-700 text-sm font-bold mb-2 w-[40%]">Tên thuộc tính (Tiếng Anh):</label>
               <input
                 type="text"
-                value={isEditing && dataSave?.name_en}
+                // value={isEditing ? dataSave?.name_en: null}
                 name="name_en"
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -258,6 +256,7 @@ const ManageProperty = () => {
         </div>
         
       </Modal>
+      {isShowModal && <ModalProperty idModal={idModal} isShowModal  setIsShowModal={setIsShowModal} />}
       </div>
     
       {/* <ReactPaginate

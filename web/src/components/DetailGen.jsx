@@ -19,7 +19,7 @@ export const DetailGen = () => {
   return (
     <div className="flex justify-between p-10 bg-white">
       <div className="w-4/5 text-center">
-        <h3 className="p-3 text-xl font-bold  text-teal-500 uppercase">Bảng chi tiết về đặc điểm hình thái và nông học của mẫu giống</h3>
+        <h3 className="p-3 text-xl font-bold  text-teal-500 uppercase">Bảng chi tiết về đặc điểm hình thái và nông sinh học của mẫu giống</h3>
         <table className="table-auto border border-solid  border-slate-600 p-2 text-center mx-auto">
           <thead>
             <tr>

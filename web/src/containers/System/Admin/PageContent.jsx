@@ -17,6 +17,7 @@ import ManageSpecies from '../Page/ManageSpecies';
 import KmeansSpecies from '../../User/KmeansSpecies';
 import ManageGenus from '../Page/ManageGenus';
 import ManageProperty from '../Page/ManageProperty';
+import ManagePropertyValue from '../Page/ManagePropertyValue';
 
 
 const PageContent = () => {
@@ -40,6 +41,7 @@ const PageContent = () => {
         <Route path={'manage-user'} element={<ManageUser/>}></Route>
         <Route path={'manage-genus'} element={<ManageGenus/>}></Route>
         <Route path={'manage-property'} element={<ManageProperty/>}></Route>
+        <Route path={'manage-propertyvalue'} element={<ManagePropertyValue/>}></Route>
       </Routes>
     <Routes path={'/account/*'} element={<User />}>
       
