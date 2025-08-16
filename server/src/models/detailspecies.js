@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   DetailSpecies.init({
-    speciesId: DataTypes.INTEGER,
+    speciesId: DataTypes.STRING,
     propertiesId: DataTypes.STRING,
     propertiesvalueId: DataTypes.INTEGER,
     value: DataTypes.FLOAT,

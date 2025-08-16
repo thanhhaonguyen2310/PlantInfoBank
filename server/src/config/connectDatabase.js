@@ -1,11 +1,16 @@
 const { Sequelize } = require("sequelize");
 
 // Option 3: Passing parameters separately (other dialects)
-const sequelize = new Sequelize("demo3", "root", null, {
-  host: "localhost",
-  dialect: "mysql",
-  logging: false,
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME || "demo3",
+  process.env.DB_USER || "root", 
+  process.env.DB_PASS || null,
+  {
+    host: process.env.DB_HOST || "localhost",
+    dialect: "mysql",
+    logging: false,
+  }
+);
 
 const connectDatabase = async () => {
   try {

@@ -21,7 +21,12 @@ def read_json_file(file_path):
     except json.JSONDecodeError:
         print("Error decoding JSON!")
         return None
-filePath = "D:\\LVTN\\LVTN_1\\server\\src\\services\\data.json"
+
+import os
+# Get the current directory of the script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+filePath = os.path.join(current_dir, "data.json")
+
 start_time = time.time()
 # Nhận dữ liệu từ JavaScript qua đối số dòng lệnh
 # json_string_from_js = sys.argv[1]
@@ -53,7 +58,11 @@ current_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 plt.text(1, 0.95, f"Date: {current_datetime}", horizontalalignment='right', verticalalignment='top', transform=plt.gca().transAxes)
 plt.text(1, 0.9, f"Thực thi: {execution_time:.2f} giây", horizontalalignment='right', verticalalignment='top', transform=plt.gca().transAxes)
 
-plt.savefig('D:/LVTN/LVTN_1/web/src/assets/dendrogram.png')
+# Save to shared assets directory
+output_dir = os.path.join(current_dir, '..', '..', '..', 'shared_assets', 'charts')
+os.makedirs(output_dir, exist_ok=True)
+output_path = os.path.join(output_dir, 'dendrogram.png')
+plt.savefig(output_path)
 
 
 Z_list = Z.tolist()

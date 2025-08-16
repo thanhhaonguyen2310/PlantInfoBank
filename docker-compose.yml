@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: plant_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: plantapp123
+      MYSQL_DATABASE: demo3
+      MYSQL_USER: plantuser
+      MYSQL_PASSWORD: plantpass123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d
+    networks:
+      - plant_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Backend API Server
+  backend:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: plant_backend
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - DB_HOST=mysql
+      - DB_NAME=demo3
+      - DB_USER=plantuser
+      - DB_PASS=plantpass123
+      - JWT_SECRET=${JWT_SECRET}
+    ports:
+      - "5000:5000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+      - ./shared_assets:/usr/src/app/shared_assets
+    networks:
+      - plant_network
+    restart: unless-stopped
+
+  # Web Frontend
+  frontend:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:5000
+    container_name: plant_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./shared_assets:/usr/share/nginx/html/shared_assets
+    networks:
+      - plant_network
+    restart: unless-stopped
+
+  # Database Administration
+  adminer:
+    image: adminer:4.8.1
+    container_name: plant_adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - plant_network
+    restart: unless-stopped
+    environment:
+      - ADMINER_DEFAULT_SERVER=mysql
+
+volumes:
+  mysql_data:
+    driver: local
+  shared_assets:
+    driver: local
+
+networks:
+  plant_network:
+    driver: bridge

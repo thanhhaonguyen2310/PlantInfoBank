@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   DetailImages.init(
     {
-      speciesId: DataTypes.INTEGER,
+      speciesId: DataTypes.STRING,
       imageId: DataTypes.INTEGER,
     },
     {

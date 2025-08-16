@@ -4,7 +4,13 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon --exec babel-node server.js"
+    "start": "nodemon --exec babel-node server.js",
+    "db:migrate": "npx sequelize-cli db:migrate",
+    "db:seed": "npx sequelize-cli db:seed:all",
+    "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate",
+    "db:setup": "npx sequelize-cli db:migrate",
+    "db:import": "sh import-data.sh",
+    "db:full-setup": "npx sequelize-cli db:migrate && sh import-data.sh"
   },
   "nodemonConfig": {
     "ignore": [
@@ -31,6 +37,6 @@
     "@babel/core": "^7.23.7",
     "@babel/node": "^7.22.19",
     "@babel/preset-env": "^7.23.7",
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "^6.6.3"
   }
 }

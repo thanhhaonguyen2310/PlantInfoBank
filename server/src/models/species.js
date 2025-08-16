@@ -19,6 +19,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Species.init(
     {
+      id: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+        allowNull: false,
+      },
       name: DataTypes.STRING,
       name_other: DataTypes.STRING,
       origin_vn: DataTypes.STRING,

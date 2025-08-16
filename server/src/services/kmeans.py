@@ -19,7 +19,12 @@ def read_json_file(file_path):
     except json.JSONDecodeError:
         print("Error decoding JSON!")
         return None
-filePath = "D:\\LVTN\\LVTN_1\\server\\src\\services\\data.json"
+
+import os
+# Get the current directory of the script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+filePath = os.path.join(current_dir, "data.json")
+
 # Nhận dữ liệu từ JavaScript qua đối số dòng lệnh
 json_string_from_js = sys.argv[1]
 # k = json_string_from_js[2]
@@ -76,7 +81,12 @@ for i in range(len(X_pca)):
 # plt.ylabel('Principal Component 2')
 plt.title('KMeans Clustering  và hiển thị bằng PCA')
 plt.legend()
-plt.savefig('D:/LVTN/LVTN_1/web/src/assets/kmeans.png')
+
+# Save to shared assets directory
+output_dir = os.path.join(current_dir, '..', '..', '..', 'shared_assets', 'charts')
+os.makedirs(output_dir, exist_ok=True)
+output_path = os.path.join(output_dir, 'kmeans.png')
+plt.savefig(output_path)
 
 print(json.dumps(result))
 

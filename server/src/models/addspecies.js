@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   AddSpecies.init(
     {
-      speciesId: DataTypes.INTEGER,
+      speciesId: DataTypes.STRING,
       userId: DataTypes.INTEGER,
     },
     {

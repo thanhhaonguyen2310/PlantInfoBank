@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Distribution.init(
     {
-      speciesId: DataTypes.INTEGER,
+      speciesId: DataTypes.STRING,
       provineceId: DataTypes.INTEGER,
     },
     {
