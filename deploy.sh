@@ -112,7 +112,7 @@ EOF
     fi
     
     echo "� Converting legacy data using Node.js script..."
-    docker exec plant_backend node /usr/src/app/convert-data.js
+    docker exec plant_backend node convert-data.js
     if [ $? -ne 0 ]; then
         echo "❌ Data conversion failed."
         exit 1
