@@ -11,7 +11,7 @@ const verifyToken = (req,res ,next) =>{
         msg: 'Mising access token'
     })
 
-    jwt.verify(accessToken,process.env.SECRET_KEY, (err, user) => {
+    jwt.verify(accessToken,process.env.JWT_SECRET, (err, user) => {
         // console.log(err)
         if(err)  return res.status(401).json({
                 err:1,

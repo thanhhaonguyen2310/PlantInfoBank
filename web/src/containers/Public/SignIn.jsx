@@ -11,34 +11,38 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignIn() {
 
-  const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  // const { loading, error } = useSelector((state) => state.user);
-  const { isLoggedIn } = useSelector(state => state.auth)
+  const { isLoggedIn, msg } = useSelector(state => state.auth)
   const [formData, setFormData] = useState({})
+  
   const handleChange = (e) => {
-    // console.log(e.target.name)
     setFormData({...formData, [e.target.name]: e.target.value})
+    // Clear any existing error message when user starts typing
+    if (msg) {
+      dispatch(actions.clearMessage());
+    }
   }
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(actions.login(formData))
-    setTimeout(function() {
-    }, 1000);
-    !isLoggedIn ?  toast.success('Đăng nhập thành công !', {
-      position: "top-right"
-    }) : toast.error('Đã xảy ra lỗi. Vui lòng kiểm tra lại số điện thoại hoặc mật khẩu của bạn!', {
-        position: "top-right"
-    }) 
-
   }
-    useEffect(() => {
-      isLoggedIn &&  setTimeout(function() {
-        console.log(isLoggedIn)
-        navigate('/')
-    }, 2000);
-  }, [isLoggedIn])
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      toast.success('Đăng nhập thành công !', {
+        position: "top-right"
+      });
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    } else if (msg && msg !== "") {
+      toast.error(msg, {
+        position: "top-right"
+      });
+    }
+  }, [isLoggedIn, msg, navigate]);
   
   
   

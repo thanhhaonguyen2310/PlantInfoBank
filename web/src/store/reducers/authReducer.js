@@ -44,6 +44,11 @@ const authReducer = (state = initState, action) => {
         token: null,
         msg: "",
       };
+    case actionTypes.CLEAR_MESSAGE:
+      return {
+        ...state,
+        msg: "",
+      };
     case actionTypes.GET_USER:
       return {
         ...state,

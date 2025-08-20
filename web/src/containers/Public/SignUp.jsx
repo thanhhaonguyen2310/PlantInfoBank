@@ -10,32 +10,39 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignUp() {
 
-  const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { loading, error } = useSelector((state) => state.user);
-  const { isLoggedIn } = useSelector(state => state.auth)
+  const { isLoggedIn, msg } = useSelector(state => state.auth)
   const [formData, setFormData] = useState({})
+  
   const handleChange = (e) => {
     console.log(e.target.name)
     setFormData({...formData, [e.target.name]: e.target.value})
+    // Clear any existing error message when user starts typing
+    if (msg) {
+      dispatch(actions.clearMessage());
+    }
   }
-  console.log(isLoggedIn)
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(actions.register(formData))
-    // isLoggedIn && navigate('/')
-    setTimeout(function() {
-    }, 1000);
-    isLoggedIn ?  toast.success('Đăng nhập thành công !', {
-      position: "top-right"
-    }) : toast.error('Đã xảy ra lỗi. Vui lòng kiểm tra lại số điện thoại hoặc mật khẩu của bạn!', {
-        position: "top-right"
-    }) 
   }
+  
   useEffect(() => {
-    isLoggedIn && navigate('/')
-}, [])
+    if (isLoggedIn) {
+      toast.success('Đăng ký thành công !', {
+        position: "top-right"
+      });
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    } else if (msg && msg !== "") {
+      toast.error(msg, {
+        position: "top-right"
+      });
+    }
+  }, [isLoggedIn, msg, navigate])
   return (
     <div className='flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100'>
         <div className='flex flex-col items-center justify-center w-full flex-1 px-20 text-center'>
@@ -45,7 +52,7 @@ export default function SignUp() {
                     <span className='text-green-500'>CâyXanh</span>
                 </div>
                 <form className='py-10' onSubmit={handleSubmit}>
-                    <h2 className='text-3xl font-bold text-green-500 mb-2'>Sign in</h2>
+                    <h2 className='text-3xl font-bold text-green-500 mb-2'>Sign up</h2>
                     <div className='border-2 w-10 border-green-500 inline-block mb-2'> </div>
                     <div className='flex justify-center my-2'>
                       <a href="#" className='border-2 border-gray-200 rounded-full p-3 mx-1'>
@@ -93,7 +100,7 @@ export default function SignUp() {
                           </div>
                           <button
                            className='border-2 border-green-500 text-green-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white'>
-                            Sign In</button>
+                            Sign Up</button>
                     </div>
                 </form>
                   

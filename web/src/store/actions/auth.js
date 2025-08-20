@@ -2,33 +2,32 @@ import actionTypes from "./acctionTypes";
 import * as api from "../../services/user.services";
 export const register = (payload) => async (dispatch) => {
   try {
-    const respone = await api.apiRegister(payload);
-    console.log(respone);
-    if (respone?.err === 0) {
+    const response = await api.apiRegister(payload);
+    console.log(response);
+    if (response?.data?.err === 0) {
       dispatch({
         type: actionTypes.REGISTER_SUCCESS,
-        data: respone.token,
-        // idCurrent: respone.respone[0].id,
+        data: response.data.token,
+        // idCurrent: response.data.response.id,
       });
     } else {
       dispatch({
         type: actionTypes.REGISTER_FAIL,
-        data: respone.msg,
+        data: response?.data?.msg || "Registration failed",
       });
     }
   } catch (error) {
     dispatch({
       type: actionTypes.REGISTER_FAIL,
-      data: null,
+      data: "Network error or server unavailable",
     });
   }
 };
 export const login = (payload) => async (dispatch) => {
   try {
     const response = await api.apiLogin(payload);
-    // console.log(response);
+    console.log(response);
     if (response?.data?.err === 0) {
-      
       dispatch({
         type: actionTypes.LOGIN_SUCCESS,
         data: response?.data?.token,
@@ -37,14 +36,14 @@ export const login = (payload) => async (dispatch) => {
     } else {
       dispatch({
         type: actionTypes.LOGIN_FAIL,
-        data: response.msg,
+        data: response?.data?.msg || "Login failed",
       });
     }
   } catch (error) {
-    // console.log(console.error)
+    console.error("Login error:", error);
     dispatch({
       type: actionTypes.LOGIN_FAIL,
-      data: null,
+      data: "Network error or server unavailable",
     });
   }
 };
@@ -106,3 +105,7 @@ export const editUser = (dataEdit) => ({
 //         })
 //     }
 // }
+
+export const clearMessage = () => ({
+  type: actionTypes.CLEAR_MESSAGE,
+});
