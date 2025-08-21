@@ -3601,3 +3601,6 @@ INSERT IGNORE INTO `DetailImages` (imageId,speciesId,createdAt,updatedAt) VALUES
 ('74','183',NOW(),NOW()),
 ('75','184',NOW(),NOW()),
 ('76','185',NOW(),NOW());
+
+INSERT IGNORE INTO `Users` (id, name, phone, password, address, gender, power, createdAt, updatedAt) VALUES
+('aa77fdf2-326f-4586-a3e6-dcee295a5f99', 'PlantApp', '0395786543', '$2a$12$fyrA9qEzj3P0e5AEutA6n.rh5SXX/UAEVLQEXc34QQS6Td1A28mbC', 'Can Tho', NULL, 1, '2025-08-21 01:38:58', '2025-08-21 01:38:58');
