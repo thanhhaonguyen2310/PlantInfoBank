@@ -1,0 +1,50 @@
+server {
+    
+    listen 443 ssl;
+    server_name ${PRIMARY_DOMAIN_NAME};
+
+    # SSL configuration
+    ssl_certificate /etc/nginx/certs/letsencrypt/live/${PRIMARY_DOMAIN_NAME}/fullchain.pem;
+    ssl_certificate_key /etc/nginx/certs/letsencrypt/live/${PRIMARY_DOMAIN_NAME}/privkey.pem;
+
+    # TLS1.2 and TLS1.3 are the recommended protocols
+    # Disable older protocols for security reasons
+    # Ciphers should be strong and secure
+    # Session cache is used to improve performance
+    # Enforce HSTS (HTTP Strict Transport Security)
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_session_cache shared:SSL:20m;
+    ssl_session_timeout   1h;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
+
+    # Gzip compression settings
+    gzip on;
+    gzip_comp_level 5;
+    gzip_min_length 256;
+    gzip_types text/plain text/css application/javascript application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript application/font-woff application/font-woff2 image/svg+xml;
+
+    # Upstream Application
+    # The frontend container in docker-compose serves the app on container port 80
+    # (nginx within the frontend image). Proxy there.
+    set $upstream_website http://frontend:80;
+    
+    # Dynamic Content (Unbuffered Mode)
+    location / {
+
+        # Proxy to ReactJS
+        proxy_pass $upstream_website;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Timeouts for unbuffered mode
+        proxy_connect_timeout 15s;
+        proxy_read_timeout 30s;
+        proxy_send_timeout 30s;
+
+        # Rate limiting
+        limit_req zone=website_zone burst=30;
+    }
+}

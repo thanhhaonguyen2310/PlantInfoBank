@@ -52,11 +52,11 @@ deploy() {
     echo "🚀 Building and starting services..."
     
     # Stop any existing containers
-    docker compose down
+    docker compose --profile system down
     
     # Build and start services
-    docker compose up --build -d
-    
+    docker compose --profile system up --build -d
+
     echo "⏳ Waiting for services to be ready..."
     sleep 30
     
