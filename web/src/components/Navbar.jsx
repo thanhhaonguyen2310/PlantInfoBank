@@ -303,7 +303,7 @@ function Navbar() {
             </span>
           </NavLink>
           )} */}
-          {isLoggedIn && currentData.power == true && (
+          {isLoggedIn && (
             <div className="flex items-center  relative gap-1 z-50 mr-10">
               <button
                 style={{
