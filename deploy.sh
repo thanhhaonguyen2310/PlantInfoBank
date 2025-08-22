@@ -165,7 +165,7 @@ stop() {
 # Function to clean up
 cleanup() {
     echo "🧹 Cleaning up..."
-    docker compose down -v
+    docker compose --profile system down -v
     docker system prune -f
     echo "✅ Cleanup completed"
 }
