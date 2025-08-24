@@ -48,7 +48,7 @@ Có thể copy từ `.env.example` sang `.env` và điều chỉnh nếu cần.
 - Tạo thư mục chia sẻ: script sẽ tự tạo (`shared_assets/images`, `shared_assets/charts`, `shared_assets/exports`).
 
 2) Triển khai dịch vụ
-- Chạy: `./deploy.sh deploy`
+- Chạy: `./deploy.sh deploy` - cho môi trường production hoặc `./deploy.dev.sh deploy` - cho môi trường dev
   - Dừng phiên cũ (nếu có), build và khởi động các container.
   - Sau khi up thành công, truy cập:
     - Frontend: http://localhost:3000
@@ -57,12 +57,12 @@ Có thể copy từ `.env.example` sang `.env` và điều chỉnh nếu cần.
     - Thông tin đăng nhập Adminer: Server mysql, Username plantuser, Password plantpass123, Database demo3
 
 3) Tạo cấu trúc DB (migrations) + Import dữ liệu thực
-- Cách 1 (đề xuất): `./deploy.sh db-full`
+- Cách 1 (đề xuất): `./deploy.sh db-full` hoặc `./deploy.dev.sh db-full`
   - Chạy migrations trong container backend.
   - Chuyển đổi dữ liệu legacy bằng `server/convert-data.js` → sinh `server/import.sql` (utf8mb4) và import vào MySQL.
 - Cách 2 (từng bước):
-  - `./deploy.sh db-setup` (chỉ migrations)
-  - `./deploy.sh db-import` (chỉ import dữ liệu thực)
+  - `./deploy.sh db-setup` hoặc `./deploy.dev.sh db-setup` (chỉ migrations)
+  - `./deploy.sh db-import` hoặc `./deploy.dev.sh db-import` (chỉ import dữ liệu thực)
 
 Lưu ý import dữ liệu:
 - Script import sẽ tạm tắt khóa ngoại, đặt `SET NAMES utf8mb4` để đảm bảo tiếng Việt hiển thị đúng, sau đó bật lại.

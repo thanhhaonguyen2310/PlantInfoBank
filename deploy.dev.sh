@@ -52,10 +52,10 @@ deploy() {
     echo "🚀 Building and starting services..."
     
     # Stop any existing containers
-    docker compose --profile system down
-    
+    docker compose --file docker-compose.dev.yml --profile system down
+
     # Build and start services
-    docker compose --profile system up --build -d
+    docker compose --file docker-compose.dev.yml --profile system up --build -d
 
     echo "⏳ Waiting for services to be ready..."
     sleep 5
@@ -88,7 +88,7 @@ deploy() {
 # Function to setup database (migrations only)
 setup_database() {
     echo "🗄️  Setting up database structure..."
-    docker compose exec backend npm run db:setup
+    docker compose --file docker-compose.dev.yml exec backend npm run db:setup
     echo "✅ Database structure created"
     echo "💡 To import real plant data, run: ./deploy.sh db-import"
 }
@@ -144,7 +144,7 @@ EOF
 # Function to full database setup (migrations + data import)
 full_database_setup() {
     echo "🗄️  Setting up database with real data..."
-    docker compose exec backend npm run db:setup
+    docker compose --file docker-compose.dev.yml exec backend npm run db:setup
     import_data
     echo "✅ Database setup completed with real plant data!"
 }
@@ -152,20 +152,20 @@ full_database_setup() {
 # Function to show logs
 show_logs() {
     echo "📋 Showing service logs..."
-    docker compose --profile system logs -f
+    docker compose --file docker-compose.dev.yml --profile system logs -f
 }
 
 # Function to stop services
 stop() {
     echo "🛑 Stopping services..."
-    docker compose --profile system down
+    docker compose --file docker-compose.dev.yml --profile system down
     echo "✅ Services stopped"
 }
 
 # Function to clean up
 cleanup() {
     echo "🧹 Cleaning up..."
-    docker compose --profile system down -v
+    docker compose --file docker-compose.dev.yml --profile system down -v
     docker system prune -f
     echo "✅ Cleanup completed"
 }
