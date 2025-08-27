@@ -1,3 +1,17 @@
+# Tham khảo học tập báo cáo khoa học
+
+**Mục đích:**
+Tài liệu này được dùng **chỉ để học tập và sửa lỗi** trong báo cáo khoa học, không phải sản phẩm của tôi.
+
+**Nguồn gốc**
+Niên luận gốc thuộc về: Chau Bôl.
+Người sửa lỗi: Nguyễn Thanh Hào.
+
+**Lưu ý**
+
+- Toàn bộ nội dung gốc vẫn thuộc bản quyền của tác giả Chau Bôl.
+- Repository này chỉ dùng cho mục đích học tập của cá nhân.
+
 # Hệ thống Ngân hàng Thông tin Giống Cây trồng Việt Nam
 
 Mục tiêu: Triển khai hệ thống web tổng hợp thông tin giống cây trồng, có tích hợp phân cụm dữ liệu, chạy bằng Docker (MySQL + Backend + Frontend + Adminer).
@@ -5,11 +19,13 @@ Mục tiêu: Triển khai hệ thống web tổng hợp thông tin giống cây 
 ## Công nghệ sử dụng
 
 - Hạ tầng & Triển khai
+
   - Docker, Docker Compose: đóng gói và vận hành các dịch vụ.
   - Nginx: phục vụ frontend build.
   - Script triển khai: `deploy.sh` cung cấp các tác vụ deploy, migrate, import, logs…
 
 - Backend API (`/server`)
+
   - Node.js + Express: xây dựng REST API.
   - Sequelize ORM + mysql2: truy cập MySQL, chạy migrations.
   - JWT (jsonwebtoken) + bcryptjs: xác thực & băm mật khẩu.
@@ -17,7 +33,8 @@ Mục tiêu: Triển khai hệ thống web tổng hợp thông tin giống cây 
   - ML/DS: Python 3, numpy, pandas, scikit-learn, scipy, matplotlib (tạo ảnh biểu đồ vào `shared_assets/charts`).
 
 - Cơ sở dữ liệu
-  - MySQL 8: lưu trữ dữ liệu. 
+
+  - MySQL 8: lưu trữ dữ liệu.
   - Adminer: giao diện quản trị DB.
   - Import dữ liệu thực từ 2 file legacy `server/src/dl` và `server/src/dl1` thông qua bộ chuyển đổi `server/convert-data.js` → sinh `server/import.sql` chuẩn hóa (utf8mb4, schema hiện tại).
 
@@ -43,20 +60,23 @@ Có thể copy từ `.env.example` sang `.env` và điều chỉnh nếu cần.
 
 ## Hướng dẫn triển khai nhanh
 
-1) Chuẩn bị
+1. Chuẩn bị
+
 - Cài Docker & Docker Compose.
 - Tạo thư mục chia sẻ: script sẽ tự tạo (`shared_assets/images`, `shared_assets/charts`, `shared_assets/exports`).
 
-2) Triển khai dịch vụ
+2. Triển khai dịch vụ
+
 - Chạy: `./deploy.sh deploy` - cho môi trường production hoặc `./deploy.dev.sh deploy` - cho môi trường dev
   - Dừng phiên cũ (nếu có), build và khởi động các container.
   - Sau khi up thành công, truy cập:
     - Frontend: http://localhost:3000
-    - Backend:  http://localhost:5000
-    - Adminer:  http://localhost:8080
+    - Backend: http://localhost:5000
+    - Adminer: http://localhost:8080
     - Thông tin đăng nhập Adminer: Server mysql, Username plantuser, Password plantpass123, Database demo3
 
-3) Tạo cấu trúc DB (migrations) + Import dữ liệu thực
+3. Tạo cấu trúc DB (migrations) + Import dữ liệu thực
+
 - Cách 1 (đề xuất): `./deploy.sh db-full` hoặc `./deploy.dev.sh db-full`
   - Chạy migrations trong container backend.
   - Chuyển đổi dữ liệu legacy bằng `server/convert-data.js` → sinh `server/import.sql` (utf8mb4) và import vào MySQL.
@@ -65,6 +85,7 @@ Có thể copy từ `.env.example` sang `.env` và điều chỉnh nếu cần.
   - `./deploy.sh db-import` hoặc `./deploy.dev.sh db-import` (chỉ import dữ liệu thực)
 
 Lưu ý import dữ liệu:
+
 - Script import sẽ tạm tắt khóa ngoại, đặt `SET NAMES utf8mb4` để đảm bảo tiếng Việt hiển thị đúng, sau đó bật lại.
 - Dữ liệu nguồn: `server/src/dl`, `server/src/dl1`.
 - File kết quả: `server/import.sql` (được sinh tự động khi chạy `db-import` hoặc `db-full`).
@@ -81,6 +102,7 @@ Lưu ý import dữ liệu:
 - restart: dừng và triển khai lại nhanh.
 
 Ví dụ:
+
 - `./deploy.sh logs` để theo dõi logs.
 - `./deploy.sh cleanup && ./deploy.sh deploy && ./deploy.sh db-full` để reset hoàn toàn và khởi tạo từ đầu.
 
